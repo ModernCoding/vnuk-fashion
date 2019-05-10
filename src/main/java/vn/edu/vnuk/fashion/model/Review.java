@@ -3,7 +3,7 @@ package vn.edu.vnuk.fashion.model;
 import javax.validation.constraints.NotNull;
 
 public class Review {
-	private long id;
+	private Long id;
 	
 	@NotNull
 	private Order order;
@@ -13,11 +13,11 @@ public class Review {
 
 	private String description;
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

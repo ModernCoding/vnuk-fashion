@@ -3,10 +3,10 @@ package vn.edu.vnuk.fashion.model;
 import javax.validation.constraints.NotNull;
 
 public class Maker {
-	private long id;
+	private Long id;
 	
 	@NotNull
-	private String lable;
+	private String label;
 	
 	@NotNull
 	private String address;
@@ -15,37 +15,45 @@ public class Maker {
 	private String phone;
 	
 	private String email;
-	
-	public long getId() {
+
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+
+	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getLable() {
-		return lable;
+
+	public String getLabel() {
+		return label;
 	}
-	public void setLable(String lable) {
-		this.lable = lable;
+
+	public void setLabel(String label) {
+		this.label = label;
 	}
+
 	public String getAddress() {
 		return address;
 	}
+
 	public void setAddress(String address) {
 		this.address = address;
 	}
+
 	public String getPhone() {
 		return phone;
 	}
+
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+
 	public String getEmail() {
 		return email;
 	}
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
 
 }

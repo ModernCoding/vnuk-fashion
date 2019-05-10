@@ -3,7 +3,7 @@ package vn.edu.vnuk.fashion.model;
 import javax.validation.constraints.NotNull;
 
 public class ProductsPattern {
-	private long id;
+	private Long id;
 	
 	@NotNull
 	private Product product;
@@ -18,11 +18,11 @@ public class ProductsPattern {
 		this.pattern = pattern;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
