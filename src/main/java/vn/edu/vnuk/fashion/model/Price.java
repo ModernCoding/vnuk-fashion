@@ -3,88 +3,89 @@ package vn.edu.vnuk.fashion.model;
 import javax.validation.constraints.NotNull;
 
 public class Price {
-	private int id;
+	private long id;
 	
 	@NotNull
-	private int productsSizeId;
+	private ProductsSize productsSize;
 	
 	@NotNull
-	private int productsColorId;
+	private ProductsColor productsColor;
 	
-	private int productsPatternId;
+	private ProductsPattern productsPattern;
 	
-	private int productsLengthId;
-	
-	@NotNull
-	private int sellerId;
+	private ProductsLength productsLength;
 	
 	@NotNull
-	private int priceTypeId;
+	private Seller seller;
+	
+	@NotNull
+	private PriceType priceType;
 	
 	@NotNull
 	private float value;
-	
-	public int getId() {
+
+	public long getId() {
 		return id;
 	}
-	
-	public void setId(int id) {
+
+	public void setId(long id) {
 		this.id = id;
 	}
-	
-	public int getProductsSizeId() {
-		return productsSizeId;
+
+	public ProductsSize getProductsSize() {
+		return productsSize;
 	}
-	
-	public void setProductsSizeId(int productsSizeId) {
-		this.productsSizeId = productsSizeId;
+
+	public void setProductsSize(ProductsSize productsSize) {
+		this.productsSize = productsSize;
 	}
-	
-	public int getProductsColorId() {
-		return productsColorId;
+
+	public ProductsColor getProductsColor() {
+		return productsColor;
 	}
-	
-	public void setProductsColorId(int productsColorId) {
-		this.productsColorId = productsColorId;
+
+	public void setProductsColor(ProductsColor productsColor) {
+		this.productsColor = productsColor;
 	}
-	
-	public int getProductsPatternId() {
-		return productsPatternId;
+
+	public ProductsPattern getProductsPattern() {
+		return productsPattern;
 	}
-	
-	public void setProductsPatternId(int productsPatternId) {
-		this.productsPatternId = productsPatternId;
+
+	public void setProductsPattern(ProductsPattern productsPattern) {
+		this.productsPattern = productsPattern;
 	}
-	
-	public int getProductsLengthId() {
-		return productsLengthId;
+
+	public ProductsLength getProductsLength() {
+		return productsLength;
 	}
-	
-	public void setProductsLengthId(int productsLengthId) {
-		this.productsLengthId = productsLengthId;
+
+	public void setProductsLength(ProductsLength productsLength) {
+		this.productsLength = productsLength;
 	}
-	
-	public int getSellerId() {
-		return sellerId;
+
+	public Seller getSeller() {
+		return seller;
 	}
-	
-	public void setSellerId(int sellerId) {
-		this.sellerId = sellerId;
+
+	public void setSeller(Seller seller) {
+		this.seller = seller;
 	}
-	
-	public int getPriceTypeId() {
-		return priceTypeId;
+
+	public PriceType getPriceType() {
+		return priceType;
 	}
-	
-	public void setPriceTypeId(int priceTypeId) {
-		this.priceTypeId = priceTypeId;
+
+	public void setPriceType(PriceType priceType) {
+		this.priceType = priceType;
 	}
-	
+
 	public float getValue() {
 		return value;
 	}
-	
+
 	public void setValue(float value) {
 		this.value = value;
-	}		
+	}
+	
 }

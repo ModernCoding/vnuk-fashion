@@ -3,36 +3,35 @@ package vn.edu.vnuk.fashion.model;
 import javax.validation.constraints.NotNull;
 
 public class ProductsLength {
-	private int id;
+	private long id;
 	
 	@NotNull
-	private int productId;
+	private Product product;
 	
-	private int lengthId;
+	private Length length;
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
-	public int getProductId() {
-		return productId;
+	public Product getProduct() {
+		return product;
 	}
 
-	public void setProductId(int productId) {
-		this.productId = productId;
+	public void setProduct(Product product) {
+		this.product = product;
 	}
 
-	public int getLengthId() {
-		return lengthId;
+	public Length getLength() {
+		return length;
 	}
 
-	public void setLengthId(int lengthId) {
-		this.lengthId = lengthId;
+	public void setLength(Length length) {
+		this.length = length;
 	}
-	
 	
 }

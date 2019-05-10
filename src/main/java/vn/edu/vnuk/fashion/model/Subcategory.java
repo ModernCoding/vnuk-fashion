@@ -3,28 +3,28 @@ package vn.edu.vnuk.fashion.model;
 import javax.validation.constraints.NotNull;
 
 public class Subcategory {
-	private int id;
+	private long id;
 	
 	@NotNull
-	private int categoryId;
+	private Category category;
 	
 	@NotNull
 	private String label;
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
-	public int getCategoryId() {
-		return categoryId;
+	public Category getCategory() {
+		return category;
 	}
 
-	public void setCategoryId(int categoryId) {
-		this.categoryId = categoryId;
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 
 	public String getLabel() {
@@ -34,6 +34,5 @@ public class Subcategory {
 	public void setLabel(String label) {
 		this.label = label;
 	}
-	
-	
+
 }

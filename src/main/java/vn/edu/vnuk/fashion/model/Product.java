@@ -3,28 +3,28 @@ package vn.edu.vnuk.fashion.model;
 import javax.validation.constraints.NotNull;
 
 public class Product {
-	private int id;
+	private long id;
 	
 	@NotNull
 	private String name;
 	
 	@NotNull
-	private int subcategoryId;
+	private Subcategory subcategory;
 	
-	private int sleeveId;
-	private int shapeId;
-	private int collarId;
-	private int heightId;
-	private int materialId;
+	private Sleeve sleeve;
+	private Shape shape;
+	private Collar collar;
+	private Height height;
+	private Material material;
 	
 	@NotNull
-	private int makerId;
+	private Maker maker;
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -36,61 +36,61 @@ public class Product {
 		this.name = name;
 	}
 
-	public int getSubcategoryId() {
-		return subcategoryId;
+	public Subcategory getSubcategory() {
+		return subcategory;
 	}
 
-	public void setSubcategoryId(int subcategoryId) {
-		this.subcategoryId = subcategoryId;
+	public void setSubcategory(Subcategory subcategory) {
+		this.subcategory = subcategory;
 	}
 
-	public int getSleeveId() {
-		return sleeveId;
+	public Sleeve getSleeve() {
+		return sleeve;
 	}
 
-	public void setSleeveId(int sleeveId) {
-		this.sleeveId = sleeveId;
+	public void setSleeve(Sleeve sleeve) {
+		this.sleeve = sleeve;
 	}
 
-	public int getShapeId() {
-		return shapeId;
+	public Shape getShape() {
+		return shape;
 	}
 
-	public void setShapeId(int shapeId) {
-		this.shapeId = shapeId;
+	public void setShape(Shape shape) {
+		this.shape = shape;
 	}
 
-	public int getCollarId() {
-		return collarId;
+	public Collar getCollar() {
+		return collar;
 	}
 
-	public void setCollarId(int collarId) {
-		this.collarId = collarId;
+	public void setCollar(Collar collar) {
+		this.collar = collar;
 	}
 
-	public int getHeightId() {
-		return heightId;
+	public Height getHeight() {
+		return height;
 	}
 
-	public void setHeightId(int heightId) {
-		this.heightId = heightId;
+	public void setHeight(Height height) {
+		this.height = height;
 	}
 
-	public int getMaterialId() {
-		return materialId;
+	public Material getMaterial() {
+		return material;
 	}
 
-	public void setMaterialId(int materialId) {
-		this.materialId = materialId;
+	public void setMaterial(Material material) {
+		this.material = material;
 	}
 
-	public int getMakerId() {
-		return makerId;
+	public Maker getMaker() {
+		return maker;
 	}
 
-	public void setMakerId(int makerId) {
-		this.makerId = makerId;
+	public void setMaker(Maker maker) {
+		this.maker = maker;
 	}
-	
+
 	
 }
