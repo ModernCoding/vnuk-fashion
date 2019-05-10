@@ -3,39 +3,39 @@ package vn.edu.vnuk.fashion.model;
 import javax.validation.constraints.NotNull;
 
 public class Order {
-	private int id;
+	private long id;
 	
 	@NotNull
-	private int customerId;
+	private Customer customer;
 	
 	@NotNull
-	private int priceId;
+	private Price price;
 	
 	@NotNull
 	private int qty;
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
-	public int getCustomerId() {
-		return customerId;
+	public Customer getCustomer() {
+		return customer;
 	}
 
-	public void setCustomerId(int customerId) {
-		this.customerId = customerId;
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 
-	public int getPriceId() {
-		return priceId;
+	public Price getPrice() {
+		return price;
 	}
 
-	public void setPriceId(int priceId) {
-		this.priceId = priceId;
+	public void setPrice(Price price) {
+		this.price = price;
 	}
 
 	public int getQty() {

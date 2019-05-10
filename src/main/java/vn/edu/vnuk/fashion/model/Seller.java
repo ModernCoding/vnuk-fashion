@@ -3,19 +3,24 @@ package vn.edu.vnuk.fashion.model;
 import javax.validation.constraints.NotNull;
 
 public class Seller {
-	private int id;
+	private long id;
+	
 	@NotNull
 	private String label;
+	
 	@NotNull
 	private String address;
+	
 	@NotNull
 	private String phone;
+	
 	@NotNull
 	private String email;
-	public int getId() {
+	
+	public long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	public String getLabel() {

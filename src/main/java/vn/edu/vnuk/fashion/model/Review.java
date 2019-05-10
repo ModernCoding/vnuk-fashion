@@ -3,30 +3,30 @@ package vn.edu.vnuk.fashion.model;
 import javax.validation.constraints.NotNull;
 
 public class Review {
-	private int id;
+	private long id;
 	
 	@NotNull
-	private int orderId;
+	private Order order;
 	
 	@NotNull
 	private int rating;
 
 	private String description;
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
-	public int getOrderId() {
-		return orderId;
+	public Order getOrder() {
+		return order;
 	}
 
-	public void setOrderId(int orderId) {
-		this.orderId = orderId;
+	public void setOrder(Order order) {
+		this.order = order;
 	}
 
 	public int getRating() {
@@ -44,6 +44,7 @@ public class Review {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
 	
 	
 }
