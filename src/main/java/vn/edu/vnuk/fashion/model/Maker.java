@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 public class Maker {
 	private int id;
 	@NotNull
-	private String lable;
+	private String lbel;
 	@NotNull
 	private String address;
 	@NotNull
@@ -17,11 +17,11 @@ public class Maker {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getLable() {
-		return lable;
+	public String getLbel() {
+		return lbel;
 	}
-	public void setLable(String lable) {
-		this.lable = lable;
+	public void setLbel(String lbel) {
+		this.lbel = lbel;
 	}
 	public String getAddress() {
 		return address;
