@@ -4,20 +4,25 @@ import javax.validation.constraints.NotNull;
 
 public class Shape {
 
-	private int id;
+	private Long id;
 
 	@NotNull
-	private String lbel;
-	public int getId() {
+	private String label;
+
+	public Long getId() {
 		return id;
 	}
-	public void setId(int id) {
+
+	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getLbel() {
-		return lbel;
+
+	public String getLabel() {
+		return label;
 	}
-	public void setLbel(String lbel) {
-		this.lbel = lbel;
+
+	public void setLabel(String label) {
+		this.label = label;
 	}
+	
 }

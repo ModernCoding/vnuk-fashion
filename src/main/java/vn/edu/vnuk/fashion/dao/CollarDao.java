@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import vn.edu.vnuk.fashion.jdbc.ConnectionFactory;
@@ -36,7 +35,7 @@ public class CollarDao {
                 statement = connection.prepareStatement(sqlQuery);
 
                 //	Replacing "?" through values
-                statement.setString(1, collar.getLbel());
+                statement.setString(1, collar.getLabel());
 
                 // 	Executing statement
                 statement.execute();
@@ -73,7 +72,7 @@ public class CollarDao {
 
                 Collar collar = new Collar();
                 collar.setId(results.getLong("id"));
-                collar.setLbel(results.getString("label"));
+                collar.setLabel(results.getString("label"));
                 
                 collars.add(collar);
 

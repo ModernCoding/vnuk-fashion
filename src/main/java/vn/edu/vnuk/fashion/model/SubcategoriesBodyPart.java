@@ -3,36 +3,36 @@ package vn.edu.vnuk.fashion.model;
 import javax.validation.constraints.NotNull;
 
 public class SubcategoriesBodyPart {
-	private int id;
+	private Long id;
 	
 	@NotNull
-	private int subcategoryId;
+	private Subcategory subcategory;
 	
 	@NotNull
-	private int bodyPartId;
+	private BodyPart bodyPart;
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public int getSubcategoryId() {
-		return subcategoryId;
+	public Subcategory getSubcategory() {
+		return subcategory;
 	}
 
-	public void setSubcategoryId(int subcategoryId) {
-		this.subcategoryId = subcategoryId;
+	public void setSubcategory(Subcategory subcategory) {
+		this.subcategory = subcategory;
 	}
 
-	public int getBodyPartId() {
-		return bodyPartId;
+	public BodyPart getBodyPart() {
+		return bodyPart;
 	}
 
-	public void setBodyPartId(int bodyPartId) {
-		this.bodyPartId = bodyPartId;
+	public void setBodyPart(BodyPart bodyPart) {
+		this.bodyPart = bodyPart;
 	}
-	
+
 }

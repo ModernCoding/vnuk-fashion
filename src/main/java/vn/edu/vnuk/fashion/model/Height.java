@@ -3,21 +3,26 @@ package vn.edu.vnuk.fashion.model;
 import javax.validation.constraints.NotNull;
 
 public class Height {
-	private int id;
+	private Long id;
+	
 	@NotNull
-	private String lbel;
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
+	private String label;
+	
+	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getLbel() {
-		return lbel;
-	}
-	public void setLbel(String lbel) {
-		this.lbel = lbel;
-	}
 	
+	public Long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	public String getLabel() {
+		return label;
+	}
+	public void setLabel(String label) {
+		this.label = label;
+	}
 	
 }

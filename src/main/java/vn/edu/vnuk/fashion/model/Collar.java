@@ -3,20 +3,22 @@ package vn.edu.vnuk.fashion.model;
 import javax.validation.constraints.NotNull;
 
 public class Collar {
-	private int id;
+	private long id;
+	
 	@NotNull
-	private String lable;
-	public int getId() {
+	private String label;
+	
+	public long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getLable() {
-		return lable;
+	public String getLabel() {
+		return label;
 	}
-	public void setLable(String lable) {
-		this.lable = lable;
+	public void setLabel(String label) {
+		this.label = label;
 	}
 	
 	

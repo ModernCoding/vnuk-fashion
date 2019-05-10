@@ -1,0 +1,55 @@
+[33mcommit 94b11fb6615e31bbc4f5c7fe9e9025406e5b86c6[m[33m ([m[1;36mHEAD -> [m[1;32mmodels_quan[m[33m)[m
+Author: tnmquan9799 <tnmquan9799@gmail.com>
+Date:   Thu May 9 23:19:46 2019 +0700
+
+    Models: Subcategory, Product, ProductsLength, ProductsColor
+
+[33mcommit 1dfe61e4a4706ca84419a961f096a96265a340a5[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m
+Merge: 485197a 3589453
+Author: 0905534230 <quan.hoang170203@vnuk.edu.vn>
+Date:   Wed May 8 10:52:30 2019 +0700
+
+    Merge branch 'models_quan'
+
+[33mcommit 35894537b8e7f45efb5f28019a5c109fe7a93d08[m
+Author: 0905534230 <quan.hoang170203@vnuk.edu.vn>
+Date:   Wed May 8 10:32:08 2019 +0700
+
+    Models: Shape Material Maker Height Collar
+
+[33mcommit 485197af976397a7c64fe82d409c25bb162d2e56[m
+Merge: 50b89cd 889ae37
+Author: lethithuhuong99 <huong.le170205@vnuk.edu.vn>
+Date:   Wed May 8 10:24:30 2019 +0700
+
+    Merge branch 'models_huong'
+
+[33mcommit 889ae3765214982c630349749724e2f23492a5cb[m
+Author: lethithuhuong99 <huong.le170205@vnuk.edu.vn>
+Date:   Wed May 8 10:23:53 2019 +0700
+
+    Model: color, length, pattern, priceType, seller, title
+
+[33mcommit 50b89cd88ee09ecab6b6c488ede0b30bbd5fa809[m
+Author: tnmquan9799 <tnmquan9799@gmail.com>
+Date:   Wed May 8 10:14:14 2019 +0700
+
+    Models: BodyPart, Category, Gender, Size, Sleeve
+
+[33mcommit ceca4978b371f90aaa4f4da13633474fafb6033b[m
+Author: lethithuhuong99 <huong.le170205@vnuk.edu.vn>
+Date:   Wed May 8 09:22:35 2019 +0700
+
+    c
+
+[33mcommit 749c56e9334cc1b7ca91e20530439886f7a599b8[m
+Author: lethithuhuong99 <huong.le170205@vnuk.edu.vn>
+Date:   Wed May 8 09:10:54 2019 +0700
+
+    final
+
+[33mcommit 1aba4fc7c488f7663a5d5c5c7c1a1f296ac4171f[m
+Author: lethithuhuong99 <huong.le170205@vnuk.edu.vn>
+Date:   Wed May 8 08:31:08 2019 +0700
+
+    c

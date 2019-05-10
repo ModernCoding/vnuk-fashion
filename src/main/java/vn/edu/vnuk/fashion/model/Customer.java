@@ -3,9 +3,10 @@ package vn.edu.vnuk.fashion.model;
 import javax.validation.constraints.NotNull;
 
 public class Customer {
-	private int id;
+	private Long id;
+	
 	@NotNull
-	private int titleId;
+	private Title title;
 	
 	@NotNull
 	private String label;
@@ -18,20 +19,20 @@ public class Customer {
 	
 	private String email;
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public int getTitleId() {
-		return titleId;
+	public Title getTitle() {
+		return title;
 	}
 
-	public void setTitleId(int titleId) {
-		this.titleId = titleId;
+	public void setTitle(Title title) {
+		this.title = title;
 	}
 
 	public String getLabel() {
