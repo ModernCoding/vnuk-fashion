@@ -2,11 +2,14 @@ package vn.edu.vnuk.fashion.model;
 
 import javax.validation.constraints.NotNull;
 
-public class ProductsPatterns {
+public class ProductsPattern {
 	private int id;
+	
 	@NotNull
 	private int productId;
+	
 	private int patternId;
+	
 	public int getId() {
 		return id;
 	}
