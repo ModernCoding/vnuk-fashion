@@ -16,9 +16,6 @@ public class Price {
 	private ProductsLength productsLength;
 	
 	@NotNull
-	private Seller seller;
-	
-	@NotNull
 	private PriceType priceType;
 	
 	@NotNull
@@ -62,14 +59,6 @@ public class Price {
 
 	public void setProductsLength(ProductsLength productsLength) {
 		this.productsLength = productsLength;
-	}
-
-	public Seller getSeller() {
-		return seller;
-	}
-
-	public void setSeller(Seller seller) {
-		this.seller = seller;
 	}
 
 	public PriceType getPriceType() {
