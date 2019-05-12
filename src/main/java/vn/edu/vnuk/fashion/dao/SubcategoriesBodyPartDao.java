@@ -73,8 +73,8 @@ public class SubcategoriesBodyPartDao {
 
                 SubcategoriesBodyPart subcategoriesBodyPart = new SubcategoriesBodyPart();
                 subcategoriesBodyPart.setId(results.getLong("id"));
-                SubcategoryDao subcategoryDao = new SubcategoryDao();
-                subcategoriesBodyPart.setSubcategory(subcategoryDao.read(results.getLong("subcategory_id")));
+//                SubcategoryDao subcategoryDao = new SubcategoryDao();
+//                subcategoriesBodyPart.setSubcategory(subcategoryDao.read(results.getLong("subcategory_id")));
                 BodyPartDao bodyPartDao = new BodyPartDao();
                 subcategoriesBodyPart.setBodyPart(bodyPartDao.read(results.getLong("bodyPart_id")));
                 
@@ -180,8 +180,8 @@ public class SubcategoriesBodyPartDao {
             if(results.next()){
 
                 subcategoriesBodyPart.setId(results.getLong("id"));
-                SubcategoryDao subcategoryDao = new SubcategoryDao();
-                subcategoriesBodyPart.setSubcategory(subcategoryDao.read(results.getLong("subcategory_id")));
+//                SubcategoryDao subcategoryDao = new SubcategoryDao();
+//                subcategoriesBodyPart.setSubcategory(subcategoryDao.read(results.getLong("subcategory_id")));
                 BodyPartDao bodyPartDao = new BodyPartDao();
                 subcategoriesBodyPart.setBodyPart(bodyPartDao.read(results.getLong("bodyPart_id")));
                 

@@ -15,7 +15,6 @@ import vn.edu.vnuk.fashion.model.Material;
 import vn.edu.vnuk.fashion.model.Product;
 import vn.edu.vnuk.fashion.model.Shape;
 import vn.edu.vnuk.fashion.model.Sleeve;
-import vn.edu.vnuk.fashion.model.Subcategory;
 
 public class ProductDao {
 	
@@ -99,7 +98,7 @@ public class ProductDao {
 
                 
                 
-                SubcategoryDao subcategoryDao = new SubcategoryDao();
+//                SubcategoryDao subcategoryDao = new SubcategoryDao();
                 SleeveDao sleeveDao = new SleeveDao();
                 ShapeDao shapeDao = new ShapeDao();
                 CollarDao collarDao = new CollarDao();
@@ -107,7 +106,7 @@ public class ProductDao {
                 MaterialDao materialDao = new MaterialDao();
                 MakerDao makerDao = new MakerDao();	
                 
-                Subcategory subcategory = subcategoryDao.read(subcategoryIdFromDB);
+//                Subcategory subcategory = subcategoryDao.read(subcategoryIdFromDB);
                 Sleeve sleeve = sleeveDao.read(sleeveIdFromDB);
                 Shape shape = shapeDao.read(shapeIdFromDB);
                 Collar collar = collarDao.read(collarIdFromDB);
@@ -115,7 +114,7 @@ public class ProductDao {
                 Material material = materialDao.read(materialIdFromDB);
                 Maker maker = makerDao.read(makerIdFromDB);
                 
-                product.setSubcategory(subcategory);
+//                product.setSubcategory(subcategory);
                 product.setSleeve(sleeve);
                 product.setShape(shape);
                 product.setCollar(collar);
@@ -242,7 +241,7 @@ public class ProductDao {
 
                 
                 
-                SubcategoryDao subcategoryDao = new SubcategoryDao();
+//                SubcategoryDao subcategoryDao = new SubcategoryDao();
                 SleeveDao sleeveDao = new SleeveDao();
                 ShapeDao shapeDao = new ShapeDao();
                 CollarDao collarDao = new CollarDao();
@@ -250,7 +249,7 @@ public class ProductDao {
                 MaterialDao materialDao = new MaterialDao();
                 MakerDao makerDao = new MakerDao();	
                 
-                Subcategory subcategory = subcategoryDao.read(subcategoryIdFromDB);
+//                Subcategory subcategory = subcategoryDao.read(subcategoryIdFromDB);
                 Sleeve sleeve = sleeveDao.read(sleeveIdFromDB);
                 Shape shape = shapeDao.read(shapeIdFromDB);
                 Collar collar = collarDao.read(collarIdFromDB);
@@ -258,7 +257,7 @@ public class ProductDao {
                 Material material = materialDao.read(materialIdFromDB);
                 Maker maker = makerDao.read(makerIdFromDB);
                 
-                product.setSubcategory(subcategory);
+//                product.setSubcategory(subcategory);
                 product.setSleeve(sleeve);
                 product.setShape(shape);
                 product.setCollar(collar);

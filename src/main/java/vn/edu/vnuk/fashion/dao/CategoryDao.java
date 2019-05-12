@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import vn.edu.vnuk.fashion.model.Category;
 
+
 @Repository
 public class CategoryDao {
 	
@@ -93,7 +94,11 @@ public class CategoryDao {
         try {
         	this.jdbcTemplate.update(
 					sqlQuery,
-					new Object[] { category.getLabel() }
+					
+					new Object[] {
+							category.getLabel(),
+							category.getId()
+						}
 				);
             
             
