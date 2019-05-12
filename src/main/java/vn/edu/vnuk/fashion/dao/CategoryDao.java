@@ -1,12 +1,10 @@
 package vn.edu.vnuk.fashion.dao;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -52,41 +50,24 @@ public class CategoryDao {
     
     
     //  READ (List of Tasks)
-    @SuppressWarnings("finally")
     public List<Category> read() throws SQLException {
 
-        String sqlQuery = "select * from categories";
-        PreparedStatement statement;
-        List<Category> categories = new ArrayList<Category>();
-
         try {
-
-            statement = connection.prepareStatement(sqlQuery);
-
-            // 	Executing statement
-            ResultSet results = statement.executeQuery();
             
-            while(results.next()){
+        	return this.jdbcTemplate.query(
+        			"SELECT * FROM categories",
+        			new BeanPropertyRowMapper<Category>(Category.class)
+    			);
 
-                Category category = new Category();
-                category.setId(results.getLong("id"));
-                category.setLabel(results.getString("label"));
-                
-                categories.add(category);
-
-            }
-
-            results.close();
-            statement.close();
-
-
+        	
         } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-                connection.close();
-                return categories;
+        	
+            e.printStackTrace();
+        
         }
+        
+        
+		return null;
 
 
     }
@@ -94,20 +75,27 @@ public class CategoryDao {
 
     //  READ (Single Category)
     public Category read(Long id) throws SQLException{
-        return this.read(id, true);
+    	
+    	return this.jdbcTemplate.queryForObject(
+    			"SELECT * FROM categories where id = ?",
+        		new Object[] {id},
+        		new BeanPropertyRowMapper<Category>(Category.class)
+        	);
+        
     }  
 
     
     //  UPDATE
     public void update(Category category) throws SQLException {
+    	
         String sqlQuery = "update categories label=? where id=?";
         
         try {
-            PreparedStatement statement = connection.prepareStatement(sqlQuery);
-            statement.setString(1, category.getLabel());
+        	this.jdbcTemplate.update(
+					sqlQuery,
+					new Object[] { category.getLabel() }
+				);
             
-            statement.execute();
-            statement.close();
             
             System.out.println("Category successfully modified.");
         } 
@@ -117,24 +105,26 @@ public class CategoryDao {
             e.printStackTrace();
         }
         
-        finally {
-            connection.close();
-        }
-        
     }
     
     
     //  DELETE
     public void delete(Long id) throws SQLException {
+    	
         String sqlQuery = "delete from categories where id=?";
 
         try {
-            PreparedStatement statement = connection.prepareStatement(sqlQuery);
-            statement.setLong(1, id);
-            statement.execute();
-            statement.close();
-            
-            System.out.println("Category successfully deleted.");
+
+            System.out.println(
+            		String.format(
+            				"%s record successfully removed from DB!",
+            				
+            				this.jdbcTemplate.update(
+            						sqlQuery,
+            						new Object[] {id}
+        						)
+        				)
+        		);
 
         } 
 
@@ -142,55 +132,7 @@ public class CategoryDao {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
-        finally {
-            connection.close();
-        }
 
     }
-  
     
-    //  PRIVATE
-    
-    @SuppressWarnings("finally")
-    private Category read(Long id, boolean closeAfterUse) throws SQLException{
-
-        String sqlQuery = "select * from categories where id=?";
-
-        PreparedStatement statement;
-        Category category = new Category();
-
-        try {
-            statement = connection.prepareStatement(sqlQuery);
-
-            //	Replacing "?" through values
-            statement.setLong(1, id);
-
-            // 	Executing statement
-            ResultSet results = statement.executeQuery();
-
-            if(results.next()){
-
-                category.setId(results.getLong("id"));
-                category.setLabel(results.getString("label"));
-
-            }
-
-            statement.close();
-
-        } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-            
-            if (closeAfterUse) {
-                connection.close();
-    
-            }
-            
-            return category;	
-        }
-
-    }
-
 }
