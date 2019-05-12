@@ -1,53 +1,51 @@
 package vn.edu.vnuk.fashion.dao;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import vn.edu.vnuk.fashion.jdbc.ConnectionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
 import vn.edu.vnuk.fashion.model.Category;
 
+@Repository
 public class CategoryDao {
 	
-    private Connection connection;
-
-    public CategoryDao(){
-        this.connection = new ConnectionFactory().getConnection();
+    private final JdbcTemplate jdbcTemplate;
+    
+    @Autowired
+    public CategoryDao(JdbcTemplate jdbcTemplate) {
+	  this.jdbcTemplate = jdbcTemplate;
     }
-
-    public CategoryDao(Connection connection){
-        this.connection = connection;
-    }
+	
 
 
     //  CREATE
     public void create(Category category) throws SQLException{
 
-        String sqlQuery = "insert into categories (label) "
-                        +	"values (?)";
-
-        PreparedStatement statement;
+        String sqlQuery = "insert into categories (label) values (?)";
 
         try {
-                statement = connection.prepareStatement(sqlQuery);
+            System.out.println(
+            		String.format(
+            				"%s new category in DB!",
+            				
+            				this.jdbcTemplate.update(
+            						sqlQuery,
+            						new Object[] {category.getLabel()}
+        						)
+        				)
+        		);
 
-                //	Replacing "?" through values
-                statement.setString(1, category.getLabel());
-
-                // 	Executing statement
-                statement.execute();
-
-                System.out.println("New record in DB !");
-
+            
         } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-                System.out.println("Done !");
-                connection.close();
+        	
+            e.printStackTrace();
+        
         }
 
     }
