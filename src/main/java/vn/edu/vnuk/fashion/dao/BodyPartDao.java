@@ -53,7 +53,7 @@ public class BodyPartDao {
     }
     
     
-    //  READ (List of Tasks)
+    //  READ (List of BodyParts)
     @SuppressWarnings("finally")
     public List<BodyPart> read() throws SQLException {
 
