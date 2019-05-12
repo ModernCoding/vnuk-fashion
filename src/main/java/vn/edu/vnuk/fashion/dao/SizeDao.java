@@ -61,7 +61,7 @@ public class SizeDao {
     }
     
     
-    //  READ (List of Tasks)
+    //  READ (List of Sizes)
     @SuppressWarnings("finally")
     public List<Size> read() throws SQLException {
 

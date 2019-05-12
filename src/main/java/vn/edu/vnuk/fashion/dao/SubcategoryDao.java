@@ -56,7 +56,7 @@ public class SubcategoryDao {
     }
     
     
-    //  READ (List of Tasks)
+    //  READ (List of Subcategories)
     @SuppressWarnings("finally")
     public List<Subcategory> read() throws SQLException {
 
@@ -192,7 +192,6 @@ public class SubcategoryDao {
                 CategoryDao categoryDao = new CategoryDao();
                 Category category = categoryDao.read(categoryIdFromDB);
                 subcategory.setCategory(category);
-
 
             }
 
