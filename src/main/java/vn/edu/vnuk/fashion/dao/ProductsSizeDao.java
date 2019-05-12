@@ -10,27 +10,31 @@ import java.util.List;
 import vn.edu.vnuk.fashion.jdbc.ConnectionFactory;
 import vn.edu.vnuk.fashion.model.Color;
 import vn.edu.vnuk.fashion.model.Length;
+import vn.edu.vnuk.fashion.model.Pattern;
 import vn.edu.vnuk.fashion.model.Product;
 import vn.edu.vnuk.fashion.model.ProductsColor;
 import vn.edu.vnuk.fashion.model.ProductsLength;
+import vn.edu.vnuk.fashion.model.ProductsPattern;
+import vn.edu.vnuk.fashion.model.ProductsSize;
+import vn.edu.vnuk.fashion.model.Size;
 
-public class ProductsLengthDao {
+public class ProductsSizeDao {
 	
     private Connection connection;
 
-    public ProductsLengthDao(){
+    public ProductsSizeDao(){
         this.connection = new ConnectionFactory().getConnection();
     }
 
-    public ProductsLengthDao(Connection connection){
+    public ProductsSizeDao(Connection connection){
         this.connection = connection;
     }
 
 
     //  CREATE
-    public void create(ProductsLength productsLength) throws SQLException{
+    public void create(ProductsSize productsSize) throws SQLException{
 
-        String sqlQuery = "insert into products_lengths (product_id, length_id) "
+        String sqlQuery = "insert into products_lengths (product_id, size_id) "
                         +	"values (? , ?)";
 
         PreparedStatement statement;
@@ -39,8 +43,8 @@ public class ProductsLengthDao {
                 statement = connection.prepareStatement(sqlQuery);
 
                 //	Replacing "?" through values
-                statement.setLong(1, productsLength.getProduct().getId());
-                statement.setLong(2, productsLength.getLength().getId());
+                statement.setLong(1, productsSize.getProduct().getId());
+                statement.setLong(2, productsSize.getSize().getId());
 
                 // 	Executing statement
                 statement.execute();
@@ -60,11 +64,11 @@ public class ProductsLengthDao {
     
     //  READ (List of ProductsLength)
     @SuppressWarnings("finally")
-    public List<ProductsLength> read() throws SQLException {
+    public List<ProductsSize> read() throws SQLException {
 
-        String sqlQuery = "select * from products_lengths";
+        String sqlQuery = "select * from products_sizes";
         PreparedStatement statement;
-        List<ProductsLength> productsLengths = new ArrayList<ProductsLength>();
+        List<ProductsSize> productsSizes = new ArrayList<ProductsSize>();
 
         try {
 
@@ -75,24 +79,24 @@ public class ProductsLengthDao {
             
             while(results.next()){
 
-            	ProductsLength productsLength = new ProductsLength();
+            	ProductsSize productsSize = new ProductsSize();
                 
-            	productsLength.setId(results.getLong("id"));
+            	productsSize.setId(results.getLong("id"));
                 
                 // Process foreign key
                 Long productIdFromDB = results.getLong("product_id");
-                Long lengthIdFromDB = results.getLong("length_id");
+                Long sizeIdFromDB = results.getLong("size_id");
                 
                 ProductDao productDao = new ProductDao();
-                LengthDao lengthDao = new LengthDao();
+                SizeDao sizeDao = new SizeDao();
                 
                 Product product = productDao.read(productIdFromDB);
-                Length length = lengthDao.read(lengthIdFromDB);
+                Size size  = sizeDao.read(sizeIdFromDB);
                 
-                productsLength.setProduct(product);
-                productsLength.setLength(length);
+                productsSize.setProduct(product);
+                productsSize.setSize(size);
                 
-                productsLengths.add(productsLength);
+                productsSizes.add(productsSize);
 
             }
 
@@ -105,32 +109,32 @@ public class ProductsLengthDao {
                 e.printStackTrace();
         } finally {
                 connection.close();
-                return productsLengths;
+                return productsSizes;
         }
 
 
     }
 
 
-    //  READ (Single ProductsLength)
-    public ProductsLength read(Long id) throws SQLException{
+    //  READ (Single ProductsSize)
+    public ProductsSize read(Long id) throws SQLException{
         return this.read(id, true);
     }  
 
     
     //  UPDATE
-    public void update(ProductsLength productsLength) throws SQLException {
-        String sqlQuery = "update products_lengths product_id=? length_id=? where id=?";
+    public void update(ProductsSize productsSize) throws SQLException {
+        String sqlQuery = "update products_sizes product_id=? size_id=? where id=?";
         
         try {
             PreparedStatement statement = connection.prepareStatement(sqlQuery);
-            statement.setLong(1, productsLength.getProduct().getId());
-            statement.setLong(2, productsLength.getLength().getId());
+            statement.setLong(1, productsSize.getProduct().getId());
+            statement.setLong(2, productsSize.getSize().getId());
             
             statement.execute();
             statement.close();
             
-            System.out.println("products_lengths successfully modified.");
+            System.out.println("products_sizes successfully modified.");
         } 
 
         catch (Exception e) {
@@ -147,7 +151,7 @@ public class ProductsLengthDao {
     
     //  DELETE
     public void delete(Long id) throws SQLException {
-        String sqlQuery = "delete from products_lengths where id=?";
+        String sqlQuery = "delete from products_sizes where id=?";
 
         try {
             PreparedStatement statement = connection.prepareStatement(sqlQuery);
@@ -155,7 +159,7 @@ public class ProductsLengthDao {
             statement.execute();
             statement.close();
             
-            System.out.println("products_lengths successfully deleted.");
+            System.out.println("products_sizes successfully deleted.");
 
         } 
 
@@ -174,12 +178,12 @@ public class ProductsLengthDao {
     //  PRIVATE
     
     @SuppressWarnings("finally")
-    private ProductsLength read(Long id, boolean closeAfterUse) throws SQLException{
+    private ProductsSize read(Long id, boolean closeAfterUse) throws SQLException{
 
-        String sqlQuery = "select * from products_lengths where id=?";
+        String sqlQuery = "select * from products_sizes where id=?";
 
         PreparedStatement statement;
-        ProductsLength productsLength = new ProductsLength();
+        ProductsSize productsSize = new ProductsSize();
 
         try {
             statement = connection.prepareStatement(sqlQuery);
@@ -192,20 +196,20 @@ public class ProductsLengthDao {
 
             if(results.next()){
 
-            	productsLength.setId(results.getLong("id"));
+            	productsSize.setId(results.getLong("id"));
                 
                 // Process foreign key
                 Long productIdFromDB = results.getLong("product_id");
-                Long lengthIdFromDB = results.getLong("length_id");
+                Long sizeIdFromDB = results.getLong("size_id");
                 
                 ProductDao productDao = new ProductDao();
-                LengthDao lengthDao = new LengthDao();
+                SizeDao sizeDao = new SizeDao();
                 
                 Product product = productDao.read(productIdFromDB);
-                Length length = lengthDao.read(lengthIdFromDB);
+                Size size  = sizeDao.read(sizeIdFromDB);
                 
-                productsLength.setProduct(product);
-                productsLength.setLength(length);
+                productsSize.setProduct(product);
+                productsSize.setSize(size);
 
 
             }
@@ -222,7 +226,7 @@ public class ProductsLengthDao {
     
             }
             
-            return productsLength;
+            return productsSize;
         }
 
     }

@@ -8,26 +8,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 import vn.edu.vnuk.fashion.jdbc.ConnectionFactory;
-import vn.edu.vnuk.fashion.model.Order;
+import vn.edu.vnuk.fashion.model.Gender;
+import vn.edu.vnuk.fashion.model.Product;
+import vn.edu.vnuk.fashion.model.ProductsGender;
 
-public class OrderDao {
+
+public class ProductsGenderDao {
 	
     private Connection connection;
 
-    public OrderDao(){
+    public ProductsGenderDao(){
         this.connection = new ConnectionFactory().getConnection();
     }
 
-    public OrderDao(Connection connection){
+    public ProductsGenderDao(Connection connection){
         this.connection = connection;
     }
 
 
     //  CREATE
-    public void create(Order order) throws SQLException{
+    public void create(ProductsGender productsGender) throws SQLException{
 
-        String sqlQuery = "insert into orders (customer_id , price_id , qty) "
-                        +	"values (? , ? , ?)";
+        String sqlQuery = "insert into products_lengths (product_id, gender_id) "
+                        +	"values (? , ?)";
 
         PreparedStatement statement;
 
@@ -35,9 +38,8 @@ public class OrderDao {
                 statement = connection.prepareStatement(sqlQuery);
 
                 //	Replacing "?" through values
-                statement.setLong(1, order.getCustomer().getId());
-                statement.setLong(2, order.getPrice().getId());
-                statement.setInt(3, order.getQty());
+                statement.setLong(1, productsGender.getProduct().getId());
+                statement.setLong(2, productsGender.getGender().getId());
 
                 // 	Executing statement
                 statement.execute();
@@ -55,13 +57,13 @@ public class OrderDao {
     }
     
     
-    //  READ (List of Orders)
+    //  READ (List of ProductsLength)
     @SuppressWarnings("finally")
-    public List<Order> read() throws SQLException {
+    public List<ProductsGender> read() throws SQLException {
 
-        String sqlQuery = "select * from orders";
+        String sqlQuery = "select * from products_genders";
         PreparedStatement statement;
-        List<Order> orders = new ArrayList<Order>();
+        List<ProductsGender> productsGenders = new ArrayList<ProductsGender>();
 
         try {
 
@@ -72,15 +74,24 @@ public class OrderDao {
             
             while(results.next()){
 
-                Order order = new Order();
-                order.setId(results.getLong("id"));
-                CustomerDao customerDao = new CustomerDao();
-                order.setCustomer(customerDao.read(results.getLong("customer_id")));
-                PriceDao priceDao = new PriceDao();
-                order.setPrice(priceDao.read(results.getLong("price_id")));
-                order.setQty(results.getInt("qty"));
+            	ProductsGender productsGender = new ProductsGender();
                 
-                orders.add(order);
+            	productsGender.setId(results.getLong("id"));
+                
+                // Process foreign key
+                Long productIdFromDB = results.getLong("product_id");
+                Long genderIdFromDB = results.getLong("gender_id");
+                
+                ProductDao productDao = new ProductDao();
+                GenderDao genderDao = new GenderDao();
+                
+                Product product = productDao.read(productIdFromDB);
+                Gender gender  = genderDao.read(genderIdFromDB);
+                
+                productsGender.setProduct(product);
+                productsGender.setGender(gender);
+                
+                productsGenders.add(productsGender);
 
             }
 
@@ -93,34 +104,32 @@ public class OrderDao {
                 e.printStackTrace();
         } finally {
                 connection.close();
-                return orders;
+                return productsGenders;
         }
 
 
     }
 
 
-    //  READ (Single Order)
-    public Order read(Long id) throws SQLException{
+    //  READ (Single ProductsGender)
+    public ProductsGender read(Long id) throws SQLException{
         return this.read(id, true);
     }  
 
     
     //  UPDATE
-    public void update(Order order) throws SQLException {
-        String sqlQuery = "update orders customer_id=? price_id=? qty=? where id=?";
+    public void update(ProductsGender productsGender) throws SQLException {
+        String sqlQuery = "update products_genders product_id=? gender_id=? where id=?";
         
         try {
             PreparedStatement statement = connection.prepareStatement(sqlQuery);
-            statement.setLong(1, order.getCustomer().getId());
-            statement.setLong(2, order.getPrice().getId());
-            statement.setInt(3, order.getQty());
-            
+            statement.setLong(1, productsGender.getProduct().getId());
+            statement.setLong(2, productsGender.getGender().getId());
             
             statement.execute();
             statement.close();
             
-            System.out.println("Order successfully modified.");
+            System.out.println("products_genders successfully modified.");
         } 
 
         catch (Exception e) {
@@ -137,7 +146,7 @@ public class OrderDao {
     
     //  DELETE
     public void delete(Long id) throws SQLException {
-        String sqlQuery = "delete from orders where id=?";
+        String sqlQuery = "delete from products_genders where id=?";
 
         try {
             PreparedStatement statement = connection.prepareStatement(sqlQuery);
@@ -145,7 +154,7 @@ public class OrderDao {
             statement.execute();
             statement.close();
             
-            System.out.println("Order successfully deleted.");
+            System.out.println("products_genders successfully deleted.");
 
         } 
 
@@ -164,12 +173,12 @@ public class OrderDao {
     //  PRIVATE
     
     @SuppressWarnings("finally")
-    private Order read(Long id, boolean closeAfterUse) throws SQLException{
+    private ProductsGender read(Long id, boolean closeAfterUse) throws SQLException{
 
-        String sqlQuery = "select * from orders where id=?";
+        String sqlQuery = "select * from products_genders where id=?";
 
         PreparedStatement statement;
-        Order order = new Order();
+        ProductsGender productsGender = new ProductsGender();
 
         try {
             statement = connection.prepareStatement(sqlQuery);
@@ -182,12 +191,20 @@ public class OrderDao {
 
             if(results.next()){
 
-                order.setId(results.getLong("id"));
-                CustomerDao customerDao = new CustomerDao();
-                order.setCustomer(customerDao.read(results.getLong("customer_id")));
-                PriceDao priceDao = new PriceDao();
-                order.setPrice(priceDao.read(results.getLong("price_id")));
-                order.setQty(results.getInt("qty"));
+            	productsGender.setId(results.getLong("id"));
+                
+                // Process foreign key
+                Long productIdFromDB = results.getLong("product_id");
+                Long genderIdFromDB = results.getLong("gender_id");
+                
+                ProductDao productDao = new ProductDao();
+                GenderDao genderDao = new GenderDao();
+                
+                Product product = productDao.read(productIdFromDB);
+                Gender gender  = genderDao.read(genderIdFromDB);
+                
+                productsGender.setProduct(product);
+                productsGender.setGender(gender);
 
             }
 
@@ -203,7 +220,7 @@ public class OrderDao {
     
             }
             
-            return order;
+            return productsGender;
         }
 
     }
