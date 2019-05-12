@@ -8,12 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import vn.edu.vnuk.fashion.jdbc.ConnectionFactory;
-import vn.edu.vnuk.fashion.model.Color;
-import vn.edu.vnuk.fashion.model.Length;
 import vn.edu.vnuk.fashion.model.Pattern;
 import vn.edu.vnuk.fashion.model.Product;
-import vn.edu.vnuk.fashion.model.ProductsColor;
-import vn.edu.vnuk.fashion.model.ProductsLength;
 import vn.edu.vnuk.fashion.model.ProductsPattern;
 
 public class ProductsPatternDao {

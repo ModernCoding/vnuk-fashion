@@ -9,7 +9,6 @@ import java.util.List;
 
 import vn.edu.vnuk.fashion.jdbc.ConnectionFactory;
 import vn.edu.vnuk.fashion.model.Category;
-import vn.edu.vnuk.fashion.model.Size;
 import vn.edu.vnuk.fashion.model.Subcategory;
 
 public class SubcategoryDao {

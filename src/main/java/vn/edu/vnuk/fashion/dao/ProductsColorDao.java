@@ -8,11 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import vn.edu.vnuk.fashion.jdbc.ConnectionFactory;
-import vn.edu.vnuk.fashion.model.Category;
 import vn.edu.vnuk.fashion.model.Color;
 import vn.edu.vnuk.fashion.model.Product;
 import vn.edu.vnuk.fashion.model.ProductsColor;
-import vn.edu.vnuk.fashion.model.Subcategory;
 
 public class ProductsColorDao {
 	
