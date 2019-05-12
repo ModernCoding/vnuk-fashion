@@ -16,7 +16,7 @@ public class Sql2172CreateProductsColors {
 				+ "color_id INT NULL, "
 				+ "CONSTRAINT fk_products_colors_product_id FOREIGN KEY (product_id) REFERENCES products(id),"
 				+ "CONSTRAINT fk_products_colors_color_id FOREIGN KEY (color_id) REFERENCES colors(id)"				
-				+ ");"
+				+ 	") CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 			;
 	}
 	

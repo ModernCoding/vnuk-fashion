@@ -16,7 +16,7 @@ public class Sql2171CreateProductsSizes {
 				+ "size_id INT NULL, "
 				+ "CONSTRAINT fk_products_sizes_product_id FOREIGN KEY (product_id) REFERENCES products(id),"
 				+ "CONSTRAINT fk_products_sizes_size_id FOREIGN KEY (size_id) REFERENCES sizes(id)"				
-				+ ");"
+				+ 	") CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 			;
 	}
 	

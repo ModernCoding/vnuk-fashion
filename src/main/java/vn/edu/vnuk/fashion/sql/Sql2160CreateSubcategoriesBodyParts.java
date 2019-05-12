@@ -16,7 +16,7 @@ public class Sql2160CreateSubcategoriesBodyParts {
 				+	"body_part_id INT NOT NULL,"
 				+ 	"CONSTRAINT fk_subcategories_body_parts_subcategory_id FOREIGN KEY (subcategory_id) REFERENCES subcategories(id),"
 				+ 	"CONSTRAINT fk_subcategories_body_parts_body_part_id FOREIGN KEY (body_part_id) REFERENCES body_parts(id)"
-				+ ");"
+				+ 	") CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 			;
 	}
 	

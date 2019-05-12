@@ -27,7 +27,7 @@ public class Sql2170CreateProducts {
 				+ "CONSTRAINT fk_products_height_id FOREIGN KEY (height_id) REFERENCES heights(id),"
 				+ "CONSTRAINT fk_products_material_id FOREIGN KEY (material_id) REFERENCES materials(id),"
 				+ "CONSTRAINT fk_products_maker_id FOREIGN KEY (maker_id) REFERENCES makers(id)"				
-				+ ");"
+				+ 	") CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 			;
 	}
 	

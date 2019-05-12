@@ -15,7 +15,7 @@ public class Sql2020CreateSubcategories {
 				+   "category_id INT NOT NULL,"
 				+ 	"label VARCHAR(255) NOT NULL,"
 				+ 	"CONSTRAINT fk_subcategories_category_id FOREIGN KEY (category_id) REFERENCES categories(id)"
-				+ 	");"
+				+ 	") CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 			;
 	}
 	

@@ -9,7 +9,9 @@ public class Sql1010CreateDatabase {
 	
 	public Sql1010CreateDatabase(Connection connection) {
 		this.connection = connection;
-		this.sqlQuery = "CREATE DATABASE IF NOT EXISTS vnuk_e_commerce_fashion;";
+		
+		this.sqlQuery = "CREATE DATABASE IF NOT EXISTS vnuk_e_commerce_fashion "
+						+ "CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;";
 	}
 	
 	public void run() throws SQLException {

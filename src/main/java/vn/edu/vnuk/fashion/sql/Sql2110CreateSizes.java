@@ -20,7 +20,7 @@ public class Sql2110CreateSizes {
 				+	"germany VARCHAR(255) NULL, " 
 				+	"australia VARCHAR(255) NULL, " 
 				+  	"japan VARCHAR(255) NULL " 
-				+ ");"
+				+ 	") CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 			;
 	}
 	

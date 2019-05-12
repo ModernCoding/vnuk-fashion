@@ -16,7 +16,7 @@ public class Sql2173CreateProductsPatterns {
 				+ "pattern_id INT NULL, "
 				+ "CONSTRAINT fk_products_patterns_product_id FOREIGN KEY (product_id) REFERENCES products(id),"
 				+ "CONSTRAINT fk_products_patterns_pattern_id FOREIGN KEY (pattern_id) REFERENCES patterns(id)"				
-				+ ");"
+				+ 	") CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 			;
 	}
 	

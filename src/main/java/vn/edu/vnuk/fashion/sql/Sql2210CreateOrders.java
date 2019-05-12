@@ -17,7 +17,7 @@ public class Sql2210CreateOrders {
 				+ "qty INT NOT NULL,"
 				+ "CONSTRAINT fk_orders_customer_id FOREIGN KEY (customer_id) REFERENCES customers(id),"
 				+ "CONSTRAINT fk_orders_price_id FOREIGN KEY (price_id) REFERENCES prices(id)" 
-				+ ");"
+				+ 	") CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 			;
 	}
 	

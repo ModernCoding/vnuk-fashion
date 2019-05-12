@@ -25,7 +25,7 @@ public class Sql2190CreatePrices {
 				+ 	"CONSTRAINT fk_prices_products_length_id FOREIGN KEY (products_length_id) REFERENCES products_lengths(id),"
 				+ 	"CONSTRAINT fk_prices_seller_id FOREIGN KEY (seller_id) REFERENCES sellers(id), "
 				+ 	"CONSTRAINT fk_prices_price_type_id FOREIGN KEY (price_type_id) REFERENCES price_types(id)"
-				+ ");"
+				+ 	") CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 			;
 	}
 	

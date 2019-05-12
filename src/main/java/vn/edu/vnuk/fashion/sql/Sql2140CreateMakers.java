@@ -16,7 +16,7 @@ public class Sql2140CreateMakers {
 				+ 	"address VARCHAR(255) NOT NULL,"
 				+ 	"phone VARCHAR(255) NOT NULL,"
 				+ 	"email VARCHAR(255) NULL"
-				+ ");"
+				+ 	") CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 			;
 	}
 	

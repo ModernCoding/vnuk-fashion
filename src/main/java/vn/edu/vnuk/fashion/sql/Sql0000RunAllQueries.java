@@ -19,73 +19,72 @@ public class Sql0000RunAllQueries {
 
 		connectionDb.close();
 		
-		//Create tbels 
+		//Create tables 
 		
-		Connection connectionTbel = new ConnectionFactory()
-				.getConnection("jdbc:mysql://localhost/vnuk_e_commerce_fashion");
+		Connection connectionTable = new ConnectionFactory().getConnection();
 		
-		new Sql2010CreateCategories(connectionTbel).run();
-		new Sql2020CreateSubcategories(connectionTbel).run();
-		new Sql2030CreateGenders(connectionTbel).run();
-		new Sql2040CreateBodyParts(connectionTbel).run();
-		new Sql2050CreateSleeves(connectionTbel).run();
-		new Sql2060CreatePatterns(connectionTbel).run();
-		new Sql2070CreateLengths(connectionTbel).run();
-		new Sql2080CreateShapes(connectionTbel).run();
-		new Sql2090CreateCollars(connectionTbel).run();
-		new Sql2100CreateColors(connectionTbel).run();
-		new Sql2110CreateSizes(connectionTbel).run();
-		new Sql2120CreateTitles(connectionTbel).run();
-		new Sql2130CreateSellers(connectionTbel).run();
-		new Sql2140CreateMakers(connectionTbel).run();
-		new Sql2150CreatePriceTypes(connectionTbel).run();
-		new Sql2160CreateSubcategoriesBodyParts(connectionTbel).run();
-		new Sql2230CreateHeights(connectionTbel).run();
-		new Sql2240CreateMaterials(connectionTbel).run();
-		new Sql2170CreateProducts(connectionTbel).run();
-		new Sql2171CreateProductsSizes(connectionTbel).run();
-		new Sql2172CreateProductsColors(connectionTbel).run();
-		new Sql2173CreateProductsPatterns(connectionTbel).run();
-		new Sql2174CreateProductsLengths(connectionTbel).run();
-		new Sql2180CreateProductsGenders(connectionTbel).run();
-		new Sql2190CreatePrices(connectionTbel).run();
-		new Sql2200CreateCustomers(connectionTbel).run();
-		new Sql2210CreateOrders(connectionTbel).run();
-		new Sql2220CreateReviews(connectionTbel).run();
+		new Sql2010CreateCategories(connectionTable).run();
+		new Sql2020CreateSubcategories(connectionTable).run();
+		new Sql2030CreateGenders(connectionTable).run();
+		new Sql2040CreateBodyParts(connectionTable).run();
+		new Sql2050CreateSleeves(connectionTable).run();
+		new Sql2060CreatePatterns(connectionTable).run();
+		new Sql2070CreateLengths(connectionTable).run();
+		new Sql2080CreateShapes(connectionTable).run();
+		new Sql2090CreateCollars(connectionTable).run();
+		new Sql2100CreateColors(connectionTable).run();
+		new Sql2110CreateSizes(connectionTable).run();
+		new Sql2120CreateTitles(connectionTable).run();
+		new Sql2130CreateSellers(connectionTable).run();
+		new Sql2140CreateMakers(connectionTable).run();
+		new Sql2150CreatePriceTypes(connectionTable).run();
+		new Sql2160CreateSubcategoriesBodyParts(connectionTable).run();
+		new Sql2230CreateHeights(connectionTable).run();
+		new Sql2240CreateMaterials(connectionTable).run();
+		new Sql2170CreateProducts(connectionTable).run();
+		new Sql2171CreateProductsSizes(connectionTable).run();
+		new Sql2172CreateProductsColors(connectionTable).run();
+		new Sql2173CreateProductsPatterns(connectionTable).run();
+		new Sql2174CreateProductsLengths(connectionTable).run();
+		new Sql2180CreateProductsGenders(connectionTable).run();
+		new Sql2190CreatePrices(connectionTable).run();
+		new Sql2200CreateCustomers(connectionTable).run();
+		new Sql2210CreateOrders(connectionTable).run();
+		new Sql2220CreateReviews(connectionTable).run();
 		
 		
-		//Insert data into tbels
+		//Insert data into tables
 		
-		new Sql5010InsertIntoCategories(connectionTbel).run();
-		new Sql5020InsertIntoSubcategories(connectionTbel).run();
-		new Sql5030InsertIntoGenders(connectionTbel).run();
-		new Sql5040InsertIntoBodyParts(connectionTbel).run();
-		new Sql5050InsertIntoSleeves(connectionTbel).run();
-		new Sql5060InsertIntoPatterns(connectionTbel).run();
-		new Sql5070InsertIntoLengths(connectionTbel).run();
-		new Sql5080InsertIntoShapes(connectionTbel).run();
-		new Sql5090InsertIntoCollars(connectionTbel).run();
-		new Sql5100InsertIntoColors(connectionTbel).run();
-		new Sql5110InsertIntoSizes(connectionTbel).run();
-		new Sql5120InsertIntoTitles(connectionTbel).run();
-		new Sql5130InsertIntoSellers(connectionTbel).run();
-		new Sql5140InsertIntoMakers(connectionTbel).run();
-		new Sql5150InsertIntoPriceTypes(connectionTbel).run();
-		new Sql5160InsertIntoSubcategoriesBodyParts(connectionTbel).run();
-		new Sql5230InsertIntoHeights(connectionTbel).run();
-		new Sql5240InsertIntoMaterials(connectionTbel).run();
-		new Sql5170InsertIntoProducts(connectionTbel).run();
-		new Sql5171InsertIntoProductsSizes(connectionTbel).run();
-		new Sql5172InsertIntoProductsColors(connectionTbel).run();
-		new Sql5173InsertIntoProductsPatterns(connectionTbel).run();
-		new Sql5174InsertIntoProductsLengths(connectionTbel).run();
-		new Sql5180InsertIntoProductsGenders(connectionTbel).run();
-		new Sql5190InsertIntoPrices(connectionTbel).run();
-		new Sql5200InsertIntoCustomers(connectionTbel).run();
-		new Sql5210InsertIntoOrders(connectionTbel).run();
-		new Sql5220InsertIntoReviews(connectionTbel).run();
+		new Sql5010InsertIntoCategories(connectionTable).run();
+		new Sql5020InsertIntoSubcategories(connectionTable).run();
+		new Sql5030InsertIntoGenders(connectionTable).run();
+		new Sql5040InsertIntoBodyParts(connectionTable).run();
+		new Sql5050InsertIntoSleeves(connectionTable).run();
+		new Sql5060InsertIntoPatterns(connectionTable).run();
+		new Sql5070InsertIntoLengths(connectionTable).run();
+		new Sql5080InsertIntoShapes(connectionTable).run();
+		new Sql5090InsertIntoCollars(connectionTable).run();
+		new Sql5100InsertIntoColors(connectionTable).run();
+		new Sql5110InsertIntoSizes(connectionTable).run();
+		new Sql5120InsertIntoTitles(connectionTable).run();
+		new Sql5130InsertIntoSellers(connectionTable).run();
+		new Sql5140InsertIntoMakers(connectionTable).run();
+		new Sql5150InsertIntoPriceTypes(connectionTable).run();
+		new Sql5160InsertIntoSubcategoriesBodyParts(connectionTable).run();
+		new Sql5230InsertIntoHeights(connectionTable).run();
+		new Sql5240InsertIntoMaterials(connectionTable).run();
+		new Sql5170InsertIntoProducts(connectionTable).run();
+		new Sql5171InsertIntoProductsSizes(connectionTable).run();
+		new Sql5172InsertIntoProductsColors(connectionTable).run();
+		new Sql5173InsertIntoProductsPatterns(connectionTable).run();
+		new Sql5174InsertIntoProductsLengths(connectionTable).run();
+		new Sql5180InsertIntoProductsGenders(connectionTable).run();
+		new Sql5190InsertIntoPrices(connectionTable).run();
+		new Sql5200InsertIntoCustomers(connectionTable).run();
+		new Sql5210InsertIntoOrders(connectionTable).run();
+		new Sql5220InsertIntoReviews(connectionTable).run();
 		
-		connectionTbel.close();
+		connectionTable.close();
 		
 	}
 

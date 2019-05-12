@@ -16,7 +16,7 @@ public class Sql2174CreateProductsLengths {
 				+ "length_id INT NULL, "
 				+ "CONSTRAINT fk_products_lengths_product_id FOREIGN KEY (product_id) REFERENCES products(id),"
 				+ "CONSTRAINT fk_products_lengths_length_id FOREIGN KEY (length_id) REFERENCES lengths(id)"				
-				+ ");"
+				+ 	") CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 			;
 	}
 	

@@ -13,7 +13,7 @@ public class Sql2010CreateCategories {
 		this.sqlQuery = "CREATE TABLE IF NOT EXISTS categories ("
 				+ 	"id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, "
 				+ 	"label VARCHAR(255) NOT NULL"
-				+ ");"
+				+ ") CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 			;
 	}
 	

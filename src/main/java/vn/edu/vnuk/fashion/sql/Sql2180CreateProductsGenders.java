@@ -16,7 +16,7 @@ public class Sql2180CreateProductsGenders {
 				+	"gender_id INT NOT NULL, "
 				+ 	"CONSTRAINT fk_products_genders_product_id FOREIGN KEY (product_id) REFERENCES products(id),"
 				+ 	"CONSTRAINT fk_products_genders_gender_id FOREIGN KEY (gender_id) REFERENCES genders(id) "
-				+ ");"
+				+ 	") CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 			;
 	}
 	
