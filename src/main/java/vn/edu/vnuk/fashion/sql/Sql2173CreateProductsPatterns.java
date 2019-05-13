@@ -11,9 +11,9 @@ public class Sql2173CreateProductsPatterns {
 		this.connection = connection;
 		
 		this.sqlQuery = "CREATE TABLE IF NOT EXISTS products_patterns ("
-				+ "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, "
-				+ "product_id INT NOT NULL, "
-				+ "pattern_id INT NULL, "
+				+ "id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, "
+				+ "product_id BIGINT NOT NULL, "
+				+ "pattern_id BIGINT NULL, "
 				+ "CONSTRAINT fk_products_patterns_product_id FOREIGN KEY (product_id) REFERENCES products(id),"
 				+ "CONSTRAINT fk_products_patterns_pattern_id FOREIGN KEY (pattern_id) REFERENCES patterns(id)"				
 				+ 	") CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"

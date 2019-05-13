@@ -11,9 +11,9 @@ public class Sql2210CreateOrders {
 		this.connection = connection;
 		
 		this.sqlQuery = "CREATE TABLE IF NOT EXISTS orders ("
-				+ "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY," 
-				+ "customer_id INT NOT NULL," 
-				+ "price_id INT NOT NULL," 
+				+ "id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY," 
+				+ "customer_id BIGINT NOT NULL," 
+				+ "price_id BIGINT NOT NULL," 
 				+ "qty INT NOT NULL,"
 				+ "CONSTRAINT fk_orders_customer_id FOREIGN KEY (customer_id) REFERENCES customers(id),"
 				+ "CONSTRAINT fk_orders_price_id FOREIGN KEY (price_id) REFERENCES prices(id)" 

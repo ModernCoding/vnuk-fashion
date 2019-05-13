@@ -11,8 +11,8 @@ public class Sql2200CreateCustomers {
 		this.connection = connection;
 		
 		this.sqlQuery = "CREATE TABLE IF NOT EXISTS customers ("
-				+ "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY," 
-				+ "title_id INT NOT NULL," 
+				+ "id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY," 
+				+ "title_id BIGINT NOT NULL," 
 				+ "label VARCHAR(255) NOT NULL," 
 				+ "address VARCHAR(255) NOT NULL," 
 				+ "phone VARCHAR(255) NOT NULL," 

@@ -11,9 +11,9 @@ public class Sql2160CreateSubcategoriesBodyParts {
 		this.connection = connection;
 		
 		this.sqlQuery = "CREATE TABLE IF NOT EXISTS subcategories_body_parts ("
-				+ 	"id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,"
-				+ 	"subcategory_id INT NOT NULL,"  
-				+	"body_part_id INT NOT NULL,"
+				+ 	"id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,"
+				+ 	"subcategory_id BIGINT NOT NULL,"  
+				+	"body_part_id BIGINT NOT NULL,"
 				+ 	"CONSTRAINT fk_subcategories_body_parts_subcategory_id FOREIGN KEY (subcategory_id) REFERENCES subcategories(id),"
 				+ 	"CONSTRAINT fk_subcategories_body_parts_body_part_id FOREIGN KEY (body_part_id) REFERENCES body_parts(id)"
 				+ 	") CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"

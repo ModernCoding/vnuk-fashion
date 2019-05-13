@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import vn.edu.vnuk.fashion.model.Subcategory;
+import vn.edu.vnuk.fashion.rowmapper.SubcategoryRowMapper;
 
 
 @Repository
@@ -55,14 +56,20 @@ public class SubcategoryDao {
     
     //  READ (List of Subcategories)
     public List<Subcategory> read() throws SQLException {
+    	
+    	String sqlQuery = "select t01.id"
+		    			+ "     , t01.label"
+		    			+ "     , t02.id as category_id"
+						+ "     , t02.label as category_label"
+						+ "  from subcategories t01, categories t02"
+						+ " where t02.id = t01.category_id"
+						+ " order by t02.id asc, t01.id asc"
+						+ ";"
+    			;
 
         try {
-            
-        	return this.jdbcTemplate.query(
-        			"SELECT * FROM subcategories",
-        			new BeanPropertyRowMapper<Subcategory>(Subcategory.class)
-    			);
-
+        	
+        	return new SubcategoryRowMapper().mapRows(this.jdbcTemplate.queryForList(sqlQuery));
         	
         } catch (Exception e) {
         	

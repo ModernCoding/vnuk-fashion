@@ -11,9 +11,9 @@ public class Sql2172CreateProductsColors {
 		this.connection = connection;
 		
 		this.sqlQuery = "CREATE TABLE IF NOT EXISTS products_colors ("
-				+ "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, "
-				+ "product_id INT NOT NULL, "
-				+ "color_id INT NULL, "
+				+ "id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, "
+				+ "product_id BIGINT NOT NULL, "
+				+ "color_id BIGINT NULL, "
 				+ "CONSTRAINT fk_products_colors_product_id FOREIGN KEY (product_id) REFERENCES products(id),"
 				+ "CONSTRAINT fk_products_colors_color_id FOREIGN KEY (color_id) REFERENCES colors(id)"				
 				+ 	") CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"

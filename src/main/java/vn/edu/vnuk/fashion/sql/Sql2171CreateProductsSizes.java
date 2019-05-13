@@ -11,9 +11,9 @@ public class Sql2171CreateProductsSizes {
 		this.connection = connection;
 		
 		this.sqlQuery = "CREATE TABLE IF NOT EXISTS products_sizes ("
-				+ "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, "
-				+ "product_id INT NOT NULL, "
-				+ "size_id INT NULL, "
+				+ "id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, "
+				+ "product_id BIGINT NOT NULL, "
+				+ "size_id BIGINT NULL, "
 				+ "CONSTRAINT fk_products_sizes_product_id FOREIGN KEY (product_id) REFERENCES products(id),"
 				+ "CONSTRAINT fk_products_sizes_size_id FOREIGN KEY (size_id) REFERENCES sizes(id)"				
 				+ 	") CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"

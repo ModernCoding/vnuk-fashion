@@ -11,8 +11,8 @@ public class Sql2220CreateReviews {
 		this.connection = connection;
 		
 		this.sqlQuery = "CREATE TABLE IF NOT EXISTS reviews ("
-				+ "id INT NOT NULL AUTO_INCREMENT PRIMARY KEY," 
-				+ "order_id INT NOT NULL," 
+				+ "id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY," 
+				+ "order_id BIGINT NOT NULL," 
 				+ "rating INT NOT NULL,"
 				+ "description VARCHAR(255) NULL,"
 				+ "CONSTRAINT fk_reviews_order_id FOREIGN KEY (order_id) REFERENCES orders(id)"

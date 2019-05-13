@@ -11,7 +11,7 @@ public class Sql2140CreateMakers {
 		this.connection = connection;
 		
 		this.sqlQuery = "CREATE TABLE IF NOT EXISTS makers ("
-				+ 	"id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, "
+				+ 	"id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, "
 				+ 	"label VARCHAR(255) NOT NULL,"
 				+ 	"address VARCHAR(255) NOT NULL,"
 				+ 	"phone VARCHAR(255) NOT NULL,"

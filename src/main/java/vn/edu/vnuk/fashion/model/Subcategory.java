@@ -1,6 +1,7 @@
 package vn.edu.vnuk.fashion.model;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class Subcategory {
 	private Long id;
@@ -9,7 +10,8 @@ public class Subcategory {
 	private Category category;
 	
 	@NotNull
-	private String label;
+	@Size(min = 1, message="Label is mandatory")
+    private String label;
 
 	public Long getId() {
 		return id;

@@ -11,7 +11,7 @@ public class Sql2110CreateSizes {
 		this.connection = connection;
 		
 		this.sqlQuery = "CREATE TABLE IF NOT EXISTS sizes ("
-				+ 	"id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, "
+				+ 	"id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, "
 				+ 	"universal VARCHAR(255), "
 				+   "us VARCHAR(255) NULL, " 
 				+	"uk VARCHAR(255) NULL," 

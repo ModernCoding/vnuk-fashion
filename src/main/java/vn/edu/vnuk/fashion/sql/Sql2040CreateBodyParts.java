@@ -11,7 +11,7 @@ public class Sql2040CreateBodyParts {
 		this.connection = connection;
 		
 		this.sqlQuery = "CREATE TABLE IF NOT EXISTS body_parts ("
-				+ 	"id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, "
+				+ 	"id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, "
 				+ 	"label VARCHAR(255) NOT NULL"
 				+ 	") CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 			;
