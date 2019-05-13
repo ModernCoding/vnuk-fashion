@@ -89,7 +89,7 @@ public class CategoryDao {
     //  UPDATE
     public void update(Category category) throws SQLException {
     	
-        String sqlQuery = "update categories label=? where id=?";
+        String sqlQuery = "update categories set label=? where id=?";
         
         try {
         	this.jdbcTemplate.update(

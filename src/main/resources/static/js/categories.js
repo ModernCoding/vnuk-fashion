@@ -21,7 +21,7 @@ $(function(){
                 
                 $('#my-notice').addClass('my-notice-green').removeClass("my-no-line-height");
                 $('#my-notice i').addClass('far fa-smile');
-                $('#my-notice span:last-child').text("category #" + categoryId + " has successfully been deleted.");
+                $('#my-notice span:last-child').text("Category #" + categoryId + " has successfully been deleted.");
                     
             },
             

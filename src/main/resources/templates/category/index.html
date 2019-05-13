@@ -57,7 +57,6 @@
                         
                         <!-- Edit category -->
                         <a
-                        	th:unless="${category.complete}"
                         	th:href="@{/categories/{id}/edit(id=${category.id})}"
                         	class="btn btn-sm btn-primary my-category-to-edit" 
                            	data-toggle="tooltip"

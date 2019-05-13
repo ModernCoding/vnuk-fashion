@@ -41,12 +41,7 @@ public class CategoriesController {
 		this.dao = dao;
 	}
 	
-	@RequestMapping(value={"", "/"})
-	public String home() {
-		return "redirect:/categories";
-	}
-    
-	
+
 	@RequestMapping("/categories")
     public String index(Model model, ServletRequest request) throws SQLException{
         model.addAttribute("categories", dao.read());
