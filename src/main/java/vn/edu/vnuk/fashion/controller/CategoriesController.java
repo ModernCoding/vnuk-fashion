@@ -37,7 +37,7 @@ public class CategoriesController {
 	private CategoryDao dao;
 	
 	@Autowired
-	public void setcategoryDao(CategoryDao dao) {
+	public void setCategoryDao(CategoryDao dao) {
 		this.dao = dao;
 	}
 	
