@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -86,10 +85,21 @@ public class SubcategoryDao {
     //  READ (Single Subcategory)
     public Subcategory read(Long id) throws SQLException{
 
+    	String sqlQuery = "select t01.id"
+    			+ "     , t01.label"
+    			+ "     , t02.id as category_id"
+				+ "     , t02.label as category_label"
+				+ "  from subcategories t01, categories t02"
+				+ " where t01.id = ?"
+				+ "   and t02.id = t01.category_id"
+				+ " order by t02.id asc, t01.id asc"
+				+ ";"
+		;
+
     	return this.jdbcTemplate.queryForObject(
-    			"SELECT * FROM subcategories where id = ?",
+    			sqlQuery,
         		new Object[] {id},
-        		new BeanPropertyRowMapper<Subcategory>(Subcategory.class)
+        		new SubcategoryRowMapper()
         	);
         
     }  
