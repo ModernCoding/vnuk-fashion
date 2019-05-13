@@ -6,7 +6,8 @@
 	<section th:fragment="content">
 	
 		<h3 class="my-margin-bottom-28">
-			<em>List of all subcategories</em>
+			<em th:if="${category == null}">List of all subcategories</em>
+			<em th:unless="${category == null}" th:text="'Subcategories of ' + ${category.label}"></em>
 		</h3>
 	
 	    <a href="subcategories/new" class="btn btn-sm btn-success my-margin-bottom-19">

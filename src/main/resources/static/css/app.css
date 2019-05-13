@@ -32,6 +32,9 @@ a:not(.btn), a:visited:not(.btn), a:hover:not(.btn) {
 .my-tr-gold a:not(.btn), .my-tr-red a:not(.btn) { color: #fff; }
 
 .my-margin-top-4 { margin-top: 4px; }
+.my-margin-right-4 { margin-right: 4px; }
+.my-margin-bottom-4 { margin-bottom: 4px; }
+.my-margin-left-4 { margin-left: 4px; }
 
 .my-padding-top-19 { padding-top: 19px; }
 .my-padding-bottom-19 { padding-bottom: 19px; }

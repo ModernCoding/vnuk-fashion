@@ -50,11 +50,24 @@ public class SubcategoriesController {
 	
 
 	@RequestMapping("/subcategories")
-    public String index(Model model, ServletRequest request) throws SQLException{
-        model.addAttribute("subcategories", subcategoryDao.read());
+    public String index(
+		
+		@RequestParam(value="categoryId", required = false) String categoryId,
+		Model model,
+		ServletRequest request
+
+	) throws SQLException{
+        
+		model.addAttribute("subcategories", subcategoryDao.read(categoryId));
+		
+		if (categoryId != null) {
+			model.addAttribute("category", categoryDao.read(Long.parseLong(categoryId)));
+		}
+		
         model.addAttribute("template", "subcategory/index");
         return "_layout";
-    }
+   
+	}
     
     
     @RequestMapping("/subcategories/{id}")

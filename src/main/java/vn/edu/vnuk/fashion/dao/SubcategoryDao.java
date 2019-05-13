@@ -54,7 +54,7 @@ public class SubcategoryDao {
     
     
     //  READ (List of Subcategories)
-    public List<Subcategory> read() throws SQLException {
+    public List<Subcategory> read(String categoryId) throws SQLException {
     	
     	String sqlQuery = "select t01.id"
 		    			+ "     , t01.label"
@@ -62,10 +62,18 @@ public class SubcategoryDao {
 						+ "     , t02.label as category_label"
 						+ "  from subcategories t01, categories t02"
 						+ " where t02.id = t01.category_id"
-						+ " order by t02.id asc, t01.id asc"
-						+ ";"
-    			;
-
+				;
+    	
+    	if (categoryId != null) {
+    		sqlQuery += String.format("   and t02.id = %s", categoryId);
+    		sqlQuery += " order by t01.id asc;";
+    	}
+    	
+    	else {
+        	sqlQuery += " order by t02.id asc, t01.id asc;";
+    	}
+    	
+    	
         try {
         	
         	return new SubcategoryRowMapper().mapRows(this.jdbcTemplate.queryForList(sqlQuery));

@@ -85,8 +85,30 @@
 
                     </td>
                     
+                    
                     <td th:text="${category.id}"></td>
-                    <td th:text="${category.label}"></td>
+                    
+                    
+                    <td>
+                    	<div th:text="${category.label}" class="my-margin-bottom-4"></div>
+                    	
+                    	<div>
+                    		<a
+	                        	th:href="@{/subcategories?categoryId={id}(id=${category.id})}"
+	                        	class="btn btn-sm btn-info" 
+	                        >
+	                        
+	                            <i class="fas fa-angle-double-right" aria-hidden="true"></i>
+	                            
+	                            <span class="my-margin-left-19">
+	                            	<i>Subcategories</i>
+	                            </span>
+	                            
+	                        </a>
+                    	</div>
+                    	
+                    </td>
+                    
                 </tr>
 	
 	        </tbody>
