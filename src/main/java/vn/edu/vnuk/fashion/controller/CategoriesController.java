@@ -86,8 +86,6 @@ public class CategoriesController {
 	) throws SQLException{
     	
     	
-    	category = dao.read(id);
-    	
     	for(FieldError fieldError : fieldErrors) {
     		model.addAttribute(
     				String.format("%sFieldError", fieldError.getField()),
@@ -98,7 +96,7 @@ public class CategoriesController {
     	
     	model.addAttribute("backToShow", backToShow);
     	model.addAttribute("urlCompletion", backToShow ? String.format("/%s", id) : "");
-    	model.addAttribute("category", category);
+    	model.addAttribute("category", dao.read(id));
         model.addAttribute("template", "category/edit");
 
         return "_layout";

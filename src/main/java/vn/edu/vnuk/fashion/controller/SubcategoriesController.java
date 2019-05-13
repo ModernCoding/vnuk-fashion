@@ -100,8 +100,6 @@ public class SubcategoriesController {
 	) throws SQLException{
     	
     	
-    	subcategory = subcategoryDao.read(id);
-    	
     	for(FieldError fieldError : fieldErrors) {
     		model.addAttribute(
     				String.format("%sFieldError", fieldError.getField()),
@@ -112,12 +110,12 @@ public class SubcategoriesController {
     	
     	model.addAttribute("backToShow", backToShow);
     	model.addAttribute("urlCompletion", backToShow ? String.format("/%s", id) : "");
-    	model.addAttribute("subcategory", subcategory);
+    	model.addAttribute("subcategory", subcategoryDao.read(id));
+    	model.addAttribute("categories", categoryDao.read());
         model.addAttribute("template", "subcategory/edit");
 
         return "_layout";
     
-        
     }
     
     

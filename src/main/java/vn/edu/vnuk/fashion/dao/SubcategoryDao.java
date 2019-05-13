@@ -108,7 +108,7 @@ public class SubcategoryDao {
     //  UPDATE
     public void update(Subcategory subcategory) throws SQLException {
         
-    	String sqlQuery = "update subcategories category_id=? label=? where id=?";
+    	String sqlQuery = "update subcategories set category_id=?, label=? where id=?";
         
 
         try {
@@ -116,14 +116,14 @@ public class SubcategoryDao {
 					sqlQuery,
 					
 					new Object[] {
-							subcategory.getCategory().getId(),
+							subcategory.getCategoryId(),
 							subcategory.getLabel(),
 							subcategory.getId()
 						}
 				);
             
             
-            System.out.println("Category successfully modified.");
+            System.out.println("Subcategory successfully modified.");
         } 
 
         catch (Exception e) {
