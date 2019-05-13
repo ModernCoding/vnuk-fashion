@@ -31,13 +31,13 @@ public class SubcategoryDao {
         try {
             System.out.println(
             		String.format(
-            				"%s new category in DB!",
+            				"%s new subcategory in DB!",
             				
             				this.jdbcTemplate.update(
             						sqlQuery,
             						new Object[] {
-            								subcategory.getLabel(),
-            								subcategory.getCategory().getId(),
+            								subcategory.getCategoryId(),
+            								subcategory.getLabel()
             							}
         						)
         				)

@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import vn.edu.vnuk.fashion.dao.CategoryDao;
 import vn.edu.vnuk.fashion.dao.SubcategoryDao;
 import vn.edu.vnuk.fashion.model.Subcategory;
 
@@ -34,17 +35,23 @@ import vn.edu.vnuk.fashion.model.Subcategory;
 @Controller
 public class SubcategoriesController {
 	
-	private SubcategoryDao dao;
-	
+	private SubcategoryDao subcategoryDao;
+	private CategoryDao categoryDao;
+
 	@Autowired
-	public void setSubcategoryDao(SubcategoryDao dao) {
-		this.dao = dao;
+	public void setSubcategoryDao(SubcategoryDao subcategoryDao) {
+		this.subcategoryDao = subcategoryDao;
+	}
+
+	@Autowired
+	public void setCategoryDao(CategoryDao categoryDao) {
+		this.categoryDao = categoryDao;
 	}
 	
 
 	@RequestMapping("/subcategories")
     public String index(Model model, ServletRequest request) throws SQLException{
-        model.addAttribute("subcategories", dao.read());
+        model.addAttribute("subcategories", subcategoryDao.read());
         model.addAttribute("template", "subcategory/index");
         return "_layout";
     }
@@ -52,14 +59,20 @@ public class SubcategoriesController {
     
     @RequestMapping("/subcategories/{id}")
     public String show(@PathVariable("id") Long id, Model model, ServletRequest request) throws SQLException{
-        model.addAttribute("subcategory", dao.read(id));
+        model.addAttribute("subcategory", subcategoryDao.read(id));
         model.addAttribute("template", "subcategory/show");
         return "_layout";
     }
     
     
     @RequestMapping("/subcategories/new")
-    public String add(Subcategory subcategory, Model model, @ModelAttribute("fieldErrors") ArrayList<FieldError> fieldErrors){
+    public String add(
+    		
+		Subcategory subcategory,
+		Model model,
+		@ModelAttribute("fieldErrors") ArrayList<FieldError> fieldErrors
+	
+	) throws SQLException{
     	
     	for(FieldError fieldError : fieldErrors) {
     		model.addAttribute(
@@ -68,7 +81,8 @@ public class SubcategoriesController {
     			);
     	}
     	
-        model.addAttribute("template", "subcategory/new");
+    	model.addAttribute("template", "subcategory/new");
+    	model.addAttribute("categories", categoryDao.read());
         return "_layout";
     }
     
@@ -86,7 +100,7 @@ public class SubcategoriesController {
 	) throws SQLException{
     	
     	
-    	subcategory = dao.read(id);
+    	subcategory = subcategoryDao.read(id);
     	
     	for(FieldError fieldError : fieldErrors) {
     		model.addAttribute(
@@ -116,16 +130,15 @@ public class SubcategoriesController {
     	RedirectAttributes redirectAttributes
     
     ) throws SQLException{
-        
     	
         if (bindingResult.hasErrors()) {
         	redirectAttributes.addFlashAttribute("fieldErrors", bindingResult.getAllErrors());
             return "redirect:/subcategories/new";
         }
         
-        dao.create(subcategory);
-        return "redirect:/subcategories";
         
+        subcategoryDao.create(subcategory);
+        return "redirect:/subcategories";
         
     }
     
@@ -148,7 +161,7 @@ public class SubcategoriesController {
             return String.format("redirect:/subcategories/%s/edit", id);
         }
         
-        dao.update(subcategory);
+        subcategoryDao.update(subcategory);
         return backToShow ? String.format("redirect:/subcategories/%s", id) : "redirect:/subcategories";
         
         
@@ -158,7 +171,7 @@ public class SubcategoriesController {
     //  delete with ajax
     @RequestMapping(value="/subcategories/{id}", method = RequestMethod.DELETE)
     public void delete(@PathVariable("id") Long id, ServletRequest request, HttpServletResponse response) throws SQLException {
-    	dao.delete(id);
+    	subcategoryDao.delete(id);
         response.setStatus(200);
     }
     

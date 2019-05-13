@@ -23,6 +23,7 @@ public Subcategory mapRow(ResultSet rs, int rowNum) throws SQLException {
 		category.setLabel(rs.getString("category_label"));
 		
 		subcategory.setId(rs.getLong("id"));
+		subcategory.setCategoryId(rs.getLong("category_id"));
 		subcategory.setLabel(rs.getString("label"));
 		subcategory.setCategory(category);
 		
@@ -44,6 +45,7 @@ public Subcategory mapRow(ResultSet rs, int rowNum) throws SQLException {
 			category.setLabel((String) row.get("category_label"));
 			
 			subcategory.setId((Long) row.get("id"));
+			subcategory.setCategoryId((Long) row.get("category_id"));
 			subcategory.setLabel((String) row.get("label"));
 			subcategory.setCategory(category);
 			

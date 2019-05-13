@@ -1,8 +1,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	
-    <form th:fragment="form(action, method, cancelLink)" th:action="${action}" th:object="${category}" th:method="${method}">
+    <form th:fragment="form(action, method, cancelLink)" th:action="${action}" th:object="${subcategory}" th:method="${method}">
 
     	<div>
+    	
+    		<!-- LABEL -->
     		
     		<div>
     			<label>Label</label>
@@ -18,6 +20,24 @@
 				</span>
 				
 		    	<span th:text="${labelFieldError}"></span>
+        	</div>
+
+        	
+        	<!-- CATEGORY -->
+    		
+    		<div class="my-margin-top-19">
+    			<label>Category</label>
+    		</div>
+    		
+        	<div class="my-margin-top-4">
+	        	<select th:field="*{categoryId}">
+				    <option
+				    	th:each="category : ${categories}"
+				    	th:value="${category.id}"
+				    	th:text="${category.label}"
+				    >
+				    </option>
+				</select>
         	</div>
         	
         </div>

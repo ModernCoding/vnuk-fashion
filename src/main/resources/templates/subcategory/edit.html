@@ -1,26 +1,26 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	
-	<title th:fragment="title" th:text="'Edit category #' + ${category.id}"></title>
+	<title th:fragment="title" th:text="'Edit subcategory #' + ${subcategory.id}"></title>
 	
 	
 	<section th:fragment="content">
 	
 		<h3 class="my-margin-bottom-28">
-			<em th:text="'Edit category #' + ${category.id}"></em>
+			<em th:text="'Edit subcategory #' + ${subcategory.id}"></em>
 		</h3>
 		
 		
 	    <form
 	    	th:replace="
 	    			~{
-	    				/category/_form
+	    				/subcategory/_form
 	    				
 	    				::
 	    				
 	    				form(
-	    					@{/categories/{id}(id=${category.id}, backToShow=${backToShow})},
+	    					@{/subcategories/{id}(id=${subcategory.id}, backToShow=${backToShow})},
 	    					'patch',
-	    					@{/categories{urlCompletion}(urlCompletion=${urlCompletion})}
+	    					@{/subcategories{urlCompletion}(urlCompletion=${urlCompletion})}
 	    				)
 	    			}
 	    		"

@@ -7,12 +7,15 @@ public class Subcategory {
 	private Long id;
 	
 	@NotNull
-	private Category category;
+	private Long categoryId;
 	
 	@NotNull
 	@Size(min = 1, message="Label is mandatory")
     private String label;
-
+	
+	private Category category;
+	
+	
 	public Long getId() {
 		return id;
 	}
@@ -21,12 +24,12 @@ public class Subcategory {
 		this.id = id;
 	}
 
-	public Category getCategory() {
-		return category;
+	public Long getCategoryId() {
+		return categoryId;
 	}
 
-	public void setCategory(Category category) {
-		this.category = category;
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
 	}
 
 	public String getLabel() {
@@ -35,6 +38,14 @@ public class Subcategory {
 
 	public void setLabel(String label) {
 		this.label = label;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 
 }
