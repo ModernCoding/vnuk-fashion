@@ -83,7 +83,8 @@ public class Sql0000RunAllQueries {
 		new Sql5200InsertIntoCustomers(connectionTable).run();
 		new Sql5210InsertIntoOrders(connectionTable).run();
 		new Sql5220InsertIntoReviews(connectionTable).run();
-		
+		new Sql5230InsertIntoHeights(connectionTable).run();
+		new Sql5240InsertIntoMaterials(connectionTable).run();
 		connectionTable.close();
 		
 	}

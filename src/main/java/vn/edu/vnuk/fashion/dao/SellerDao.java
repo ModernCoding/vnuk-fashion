@@ -1,100 +1,80 @@
 package vn.edu.vnuk.fashion.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import vn.edu.vnuk.fashion.jdbc.ConnectionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
 import vn.edu.vnuk.fashion.model.Seller;
 
+
+@Repository
 public class SellerDao {
 	
-    private Connection connection;
-
-    public SellerDao(){
-        this.connection = new ConnectionFactory().getConnection();
+    private final JdbcTemplate jdbcTemplate;
+    
+    @Autowired
+    public SellerDao(JdbcTemplate jdbcTemplate) {
+	  this.jdbcTemplate = jdbcTemplate;
     }
-
-    public SellerDao(Connection connection){
-        this.connection = connection;
-    }
+	
 
 
     //  CREATE
     public void create(Seller seller) throws SQLException{
 
-        String sqlQuery = "insert into sellers (label , address , phone , email) "
-                        +	"values (? , ? , ? , ?)";
-
-        PreparedStatement statement;
+        String sqlQuery = "insert into sellers (label, address, phone, email) values (?, ?, ?, ?)";
 
         try {
-                statement = connection.prepareStatement(sqlQuery);
+            System.out.println(
+            		String.format(
+            				"%s new seller in DB!",
+            				
+            				this.jdbcTemplate.update(
+            						sqlQuery,
+            						new Object[] {
+            								seller.getLabel(),
+            								seller.getAddress(),
+            								seller.getPhone(),
+            								seller.getEmail()
+            								
+            								}
+        						)
+        				)
+        		);
 
-                //	Replacing "?" through values
-                statement.setString(1, seller.getLabel());
-                statement.setString(2, seller.getAddress());
-                statement.setString(3, seller.getPhone());
-                statement.setString(4, seller.getEmail());
-
-                // 	Executing statement
-                statement.execute();
-
-                System.out.println("New record in DB !");
-
+            
         } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-                System.out.println("Done !");
-                connection.close();
+        	
+            e.printStackTrace();
+        
         }
 
     }
     
     
-    //  READ (List of Tasks)
-    @SuppressWarnings("finally")
+    //  READ (List of Sellers)
     public List<Seller> read() throws SQLException {
 
-        String sqlQuery = "select * from sellers";
-        PreparedStatement statement;
-        List<Seller> sellers = new ArrayList<Seller>();
-
         try {
-
-            statement = connection.prepareStatement(sqlQuery);
-
-            // 	Executing statement
-            ResultSet results = statement.executeQuery();
             
-            while(results.next()){
+        	return this.jdbcTemplate.query(
+        			"SELECT * FROM sellers",
+        			new BeanPropertyRowMapper<Seller>(Seller.class)
+    			);
 
-                Seller seller = new Seller();
-                seller.setId(results.getLong("id"));
-                seller.setLabel(results.getString("label"));
-                seller.setAddress(results.getString("address"));
-                seller.setPhone(results.getString("phone"));
-                seller.setEmail(results.getString("email"));
-                
-                sellers.add(seller);
-
-            }
-
-            results.close();
-            statement.close();
-
-
+        	
         } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-                connection.close();
-                return sellers;
+        	
+            e.printStackTrace();
+        
         }
+        
+        
+		return null;
 
 
     }
@@ -102,23 +82,34 @@ public class SellerDao {
 
     //  READ (Single Seller)
     public Seller read(Long id) throws SQLException{
-        return this.read(id, true);
+    	
+    	return this.jdbcTemplate.queryForObject(
+    			"SELECT * FROM sellers where id = ?",
+        		new Object[] {id},
+        		new BeanPropertyRowMapper<Seller>(Seller.class)
+        	);
+        
     }  
 
     
     //  UPDATE
     public void update(Seller seller) throws SQLException {
-        String sqlQuery = "update sellers label=? address=? phone=? email=? where id=?";
+    	
+        String sqlQuery = "update sellers set label=? address=? phone=? email=? where id=?";
         
         try {
-            PreparedStatement statement = connection.prepareStatement(sqlQuery);
-            statement.setString(1, seller.getLabel());
-            statement.setString(2, seller.getAddress());
-            statement.setString(3, seller.getPhone());
-            statement.setString(4, seller.getEmail());
+        	this.jdbcTemplate.update(
+					sqlQuery,
+					
+					new Object[] {
+							seller.getLabel(),
+							seller.getAddress(),
+							seller.getPhone(),
+							seller.getEmail(),
+							seller.getId()
+						}
+				);
             
-            statement.execute();
-            statement.close();
             
             System.out.println("Seller successfully modified.");
         } 
@@ -128,24 +119,26 @@ public class SellerDao {
             e.printStackTrace();
         }
         
-        finally {
-            connection.close();
-        }
-        
     }
     
     
     //  DELETE
     public void delete(Long id) throws SQLException {
+    	
         String sqlQuery = "delete from sellers where id=?";
 
         try {
-            PreparedStatement statement = connection.prepareStatement(sqlQuery);
-            statement.setLong(1, id);
-            statement.execute();
-            statement.close();
-            
-            System.out.println("Seller successfully deleted.");
+
+            System.out.println(
+            		String.format(
+            				"%s record successfully removed from DB!",
+            				
+            				this.jdbcTemplate.update(
+            						sqlQuery,
+            						new Object[] {id}
+        						)
+        				)
+        		);
 
         } 
 
@@ -153,58 +146,7 @@ public class SellerDao {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
-        finally {
-            connection.close();
-        }
 
     }
-  
     
-    //  PRIVATE
-    
-    @SuppressWarnings("finally")
-    private Seller read(Long id, boolean closeAfterUse) throws SQLException{
-
-        String sqlQuery = "select * from sellers where id=?";
-
-        PreparedStatement statement;
-        Seller seller = new Seller();
-
-        try {
-            statement = connection.prepareStatement(sqlQuery);
-
-            //	Replacing "?" through values
-            statement.setLong(1, id);
-
-            // 	Executing statement
-            ResultSet results = statement.executeQuery();
-
-            if(results.next()){
-
-                seller.setId(results.getLong("id"));
-                seller.setLabel(results.getString("label"));
-                seller.setAddress(results.getString("address"));
-                seller.setPhone(results.getString("phone"));
-                seller.setEmail(results.getString("email"));
-
-            }
-
-            statement.close();
-
-        } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-            
-            if (closeAfterUse) {
-                connection.close();
-    
-            }
-            
-            return seller;
-        }
-
-    }
-
 }
