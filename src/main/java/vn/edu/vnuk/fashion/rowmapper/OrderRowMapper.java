@@ -130,22 +130,22 @@ public class OrderRowMapper implements RowMapper<Order> {
 		seller.setEmail(rs.getString("seller_email"));
 		seller.setPhone(rs.getString("seller_phone"));
 		
-		priceType.setId(rs.getLong("priceType_id"));
-		priceType.setLabel(rs.getString("priceType_label"));
+		priceType.setId(rs.getLong("price_type_id"));
+		priceType.setLabel(rs.getString("price_type_label"));
 		
 		price.setId(rs.getLong("price_id"));
 		price.setValue(rs.getFloat("value"));
-		price.setProductsSizeId(rs.getLong("productsSize_id"));
+		price.setProductsSizeId(rs.getLong("products_size_id"));
 		price.setProductsSize(productsSize);
-		price.setProductsPatternId(rs.getLong("productsPattern_id"));
+		price.setProductsPatternId(rs.getLong("products_pattern_id"));
 		price.setProductsPattern(productsPattern);
-		price.setProductsLengthId(rs.getLong("productsLength_id"));
+		price.setProductsLengthId(rs.getLong("products_length_id"));
 		price.setProductsLength(productsLength);
-		price.setProductsColorId(rs.getLong("productsColor_id"));
+		price.setProductsColorId(rs.getLong("products_color_id"));
 		price.setProductsColor(productsColor);
 		price.setSellerId(rs.getLong("seller_id"));
 		price.setSeller(seller);
-		price.setPriceTypeId(rs.getLong("priceType_id"));
+		price.setPriceTypeId(rs.getLong("price_type_id"));
 		price.setPriceType(priceType);
 		
 		title.setId(rs.getLong("title_id"));
@@ -269,21 +269,21 @@ public class OrderRowMapper implements RowMapper<Order> {
     		seller.setEmail((String) row.get("seller_email"));
     		seller.setPhone((String) row.get("seller_phone"));
     		
-    		priceType.setId((Long) row.get("priceType_id"));
-    		priceType.setLabel((String) row.get("priceType_label"));
+    		priceType.setId((Long) row.get("price_type_id"));
+    		priceType.setLabel((String) row.get("price_type_label"));
     		
     		price.setId((Long) row.get("price_id"));
-    		price.setProductsSizeId((Long) row.get("productsSize_id"));
+    		price.setProductsSizeId((Long) row.get("products_size_id"));
     		price.setProductsSize(productsSize);
-    		price.setProductsColorId((Long) row.get("productsColor_id"));
+    		price.setProductsColorId((Long) row.get("products_color_id"));
     		price.setProductsColor(productsColor);
-    		price.setProductsLengthId((Long) row.get("productsLength_id"));
+    		price.setProductsLengthId((Long) row.get("products_length_id"));
     		price.setProductsLength(productsLength);
-    		price.setProductsPatternId((Long) row.get("productsPattern_id"));
+    		price.setProductsPatternId((Long) row.get("products_pattern_id"));
     		price.setProductsPattern(productsPattern);
     		price.setSellerId((Long) row.get("seller_id"));
     		price.setSeller(seller);
-    		price.setPriceTypeId((Long) row.get("priceType_id"));
+    		price.setPriceTypeId((Long) row.get("price_type_id"));
     		price.setPriceType(priceType);
     		price.setValue((Float) row.get("value"));
     		

@@ -10,8 +10,20 @@ public class Review {
 	
 	@NotNull
 	private int rating;
+	
+	private Long orderId;
 
 	private String description;
+	
+	
+
+	public Long getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(Long orderId) {
+		this.orderId = orderId;
+	}
 
 	public Long getId() {
 		return id;
