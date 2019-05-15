@@ -1,6 +1,7 @@
 package vn.edu.vnuk.fashion.model;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class Customer {
 	private Long id;
@@ -9,12 +10,18 @@ public class Customer {
 	private Title title;
 	
 	@NotNull
+	private Long titleId;
+	
+	@NotNull
+	@Size(min = 1, message="Label is mandatory")
 	private String label;
 	
 	@NotNull
+	@Size(min = 1, message="Label is mandatory")
 	private String address;
 	
 	@NotNull
+	@Size(min = 1, message="Label is mandatory")
 	private String phone;
 	
 	private String email;
@@ -33,6 +40,14 @@ public class Customer {
 
 	public void setTitle(Title title) {
 		this.title = title;
+	}
+	
+	public Long getTitleId() {
+		return titleId;
+	}
+
+	public void setTitleId(Long titleId) {
+		this.titleId = titleId;
 	}
 
 	public String getLabel() {
