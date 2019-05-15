@@ -50,7 +50,7 @@ public class CategoryDao {
     }
     
     
-    //  READ (List of Tasks)
+    //  READ (List of Categories)
     public List<Category> read() throws SQLException {
 
         try {

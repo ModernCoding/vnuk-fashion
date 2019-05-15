@@ -14,7 +14,7 @@ import vn.edu.vnuk.fashion.model.Subcategory;
 public class SubcategoryRowMapper implements RowMapper<Subcategory> {
 
 	@Override
-public Subcategory mapRow(ResultSet rs, int rowNum) throws SQLException {
+	public Subcategory mapRow(ResultSet rs, int rowNum) throws SQLException {
 		
 		Category category = new Category();
 		Subcategory subcategory = new Subcategory();
