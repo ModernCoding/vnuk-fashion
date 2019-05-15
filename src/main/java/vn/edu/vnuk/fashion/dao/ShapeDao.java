@@ -1,115 +1,106 @@
 package vn.edu.vnuk.fashion.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import vn.edu.vnuk.fashion.jdbc.ConnectionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
 import vn.edu.vnuk.fashion.model.Shape;
 
+
+@Repository
 public class ShapeDao {
 	
-    private Connection connection;
-
-    public ShapeDao(){
-        this.connection = new ConnectionFactory().getConnection();
+    private final JdbcTemplate jdbcTemplate;
+    
+    @Autowired
+    public ShapeDao(JdbcTemplate jdbcTemplate) {
+	  this.jdbcTemplate = jdbcTemplate;
     }
-
-    public ShapeDao(Connection connection){
-        this.connection = connection;
-    }
+	
 
 
     //  CREATE
     public void create(Shape shape) throws SQLException{
 
-        String sqlQuery = "insert into shapes (label) "
-                        +	"values (?)";
-
-        PreparedStatement statement;
+        String sqlQuery = "insert into shape (label) values (?)";
 
         try {
-                statement = connection.prepareStatement(sqlQuery);
+            System.out.println(
+            		String.format(
+            				"%s new shape in DB!",
+            				
+            				this.jdbcTemplate.update(
+            						sqlQuery,
+            						new Object[] {shape.getLabel()}
+        						)
+        				)
+        		);
 
-                //	Replacing "?" through values
-                statement.setString(1, shape.getLabel());
-
-                // 	Executing statement
-                statement.execute();
-
-                System.out.println("New record in DB !");
-
+            
         } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-                System.out.println("Done !");
-                connection.close();
+        	
+            e.printStackTrace();
+        
         }
 
     }
     
     
-    //  READ (List of Tasks)
-    @SuppressWarnings("finally")
+    //  READ (List of Shapes)
     public List<Shape> read() throws SQLException {
 
-        String sqlQuery = "select * from shapes";
-        PreparedStatement statement;
-        List<Shape> shapes = new ArrayList<Shape>();
-
         try {
-
-            statement = connection.prepareStatement(sqlQuery);
-
-            // 	Executing statement
-            ResultSet results = statement.executeQuery();
             
-            while(results.next()){
+        	return this.jdbcTemplate.query(
+        			"SELECT * FROM shapes",
+        			new BeanPropertyRowMapper<Shape>(Shape.class)
+    			);
 
-                Shape shape = new Shape();
-                shape.setId(results.getLong("id"));
-                shape.setLabel(results.getString("label"));
-                
-                shapes.add(shape);
-
-            }
-
-            results.close();
-            statement.close();
-
-
+        	
         } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-                connection.close();
-                return shapes;
+        	
+            e.printStackTrace();
+        
         }
+        
+        
+		return null;
 
 
     }
 
 
-    //  READ (Single Height)
+    //  READ (Single Shape)
     public Shape read(Long id) throws SQLException{
-        return this.read(id, true);
+    	
+    	return this.jdbcTemplate.queryForObject(
+    			"SELECT * FROM shapes where id = ?",
+        		new Object[] {id},
+        		new BeanPropertyRowMapper<Shape>(Shape.class)
+        	);
+        
     }  
 
     
     //  UPDATE
     public void update(Shape shape) throws SQLException {
-        String sqlQuery = "update shapes label=? where id=?";
+    	
+        String sqlQuery = "update shapes set label=? where id=?";
         
         try {
-            PreparedStatement statement = connection.prepareStatement(sqlQuery);
-            statement.setString(1, shape.getLabel());
+        	this.jdbcTemplate.update(
+					sqlQuery,
+					
+					new Object[] {
+							shape.getLabel(),
+							shape.getId()
+						}
+				);
             
-            statement.execute();
-            statement.close();
             
             System.out.println("Shape successfully modified.");
         } 
@@ -119,24 +110,26 @@ public class ShapeDao {
             e.printStackTrace();
         }
         
-        finally {
-            connection.close();
-        }
-        
     }
     
     
     //  DELETE
     public void delete(Long id) throws SQLException {
+    	
         String sqlQuery = "delete from shapes where id=?";
 
         try {
-            PreparedStatement statement = connection.prepareStatement(sqlQuery);
-            statement.setLong(1, id);
-            statement.execute();
-            statement.close();
-            
-            System.out.println("Shape successfully deleted.");
+
+            System.out.println(
+            		String.format(
+            				"%s record successfully removed from DB!",
+            				
+            				this.jdbcTemplate.update(
+            						sqlQuery,
+            						new Object[] {id}
+        						)
+        				)
+        		);
 
         } 
 
@@ -144,55 +137,7 @@ public class ShapeDao {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
-        finally {
-            connection.close();
-        }
 
     }
-  
     
-    //  PRIVATE
-    
-    @SuppressWarnings("finally")
-    private Shape read(Long id, boolean closeAfterUse) throws SQLException{
-
-        String sqlQuery = "select * from shapes where id=?";
-
-        PreparedStatement statement;
-        Shape shape = new Shape();
-
-        try {
-            statement = connection.prepareStatement(sqlQuery);
-
-            //	Replacing "?" through values
-            statement.setLong(1, id);
-
-            // 	Executing statement
-            ResultSet results = statement.executeQuery();
-
-            if(results.next()){
-
-                shape.setId(results.getLong("id"));
-                shape.setLabel(results.getString("label"));
-
-            }
-
-            statement.close();
-
-        } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-            
-            if (closeAfterUse) {
-                connection.close();
-    
-            }
-            
-            return shape;
-        }
-
-    }
-
 }

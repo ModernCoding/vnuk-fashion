@@ -1,94 +1,76 @@
 package vn.edu.vnuk.fashion.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import vn.edu.vnuk.fashion.jdbc.ConnectionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
 import vn.edu.vnuk.fashion.model.Gender;
 
+
+
+
+@Repository
 public class GenderDao {
 	
-    private Connection connection;
-
-    public GenderDao(){
-        this.connection = new ConnectionFactory().getConnection();
+    private final JdbcTemplate jdbcTemplate;
+    
+    @Autowired
+    public GenderDao(JdbcTemplate jdbcTemplate) {
+	  this.jdbcTemplate = jdbcTemplate;
     }
-
-    public GenderDao(Connection connection){
-        this.connection = connection;
-    }
+	
 
 
     //  CREATE
     public void create(Gender gender) throws SQLException{
 
-        String sqlQuery = "insert into genders (label) "
-                        +	"values (?)";
-
-        PreparedStatement statement;
+        String sqlQuery = "insert into genders (label) values (?)";
 
         try {
-                statement = connection.prepareStatement(sqlQuery);
+            System.out.println(
+            		String.format(
+            				"%s new collar in DB!",
+            				
+            				this.jdbcTemplate.update(
+            						sqlQuery,
+            						new Object[] {gender.getLabel()}
+        						)
+        				)
+        		);
 
-                //	Replacing "?" through values
-                statement.setString(1, gender.getLabel());
-
-                // 	Executing statement
-                statement.execute();
-
-                System.out.println("New record in DB !");
-
+            
         } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-                System.out.println("Done !");
-                connection.close();
+        	
+            e.printStackTrace();
+        
         }
 
     }
     
     
-    //  READ (List of Tasks)
-    @SuppressWarnings("finally")
+    //  READ (List of Genders)
     public List<Gender> read() throws SQLException {
 
-        String sqlQuery = "select * from genders";
-        PreparedStatement statement;
-        List<Gender> genders = new ArrayList<Gender>();
-
         try {
-
-            statement = connection.prepareStatement(sqlQuery);
-
-            // 	Executing statement
-            ResultSet results = statement.executeQuery();
             
-            while(results.next()){
+        	return this.jdbcTemplate.query(
+        			"SELECT * FROM genders",
+        			new BeanPropertyRowMapper<Gender>(Gender.class)
+    			);
 
-                Gender gender = new Gender();
-                gender.setId(results.getLong("id"));
-                gender.setLabel(results.getString("label"));
-                
-                genders.add(gender);
-
-            }
-
-            results.close();
-            statement.close();
-
-
+        	
         } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-                connection.close();
-                return genders;
+        	
+            e.printStackTrace();
+        
         }
+        
+        
+		return null;
 
 
     }
@@ -96,20 +78,31 @@ public class GenderDao {
 
     //  READ (Single Gender)
     public Gender read(Long id) throws SQLException{
-        return this.read(id, true);
+    	
+    	return this.jdbcTemplate.queryForObject(
+    			"SELECT * FROM sleeves where id = ?",
+        		new Object[] {id},
+        		new BeanPropertyRowMapper<Gender>(Gender.class)
+        	);
+        
     }  
 
     
     //  UPDATE
     public void update(Gender gender) throws SQLException {
-        String sqlQuery = "update genders label=? where id=?";
+    	
+        String sqlQuery = "update genders set label=? where id=?";
         
         try {
-            PreparedStatement statement = connection.prepareStatement(sqlQuery);
-            statement.setString(1, gender.getLabel());
+        	this.jdbcTemplate.update(
+					sqlQuery,
+					
+					new Object[] {
+							gender.getLabel(),
+							gender.getId()
+						}
+				);
             
-            statement.execute();
-            statement.close();
             
             System.out.println("Gender successfully modified.");
         } 
@@ -119,24 +112,26 @@ public class GenderDao {
             e.printStackTrace();
         }
         
-        finally {
-            connection.close();
-        }
-        
     }
     
     
     //  DELETE
     public void delete(Long id) throws SQLException {
+    	
         String sqlQuery = "delete from genders where id=?";
 
         try {
-            PreparedStatement statement = connection.prepareStatement(sqlQuery);
-            statement.setLong(1, id);
-            statement.execute();
-            statement.close();
-            
-            System.out.println("Gender successfully deleted.");
+
+            System.out.println(
+            		String.format(
+            				"%s record successfully removed from DB!",
+            				
+            				this.jdbcTemplate.update(
+            						sqlQuery,
+            						new Object[] {id}
+        						)
+        				)
+        		);
 
         } 
 
@@ -144,55 +139,7 @@ public class GenderDao {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
-        finally {
-            connection.close();
-        }
 
     }
-  
     
-    //  PRIVATE
-    
-    @SuppressWarnings("finally")
-    private Gender read(Long id, boolean closeAfterUse) throws SQLException{
-
-        String sqlQuery = "select * from genders where id=?";
-
-        PreparedStatement statement;
-        Gender gender = new Gender();
-
-        try {
-            statement = connection.prepareStatement(sqlQuery);
-
-            //	Replacing "?" through values
-            statement.setLong(1, id);
-
-            // 	Executing statement
-            ResultSet results = statement.executeQuery();
-
-            if(results.next()){
-
-                gender.setId(results.getLong("id"));
-                gender.setLabel(results.getString("label"));
-
-            }
-
-            statement.close();
-
-        } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-            
-            if (closeAfterUse) {
-                connection.close();
-    
-            }
-            
-            return gender;	
-        }
-
-    }
-
 }

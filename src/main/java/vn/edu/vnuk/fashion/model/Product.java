@@ -1,24 +1,100 @@
 package vn.edu.vnuk.fashion.model;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class Product {
 	private Long id;
 	
 	@NotNull
-	private String name;
+	private Long subcategoryId;
 	
 	@NotNull
-	private Subcategory subcategory;
+	private Long sleeveId;
 	
+	@NotNull
+	private Long shapeId;
+	
+	@NotNull
+	private Long collarId;
+	
+	@NotNull
+	private Long heightId;
+	
+	@NotNull
+	private Long materialId;
+	
+	@NotNull
+	private Long makerId;
+	
+	@NotNull
+	@Size(min = 1, message="Label is mandatory")
+	private String name;
+	
+	private Subcategory subcategory;
 	private Sleeve sleeve;
 	private Shape shape;
 	private Collar collar;
 	private Height height;
 	private Material material;
-	
-	@NotNull
 	private Maker maker;
+
+	
+	public Long getSubcategoryId() {
+		return subcategoryId;
+	}
+
+	public void setSubcategoryId(Long subcategoryId) {
+		this.subcategoryId = subcategoryId;
+	}
+
+	public Long getSleeveId() {
+		return sleeveId;
+	}
+
+	public void setSleeveId(Long sleeveId) {
+		this.sleeveId = sleeveId;
+	}
+
+	public Long getShapeId() {
+		return shapeId;
+	}
+
+	public void setShapeId(Long shapeId) {
+		this.shapeId = shapeId;
+	}
+
+	public Long getCollarId() {
+		return collarId;
+	}
+
+	public void setCollarId(Long collarId) {
+		this.collarId = collarId;
+	}
+
+	public Long getHeightId() {
+		return heightId;
+	}
+
+	public void setHeightId(Long heightId) {
+		this.heightId = heightId;
+	}
+
+	public Long getMaterialId() {
+		return materialId;
+	}
+
+	public void setMaterialId(Long materialId) {
+		this.materialId = materialId;
+	}
+
+	public Long getMakerId() {
+		return makerId;
+	}
+
+	public void setMakerId(Long makerId) {
+		this.makerId = makerId;
+	}
 
 	public Long getId() {
 		return id;

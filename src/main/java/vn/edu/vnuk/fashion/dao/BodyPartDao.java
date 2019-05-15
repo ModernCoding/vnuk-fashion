@@ -1,94 +1,76 @@
 package vn.edu.vnuk.fashion.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import vn.edu.vnuk.fashion.jdbc.ConnectionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
 import vn.edu.vnuk.fashion.model.BodyPart;
 
+
+
+
+@Repository
 public class BodyPartDao {
 	
-    private Connection connection;
-
-    public BodyPartDao(){
-        this.connection = new ConnectionFactory().getConnection();
+    private final JdbcTemplate jdbcTemplate;
+    
+    @Autowired
+    public BodyPartDao(JdbcTemplate jdbcTemplate) {
+	  this.jdbcTemplate = jdbcTemplate;
     }
-
-    public BodyPartDao(Connection connection){
-        this.connection = connection;
-    }
+	
 
 
     //  CREATE
     public void create(BodyPart bodyPart) throws SQLException{
 
-        String sqlQuery = "insert into body_parts (label) "
-                        +	"values (?)";
-
-        PreparedStatement statement;
+        String sqlQuery = "insert into body_parts (label) values (?)";
 
         try {
-                statement = connection.prepareStatement(sqlQuery);
+            System.out.println(
+            		String.format(
+            				"%s new collar in DB!",
+            				
+            				this.jdbcTemplate.update(
+            						sqlQuery,
+            						new Object[] {bodyPart.getLabel()}
+        						)
+        				)
+        		);
 
-                //	Replacing "?" through values
-                statement.setString(1, bodyPart.getLabel());
-
-                // 	Executing statement
-                statement.execute();
-
-                System.out.println("New record in DB !");
-
+            
         } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-                System.out.println("Done !");
-                connection.close();
+        	
+            e.printStackTrace();
+        
         }
 
     }
     
     
-    //  READ (List of BodyParts)
-    @SuppressWarnings("finally")
+    //  READ (List of Body Parts)
     public List<BodyPart> read() throws SQLException {
 
-        String sqlQuery = "select * from body_parts";
-        PreparedStatement statement;
-        List<BodyPart> bodyParts = new ArrayList<BodyPart>();
-
         try {
-
-            statement = connection.prepareStatement(sqlQuery);
-
-            // 	Executing statement
-            ResultSet results = statement.executeQuery();
             
-            while(results.next()){
+        	return this.jdbcTemplate.query(
+        			"SELECT * FROM body_parts",
+        			new BeanPropertyRowMapper<BodyPart>(BodyPart.class)
+    			);
 
-                BodyPart bodyPart = new BodyPart();
-                bodyPart.setId(results.getLong("id"));
-                bodyPart.setLabel(results.getString("label"));
-                
-                bodyParts.add(bodyPart);
-
-            }
-
-            results.close();
-            statement.close();
-
-
+        	
         } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-                connection.close();
-                return bodyParts;
+        	
+            e.printStackTrace();
+        
         }
+        
+        
+		return null;
 
 
     }
@@ -96,20 +78,31 @@ public class BodyPartDao {
 
     //  READ (Single BodyPart)
     public BodyPart read(Long id) throws SQLException{
-        return this.read(id, true);
+    	
+    	return this.jdbcTemplate.queryForObject(
+    			"SELECT * FROM body_parts where id = ?",
+        		new Object[] {id},
+        		new BeanPropertyRowMapper<BodyPart>(BodyPart.class)
+        	);
+        
     }  
 
     
     //  UPDATE
     public void update(BodyPart bodyPart) throws SQLException {
-        String sqlQuery = "update body_parts label=? where id=?";
+    	
+        String sqlQuery = "update body_parts set label=? where id=?";
         
         try {
-            PreparedStatement statement = connection.prepareStatement(sqlQuery);
-            statement.setString(1, bodyPart.getLabel());
+        	this.jdbcTemplate.update(
+					sqlQuery,
+					
+					new Object[] {
+							bodyPart.getLabel(),
+							bodyPart.getId()
+						}
+				);
             
-            statement.execute();
-            statement.close();
             
             System.out.println("BodyPart successfully modified.");
         } 
@@ -119,24 +112,26 @@ public class BodyPartDao {
             e.printStackTrace();
         }
         
-        finally {
-            connection.close();
-        }
-        
     }
     
     
     //  DELETE
     public void delete(Long id) throws SQLException {
+    	
         String sqlQuery = "delete from body_parts where id=?";
 
         try {
-            PreparedStatement statement = connection.prepareStatement(sqlQuery);
-            statement.setLong(1, id);
-            statement.execute();
-            statement.close();
-            
-            System.out.println("BodyPart successfully deleted.");
+
+            System.out.println(
+            		String.format(
+            				"%s record successfully removed from DB!",
+            				
+            				this.jdbcTemplate.update(
+            						sqlQuery,
+            						new Object[] {id}
+        						)
+        				)
+        		);
 
         } 
 
@@ -144,55 +139,7 @@ public class BodyPartDao {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
-        finally {
-            connection.close();
-        }
 
     }
-  
     
-    //  PRIVATE
-    
-    @SuppressWarnings("finally")
-    private BodyPart read(Long id, boolean closeAfterUse) throws SQLException{
-
-        String sqlQuery = "select * from body_parts where id=?";
-
-        PreparedStatement statement;
-        BodyPart bodyPart = new BodyPart();
-
-        try {
-            statement = connection.prepareStatement(sqlQuery);
-
-            //	Replacing "?" through values
-            statement.setLong(1, id);
-
-            // 	Executing statement
-            ResultSet results = statement.executeQuery();
-
-            if(results.next()){
-
-                bodyPart.setId(results.getLong("id"));
-                bodyPart.setLabel(results.getString("label"));
-
-            }
-
-            statement.close();
-
-        } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-            
-            if (closeAfterUse) {
-                connection.close();
-    
-            }
-            
-            return bodyPart;	
-        }
-
-    }
-
 }
