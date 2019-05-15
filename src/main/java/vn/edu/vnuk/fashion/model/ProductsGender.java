@@ -6,6 +6,12 @@ public class ProductsGender {
 	private Long id;
 	
 	@NotNull
+	private Long productId;
+	
+	@NotNull
+	private Long genderId;
+	
+	@NotNull
 	private Product product;
 	
 	@NotNull
@@ -34,5 +40,21 @@ public class ProductsGender {
 	public void setGender(Gender gender) {
 		this.gender = gender;
 	}
-	
+
+	public Long getProductId() {
+		return productId;
+	}
+
+	public void setProductId(Long productId) {
+		this.productId = productId;
+	}
+
+	public Long getGenderId() {
+		return genderId;
+	}
+
+	public void setGenderId(Long genderId) {
+		this.genderId = genderId;
+	}
+
 }
