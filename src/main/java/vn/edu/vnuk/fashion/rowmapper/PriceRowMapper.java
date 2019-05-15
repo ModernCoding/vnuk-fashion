@@ -199,7 +199,7 @@ public class PriceRowMapper implements RowMapper<Price> {
     		maker.setId((Long) row.get("maker_id"));
     		maker.setLabel((String) row.get("maker_label"));
     		
-    		product.setId((Long) row.get("id"));
+    		product.setId((Long) row.get("product_id"));
     		product.setName((String) row.get("name"));
     		product.setSubcategoryId((Long) row.get("subcategory_id"));
     		product.setSubcategory(subcategory);
