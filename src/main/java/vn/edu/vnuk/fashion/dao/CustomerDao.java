@@ -1,25 +1,26 @@
 package vn.edu.vnuk.fashion.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import vn.edu.vnuk.fashion.jdbc.ConnectionFactory;
-import vn.edu.vnuk.fashion.model.Customer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
+import vn.edu.vnuk.fashion.model.Customer;
+import vn.edu.vnuk.fashion.model.Subcategory;
+import vn.edu.vnuk.fashion.rowmapper.CustomerRowMapper;
+import vn.edu.vnuk.fashion.rowmapper.SubcategoryRowMapper;
+
+
+@Repository
 public class CustomerDao {
 	
-    private Connection connection;
-
-    public CustomerDao(){
-        this.connection = new ConnectionFactory().getConnection();
-    }
-
-    public CustomerDao(Connection connection){
-        this.connection = connection;
+    private final JdbcTemplate jdbcTemplate;
+    
+    @Autowired
+    public CustomerDao(JdbcTemplate jdbcTemplate) {
+	  this.jdbcTemplate = jdbcTemplate;
     }
 
 
@@ -27,102 +28,121 @@ public class CustomerDao {
     public void create(Customer customer) throws SQLException{
 
         String sqlQuery = "insert into customers (title_id, label, address, phone, email) "
-                        +	"values (? , ? , ? , ? , ?)";
-
-        PreparedStatement statement;
+                        +	"values (?, ?, ?, ?, ?)";
 
         try {
-                statement = connection.prepareStatement(sqlQuery);
+            System.out.println(
+            		String.format(
+            				"%s new subcategory in DB!",
+            				
+            				this.jdbcTemplate.update(
+            						sqlQuery,
+            						new Object[] {
+            								customer.getTitleId(),
+            								customer.getLabel(),
+            								customer.getAddress(),
+            								customer.getPhone(),
+            								customer.getEmail()
+            							}
+        						)
+        				)
+        		);
 
-                //	Replacing "?" through values
-                statement.setLong(1, customer.getTitle().getId());
-                statement.setString(2, customer.getLabel());
-                statement.setString(3, customer.getAddress());
-                statement.setString(4, customer.getPhone());
-                statement.setString(5, customer.getEmail());
-
-                // 	Executing statement
-                statement.execute();
-
-                System.out.println("New record in DB !");
-
+            
         } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-                System.out.println("Done !");
-                connection.close();
+        	
+            e.printStackTrace();
+        
         }
 
     }
     
     
     //  READ (List of Customers)
-    @SuppressWarnings("finally")
-    public List<Customer> read() throws SQLException {
-
-        String sqlQuery = "select * from customers";
-        PreparedStatement statement;
-        List<Customer> customers = new ArrayList<Customer>();
-
+    public List<Customer> read(String titleId) throws SQLException {
+    	
+    	String sqlQuery = "select t01.id"
+		    			+ "     , t01.label"
+		    			+ "     , t02.id as title_id"
+						+ "     , t02.label as title_label"
+						+ "     , t01.address"
+						+ "     , t01.phone"
+						+ "     , t01.email"
+						+ "  from customers t01, titles t02"
+						+ " where t02.id = t01.title_id"
+				;
+    	
+    	if (titleId != null) {
+    		sqlQuery += String.format("   and t02.id = %s", titleId);
+    		sqlQuery += " order by t01.id asc;";
+    	}
+    	
+    	else {
+        	sqlQuery += " order by t02.id asc, t01.id asc;";
+    	}
+    	
+    	
         try {
-
-            statement = connection.prepareStatement(sqlQuery);
-
-            // 	Executing statement
-            ResultSet results = statement.executeQuery();
-            
-            while(results.next()){
-
-                Customer customer = new Customer();
-                customer.setId(results.getLong("id"));
-                TitleDao titleDao = new TitleDao();
-                customer.setTitle(titleDao.read(results.getLong("title_id")));
-                customer.setAddress(results.getString("address"));
-                customer.setPhone(results.getString("phone"));
-                customer.setEmail(results.getString("email"));
-                
-                customers.add(customer);
-
-            }
-
-            results.close();
-            statement.close();
-
-
+        	
+        	return new CustomerRowMapper().mapRows(this.jdbcTemplate.queryForList(sqlQuery));
+        	
         } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-                connection.close();
-                return customers;
+        	
+            e.printStackTrace();
+        
         }
-
+        
+        
+		return null;
 
     }
 
 
     //  READ (Single Customer)
-    public Customer read(Long id) throws SQLException{
-        return this.read(id, true);
+    public Subcategory read(Long id) throws SQLException{
+
+    	String sqlQuery = "select t01.id"
+    			+ "     , t01.label"
+    			+ "     , t02.id as title_id"
+				+ "     , t02.label as title_label"
+				+ "     , t01.address"
+				+ "     , t01.phone"
+				+ "     , t01.email"
+				+ "  from customers t01, titles t02"
+				+ " where t01.id = ?"
+				+ "   and t02.id = t01.title_id"
+				+ " order by t02.id asc, t01.id asc"
+				+ ";"
+		;
+
+    	return this.jdbcTemplate.queryForObject(
+    			sqlQuery,
+        		new Object[] {id},
+        		new SubcategoryRowMapper()
+        	);
+        
     }  
 
     
     //  UPDATE
     public void update(Customer customer) throws SQLException {
-        String sqlQuery = "update customers title_id=? label=? address=? phone=? email=? where id=?";
         
+    	String sqlQuery = "update customers set title_id=?, label=?, address=?, phone=?, email=? where id=?";
+        
+
         try {
-            PreparedStatement statement = connection.prepareStatement(sqlQuery);
-            statement.setLong(1, customer.getTitle().getId());
-            statement.setString(2, customer.getLabel());
-            statement.setString(3, customer.getAddress());
-            statement.setString(4, customer.getPhone());
-            statement.setString(5, customer.getEmail());
+        	this.jdbcTemplate.update(
+					sqlQuery,
+					
+					new Object[] {
+							customer.getTitleId(),
+							customer.getLabel(),
+							customer.getAddress(),
+							customer.getPhone(),
+							customer.getEmail()
+						}
+				);
             
-            
-            statement.execute();
-            statement.close();
             
             System.out.println("Customer successfully modified.");
         } 
@@ -132,82 +152,32 @@ public class CustomerDao {
             e.printStackTrace();
         }
         
-        finally {
-            connection.close();
-        }
-        
     }
     
     
     //  DELETE
     public void delete(Long id) throws SQLException {
-        String sqlQuery = "delete from customers where id=?";
+        
+    	String sqlQuery = "delete from customers where id=?";
 
         try {
-            PreparedStatement statement = connection.prepareStatement(sqlQuery);
-            statement.setLong(1, id);
-            statement.execute();
-            statement.close();
-            
-            System.out.println("Customer successfully deleted.");
+
+            System.out.println(
+            		String.format(
+            				"%s record successfully removed from DB!",
+            				
+            				this.jdbcTemplate.update(
+            						sqlQuery,
+            						new Object[] {id}
+        						)
+        				)
+        		);
 
         } 
 
         catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }
-        
-        finally {
-            connection.close();
-        }
-
-    }
-  
-    
-    //  PRIVATE
-    
-    @SuppressWarnings("finally")
-    private Customer read(Long id, boolean closeAfterUse) throws SQLException{
-
-        String sqlQuery = "select * from customers where id=?";
-
-        PreparedStatement statement;
-        Customer customer = new Customer();
-
-        try {
-            statement = connection.prepareStatement(sqlQuery);
-
-            //	Replacing "?" through values
-            statement.setLong(1, id);
-
-            // 	Executing statement
-            ResultSet results = statement.executeQuery();
-
-            if(results.next()){
-
-                customer.setId(results.getLong("id"));
-                TitleDao titleDao = new TitleDao();
-                customer.setTitle(titleDao.read(results.getLong("title_id")));
-                customer.setAddress(results.getString("address"));
-                customer.setPhone(results.getString("phone"));
-                customer.setEmail(results.getString("email"));
-
-            }
-
-            statement.close();
-
-        } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-            
-            if (closeAfterUse) {
-                connection.close();
-    
-            }
-            
-            return customer;
         }
 
     }
