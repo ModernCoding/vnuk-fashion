@@ -6,6 +6,24 @@ public class Price {
 	private Long id;
 	
 	@NotNull
+	private Long productsSizeId;
+	
+	@NotNull
+	private Long productsColorId;
+	
+	@NotNull
+	private Long productsPatternId;
+	
+	@NotNull
+	private Long productsLengthId;
+	
+	@NotNull
+	private Long sellerId;
+	
+	@NotNull
+	private Long priceTypeId;
+	
+	@NotNull
 	private ProductsSize productsSize;
 	
 	@NotNull
@@ -87,5 +105,55 @@ public class Price {
 	public void setValue(float value) {
 		this.value = value;
 	}
+
+	public Long getProductsSizeId() {
+		return productsSizeId;
+	}
+
+	public void setProductsSizeId(Long productsSizeId) {
+		this.productsSizeId = productsSizeId;
+	}
+
+	public Long getProductsColorId() {
+		return productsColorId;
+	}
+
+	public void setProductsColorId(Long productsColorId) {
+		this.productsColorId = productsColorId;
+	}
+
+	public Long getProductsPatternId() {
+		return productsPatternId;
+	}
+
+	public void setProductsPatternId(Long productsPatternId) {
+		this.productsPatternId = productsPatternId;
+	}
+
+	public Long getProductsLengthId() {
+		return productsLengthId;
+	}
+
+	public void setProductsLengthId(Long productsLengthId) {
+		this.productsLengthId = productsLengthId;
+	}
+
+	public Long getSellerId() {
+		return sellerId;
+	}
+
+	public void setSellerId(Long sellerId) {
+		this.sellerId = sellerId;
+	}
+
+	public Long getPriceTypeId() {
+		return priceTypeId;
+	}
+
+	public void setPriceTypeId(Long priceTypeId) {
+		this.priceTypeId = priceTypeId;
+	}
+	
+	
 	
 }
