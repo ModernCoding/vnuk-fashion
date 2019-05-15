@@ -1,20 +1,11 @@
 @charset "UTF-8";
 
-body {
-	background-color: #111;
-	color: #777;
-	padding: 28px;
-}
-
-
 table { border-collapse: collapse; }
-
 
 td, th { 
 	padding: 10px;
 	border: 1px solid #fff;
 }
-
 
 input, textarea { width: 100%; }
 
@@ -24,6 +15,14 @@ a:not(.btn), a:visited:not(.btn), a:hover:not(.btn) {
 	text-decoration: none;
 }
 
+footer {
+	background-color: #212529;
+	color: white;
+}
+
+img {
+	image-rendering: auto;
+}
 
 .my-tr-gold { background-color: #c17d11; }
 .my-tr-red { background-color: #933; }

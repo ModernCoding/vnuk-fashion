@@ -1,9 +1,24 @@
 <html xmlns:th="http://www.thymeleaf.org">
-    <header class="my-padding-bottom-19 my-border-bottom">
-		<img th:src="@{/images/banner.jpg}" class="my-margin-bottom-19" />
-		
-		<h2>
-			<strong>VNUK Fashion</strong>
-		</h2>
+    <header>
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<div class="nav navbar-nav">
+				<a class="navbar-brand" href="#">Fashion</a>
+			</div>
+			<div class="nav navbar-nav mx-auto">
+			</div>
+
+			<div class="nav navbar-nav">
+				<button class="navbar-toggler mx-auto" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="collapsibleNavbar">
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item">
+							<a class="nav-link" href="/">Home</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
 	</header>
 </html>

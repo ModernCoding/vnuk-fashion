@@ -1,5 +1,6 @@
 
 /target/
+target
 !.mvn/wrapper/maven-wrapper.jar
 
 ### STS ###
@@ -16,6 +17,7 @@
 *.iws
 *.iml
 *.ipr
+.mvn
 
 ### NetBeans ###
 /nbproject/private/
@@ -24,6 +26,10 @@
 /nbdist/
 /.nb-gradle/
 /build/
+bin/
+
 
 ### VS Code ###
 .vscode/
+
+src/main/resources/application.properties
