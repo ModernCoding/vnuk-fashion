@@ -6,6 +6,12 @@ public class Order {
 	private Long id;
 	
 	@NotNull
+	private Long customerId;
+	
+	@NotNull
+	private Long priceId;
+	
+	@NotNull
 	private Customer customer;
 	
 	@NotNull
@@ -44,6 +50,22 @@ public class Order {
 
 	public void setQty(int qty) {
 		this.qty = qty;
+	}
+
+	public Long getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(Long customerId) {
+		this.customerId = customerId;
+	}
+
+	public Long getPriceId() {
+		return priceId;
+	}
+
+	public void setPriceId(Long priceId) {
+		this.priceId = priceId;
 	}
 	
 	
