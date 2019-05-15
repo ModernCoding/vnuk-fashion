@@ -1,0 +1,51 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	
+	<title th:fragment="title" th:text="'Subcategory #' + ${subcategory.id}"></title>
+	
+	
+	<section th:fragment="content">
+	
+		<h3 class="my-margin-bottom-28">
+			<em th:text="'Subcategory #' + ${subcategory.id}"></em>
+		</h3>
+		
+		<table>
+			<tr>
+				<td>Label</td>
+				<td th:text="${subcategory.label}" class="text-justify"></td>
+			</tr>
+			
+			<tr>
+				<td>Category</td>
+				<td th:text="${subcategory.category.label}" class="text-justify"></td>
+			</tr>
+		</table>
+		
+		
+		<div class="my-margin-top-19">
+	
+		    <a th:href="@{/subcategories}" class="btn btn-sm btn-light my-margin-right-19">
+				<span class="my-margin-right-19">
+					<i class="far fa-arrow-alt-circle-left" aria-hidden="true"></i>
+				</span>
+				
+		    	<span>Back to the list of subcategories</span>
+		    </a>
+	
+	
+		    <a
+                th:href="@{/subcategories/{id}/edit(id=${subcategory.id}, backToShow=true)}"
+		    	class="btn btn-sm btn-primary"
+		    >
+				<span class="my-margin-right-19">
+					<i class="far fa-edit" aria-hidden="true"></i>
+				</span>
+				
+		    	<span>Edit subcategory #<span th:text="${subcategory.id}"></span></span>
+		    </a>
+		    
+		</div>
+	
+	</section>
+	
+</html>

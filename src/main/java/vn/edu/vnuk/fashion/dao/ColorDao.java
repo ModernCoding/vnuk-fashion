@@ -1,115 +1,106 @@
 package vn.edu.vnuk.fashion.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import vn.edu.vnuk.fashion.jdbc.ConnectionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
 import vn.edu.vnuk.fashion.model.Color;
 
+
+@Repository
 public class ColorDao {
 	
-    private Connection connection;
-
-    public ColorDao(){
-        this.connection = new ConnectionFactory().getConnection();
+    private final JdbcTemplate jdbcTemplate;
+    
+    @Autowired
+    public ColorDao(JdbcTemplate jdbcTemplate) {
+	  this.jdbcTemplate = jdbcTemplate;
     }
-
-    public ColorDao(Connection connection){
-        this.connection = connection;
-    }
+	
 
 
     //  CREATE
     public void create(Color color) throws SQLException{
 
-        String sqlQuery = "insert into colors (label) "
-                        +	"values (?)";
-
-        PreparedStatement statement;
+        String sqlQuery = "insert into colors (label) values (?)";
 
         try {
-                statement = connection.prepareStatement(sqlQuery);
+            System.out.println(
+            		String.format(
+            				"%s new color in DB!",
+            				
+            				this.jdbcTemplate.update(
+            						sqlQuery,
+            						new Object[] {color.getLabel()}
+        						)
+        				)
+        		);
 
-                //	Replacing "?" through values
-                statement.setString(1, color.getLabel());
-
-                // 	Executing statement
-                statement.execute();
-
-                System.out.println("New record in DB !");
-
+            
         } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-                System.out.println("Done !");
-                connection.close();
+        	
+            e.printStackTrace();
+        
         }
 
     }
     
     
-    //  READ (List of Tasks)
-    @SuppressWarnings("finally")
+    //  READ (List of Colors)
     public List<Color> read() throws SQLException {
 
-        String sqlQuery = "select * from colors";
-        PreparedStatement statement;
-        List<Color> colors = new ArrayList<Color>();
-
         try {
-
-            statement = connection.prepareStatement(sqlQuery);
-
-            // 	Executing statement
-            ResultSet results = statement.executeQuery();
             
-            while(results.next()){
+        	return this.jdbcTemplate.query(
+        			"SELECT * FROM colors",
+        			new BeanPropertyRowMapper<Color>(Color.class)
+    			);
 
-                Color color = new Color();
-                color.setId(results.getLong("id"));
-                color.setLabel(results.getString("label"));
-                
-                colors.add(color);
-
-            }
-
-            results.close();
-            statement.close();
-
-
+        	
         } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-                connection.close();
-                return colors;
+        	
+            e.printStackTrace();
+        
         }
+        
+        
+		return null;
 
 
     }
 
 
-    //  READ (Single Collar)
+    //  READ (Single Color)
     public Color read(Long id) throws SQLException{
-        return this.read(id, true);
+    	
+    	return this.jdbcTemplate.queryForObject(
+    			"SELECT * FROM colors where id = ?",
+        		new Object[] {id},
+        		new BeanPropertyRowMapper<Color>(Color.class)
+        	);
+        
     }  
 
     
     //  UPDATE
     public void update(Color color) throws SQLException {
-        String sqlQuery = "update colors label=? where id=?";
+    	
+        String sqlQuery = "update colors set label=? where id=?";
         
         try {
-            PreparedStatement statement = connection.prepareStatement(sqlQuery);
-            statement.setString(1, color.getLabel());
+        	this.jdbcTemplate.update(
+					sqlQuery,
+					
+					new Object[] {
+							color.getLabel(),
+							color.getId()
+						}
+				);
             
-            statement.execute();
-            statement.close();
             
             System.out.println("Color successfully modified.");
         } 
@@ -119,24 +110,26 @@ public class ColorDao {
             e.printStackTrace();
         }
         
-        finally {
-            connection.close();
-        }
-        
     }
     
     
     //  DELETE
     public void delete(Long id) throws SQLException {
+    	
         String sqlQuery = "delete from colors where id=?";
 
         try {
-            PreparedStatement statement = connection.prepareStatement(sqlQuery);
-            statement.setLong(1, id);
-            statement.execute();
-            statement.close();
-            
-            System.out.println("Color successfully deleted.");
+
+            System.out.println(
+            		String.format(
+            				"%s record successfully removed from DB!",
+            				
+            				this.jdbcTemplate.update(
+            						sqlQuery,
+            						new Object[] {id}
+        						)
+        				)
+        		);
 
         } 
 
@@ -144,55 +137,7 @@ public class ColorDao {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
-        finally {
-            connection.close();
-        }
 
     }
-  
     
-    //  PRIVATE
-    
-    @SuppressWarnings("finally")
-    private Color read(Long id, boolean closeAfterUse) throws SQLException{
-
-        String sqlQuery = "select * from colors where id=?";
-
-        PreparedStatement statement;
-        Color color = new Color();
-
-        try {
-            statement = connection.prepareStatement(sqlQuery);
-
-            //	Replacing "?" through values
-            statement.setLong(1, id);
-
-            // 	Executing statement
-            ResultSet results = statement.executeQuery();
-
-            if(results.next()){
-
-            	color.setId(results.getLong("id"));
-            	color.setLabel(results.getString("label"));
-
-            }
-
-            statement.close();
-
-        } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-            
-            if (closeAfterUse) {
-                connection.close();
-    
-            }
-            
-            return color;
-        }
-
-    }
-
 }
