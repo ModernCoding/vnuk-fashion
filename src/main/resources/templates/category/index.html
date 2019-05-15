@@ -4,8 +4,8 @@
 	
 	
 	<section th:fragment="content">
-		<div class="container">
-			<h3 class="my-margin-bottom-28">
+		<div class="container my-5">
+			<h3 class="my-margin-bottom-28 text-center">
 				<em>List of all categories</em>
 			</h3>
 
@@ -25,11 +25,12 @@
 			</div>
 
 
-			<table class="table table-bordered">
+			<table class="table table-bordered text-center">
 				<thead class="thead-dark">
 					<tr>
 						<th scope="col">#</th>
 						<th scope="col">Label</th>
+						<th scope="col">Subcategories</th>
 						<th scope="col">Actions</th>
 					</tr>
 				</thead>
@@ -38,6 +39,9 @@
 						<td scope="row" th:text="${category.id}"></td>
 						<td>
 							<div th:text="${category.label}" class="my-margin-bottom-4 d-inline-block" ></div>
+
+						</td>
+						<td>
 							<div class="d-inline-block">
 								<a th:href="@{/subcategories?categoryId={id}(id=${category.id})}" class="btn btn-sm btn-info">
 									<i class="fas fa-angle-double-right" aria-hidden="true"></i>

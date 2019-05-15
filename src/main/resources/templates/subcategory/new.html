@@ -4,13 +4,13 @@
 	
 	
 	<section th:fragment="content">
-	
-		<h3 class="my-margin-bottom-28">
-			<em>Create a new subcategory</em>
-		</h3>
-		
-		<form th:replace="~{/subcategory/_form :: form(@{/subcategories}, 'post', @{/subcategories})}"></form>
+		<div class="container">
+			<h3 class="my-margin-bottom-28">
+				<em>Create a new subcategory</em>
+			</h3>
 
+			<form th:replace="~{/subcategory/_form :: form(@{/subcategories}, 'post', @{/subcategories})}"></form>
+		</div>
 	</section>
 	
 </html>
