@@ -6,6 +6,12 @@ public class ProductsSize {
 	private Long id;
 	
 	@NotNull
+	private Long productId;
+	
+	@NotNull
+	private Long sizeId;
+	
+	@NotNull
 	private Product product;
 	
 	private Size size;
@@ -33,6 +39,21 @@ public class ProductsSize {
 	public void setSize(Size size) {
 		this.size = size;
 	}
-	
+
+	public Long getProductId() {
+		return productId;
+	}
+
+	public void setProductId(Long productId) {
+		this.productId = productId;
+	}
+
+	public Long getSizeId() {
+		return sizeId;
+	}
+
+	public void setSizeId(Long sizeId) {
+		this.sizeId = sizeId;
+	}	
 	
 }
