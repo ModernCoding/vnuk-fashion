@@ -6,6 +6,12 @@ public class ProductsPattern {
 	private Long id;
 	
 	@NotNull
+	private Long productId;
+	
+	@NotNull
+	private Long patternId;
+	
+	@NotNull
 	private Product product;
 	
 	private Pattern pattern;
@@ -32,6 +38,22 @@ public class ProductsPattern {
 
 	public void setProduct(Product product) {
 		this.product = product;
+	}
+
+	public Long getProductId() {
+		return productId;
+	}
+
+	public void setProductId(Long productId) {
+		this.productId = productId;
+	}
+
+	public Long getPatternId() {
+		return patternId;
+	}
+
+	public void setPatternId(Long patternId) {
+		this.patternId = patternId;
 	}
 	
 	
