@@ -9,7 +9,13 @@ public class SubcategoriesBodyPart {
 	private Subcategory subcategory;
 	
 	@NotNull
+	private Long subcategoryId;
+	
+	@NotNull
 	private BodyPart bodyPart;
+	
+	@NotNull
+	private Long bodyPartId;
 
 	public Long getId() {
 		return id;
@@ -34,5 +40,22 @@ public class SubcategoriesBodyPart {
 	public void setBodyPart(BodyPart bodyPart) {
 		this.bodyPart = bodyPart;
 	}
+
+	public Long getSubcategoryId() {
+		return subcategoryId;
+	}
+
+	public void setSubcategoryId(Long subcategoryId) {
+		this.subcategoryId = subcategoryId;
+	}
+
+	public Long getBodyPartId() {
+		return bodyPartId;
+	}
+
+	public void setBodyPartId(Long bodyPartId) {
+		this.bodyPartId = bodyPartId;
+	}
+	
 
 }
