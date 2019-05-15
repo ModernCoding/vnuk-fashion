@@ -4,10 +4,14 @@ import javax.validation.constraints.NotNull;
 
 public class ProductsColor {
 	private Long id;
+
+	@NotNull
+	private Long productId;
 	
 	@NotNull
-	private Product product;
+	private Long colorId;
 	
+	private Product product;
 	private Color color;
 
 	public Color getColor() {
@@ -34,4 +38,21 @@ public class ProductsColor {
 		this.product = product;
 	}
 
+	public Long getProductId() {
+		return productId;
+	}
+
+	public void setProductId(Long productId) {
+		this.productId = productId;
+	}
+
+	public Long getColorId() {
+		return colorId;
+	}
+
+	public void setColorId(Long colorId) {
+		this.colorId = colorId;
+	}
+	
+	
 }
