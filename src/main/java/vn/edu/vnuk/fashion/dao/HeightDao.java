@@ -1,94 +1,74 @@
 package vn.edu.vnuk.fashion.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import vn.edu.vnuk.fashion.jdbc.ConnectionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
 import vn.edu.vnuk.fashion.model.Height;
 
+
+@Repository
 public class HeightDao {
 	
-    private Connection connection;
-
-    public HeightDao(){
-        this.connection = new ConnectionFactory().getConnection();
+    private final JdbcTemplate jdbcTemplate;
+    
+    @Autowired
+    public HeightDao(JdbcTemplate jdbcTemplate) {
+	  this.jdbcTemplate = jdbcTemplate;
     }
-
-    public HeightDao(Connection connection){
-        this.connection = connection;
-    }
+	
 
 
     //  CREATE
     public void create(Height height) throws SQLException{
 
-        String sqlQuery = "insert into heights (label) "
-                        +	"values (?)";
-
-        PreparedStatement statement;
+        String sqlQuery = "insert into height (label) values (?)";
 
         try {
-                statement = connection.prepareStatement(sqlQuery);
+            System.out.println(
+            		String.format(
+            				"%s new height in DB!",
+            				
+            				this.jdbcTemplate.update(
+            						sqlQuery,
+            						new Object[] {height.getLabel()}
+        						)
+        				)
+        		);
 
-                //	Replacing "?" through values
-                statement.setString(1, height.getLabel());
-
-                // 	Executing statement
-                statement.execute();
-
-                System.out.println("New record in DB !");
-
+            
         } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-                System.out.println("Done !");
-                connection.close();
+        	
+            e.printStackTrace();
+        
         }
 
     }
     
     
-    //  READ (List of Tasks)
-    @SuppressWarnings("finally")
+    //  READ (List of Heights)
     public List<Height> read() throws SQLException {
 
-        String sqlQuery = "select * from heights";
-        PreparedStatement statement;
-        List<Height> heights = new ArrayList<Height>();
-
         try {
-
-            statement = connection.prepareStatement(sqlQuery);
-
-            // 	Executing statement
-            ResultSet results = statement.executeQuery();
             
-            while(results.next()){
+        	return this.jdbcTemplate.query(
+        			"SELECT * FROM heights",
+        			new BeanPropertyRowMapper<Height>(Height.class)
+    			);
 
-                Height height = new Height();
-                height.setId(results.getLong("id"));
-                height.setLabel(results.getString("label"));
-                
-                heights.add(height);
-
-            }
-
-            results.close();
-            statement.close();
-
-
+        	
         } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-                connection.close();
-                return heights;
+        	
+            e.printStackTrace();
+        
         }
+        
+        
+		return null;
 
 
     }
@@ -96,20 +76,31 @@ public class HeightDao {
 
     //  READ (Single Height)
     public Height read(Long id) throws SQLException{
-        return this.read(id, true);
+    	
+    	return this.jdbcTemplate.queryForObject(
+    			"SELECT * FROM heights where id = ?",
+        		new Object[] {id},
+        		new BeanPropertyRowMapper<Height>(Height.class)
+        	);
+        
     }  
 
     
     //  UPDATE
     public void update(Height height) throws SQLException {
-        String sqlQuery = "update heights label=? where id=?";
+    	
+        String sqlQuery = "update heights set label=? where id=?";
         
         try {
-            PreparedStatement statement = connection.prepareStatement(sqlQuery);
-            statement.setString(1, height.getLabel());
+        	this.jdbcTemplate.update(
+					sqlQuery,
+					
+					new Object[] {
+							height.getLabel(),
+							height.getId()
+						}
+				);
             
-            statement.execute();
-            statement.close();
             
             System.out.println("Height successfully modified.");
         } 
@@ -119,24 +110,26 @@ public class HeightDao {
             e.printStackTrace();
         }
         
-        finally {
-            connection.close();
-        }
-        
     }
     
     
     //  DELETE
     public void delete(Long id) throws SQLException {
+    	
         String sqlQuery = "delete from heights where id=?";
 
         try {
-            PreparedStatement statement = connection.prepareStatement(sqlQuery);
-            statement.setLong(1, id);
-            statement.execute();
-            statement.close();
-            
-            System.out.println("Height successfully deleted.");
+
+            System.out.println(
+            		String.format(
+            				"%s record successfully removed from DB!",
+            				
+            				this.jdbcTemplate.update(
+            						sqlQuery,
+            						new Object[] {id}
+        						)
+        				)
+        		);
 
         } 
 
@@ -144,55 +137,7 @@ public class HeightDao {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
-        finally {
-            connection.close();
-        }
 
     }
-  
     
-    //  PRIVATE
-    
-    @SuppressWarnings("finally")
-    private Height read(Long id, boolean closeAfterUse) throws SQLException{
-
-        String sqlQuery = "select * from heights where id=?";
-
-        PreparedStatement statement;
-        Height height = new Height();
-
-        try {
-            statement = connection.prepareStatement(sqlQuery);
-
-            //	Replacing "?" through values
-            statement.setLong(1, id);
-
-            // 	Executing statement
-            ResultSet results = statement.executeQuery();
-
-            if(results.next()){
-
-                height.setId(results.getLong("id"));
-                height.setLabel(results.getString("label"));
-
-            }
-
-            statement.close();
-
-        } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-            
-            if (closeAfterUse) {
-                connection.close();
-    
-            }
-            
-            return height;
-        }
-
-    }
-
 }

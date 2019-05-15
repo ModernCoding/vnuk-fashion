@@ -1,100 +1,80 @@
 package vn.edu.vnuk.fashion.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import vn.edu.vnuk.fashion.jdbc.ConnectionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
 import vn.edu.vnuk.fashion.model.Maker;
 
+
+@Repository
 public class MakerDao {
 	
-    private Connection connection;
-
-    public MakerDao(){
-        this.connection = new ConnectionFactory().getConnection();
+    private final JdbcTemplate jdbcTemplate;
+    
+    @Autowired
+    public MakerDao(JdbcTemplate jdbcTemplate) {
+	  this.jdbcTemplate = jdbcTemplate;
     }
-
-    public MakerDao(Connection connection){
-        this.connection = connection;
-    }
+	
 
 
     //  CREATE
     public void create(Maker maker) throws SQLException{
 
-        String sqlQuery = "insert into makers (label , address , phone , email) "
-                        +	"values (? , ? , ? , ?)";
-
-        PreparedStatement statement;
+        String sqlQuery = "insert into makers (label, address, phone, email) values (?, ?, ?, ?)";
 
         try {
-                statement = connection.prepareStatement(sqlQuery);
+            System.out.println(
+            		String.format(
+            				"%s new maker in DB!",
+            				
+            				this.jdbcTemplate.update(
+            						sqlQuery,
+            						new Object[] {
+            								maker.getLabel(),
+            								maker.getAddress(),
+            								maker.getPhone(),
+            								maker.getEmail()
+            								
+            								}
+        						)
+        				)
+        		);
 
-                //	Replacing "?" through values
-                statement.setString(1, maker.getLabel());
-                statement.setString(2, maker.getAddress());
-                statement.setString(3, maker.getPhone());
-                statement.setString(4, maker.getEmail());
-
-                // 	Executing statement
-                statement.execute();
-
-                System.out.println("New record in DB !");
-
+            
         } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-                System.out.println("Done !");
-                connection.close();
+        	
+            e.printStackTrace();
+        
         }
 
     }
     
     
-    //  READ (List of Tasks)
-    @SuppressWarnings("finally")
+    //  READ (List of Makers)
     public List<Maker> read() throws SQLException {
 
-        String sqlQuery = "select * from makers";
-        PreparedStatement statement;
-        List<Maker> makers = new ArrayList<Maker>();
-
         try {
-
-            statement = connection.prepareStatement(sqlQuery);
-
-            // 	Executing statement
-            ResultSet results = statement.executeQuery();
             
-            while(results.next()){
+        	return this.jdbcTemplate.query(
+        			"SELECT * FROM makers",
+        			new BeanPropertyRowMapper<Maker>(Maker.class)
+    			);
 
-                Maker maker = new Maker();
-                maker.setId(results.getLong("id"));
-                maker.setLabel(results.getString("label"));
-                maker.setAddress(results.getString("address"));
-                maker.setPhone(results.getString("phone"));
-                maker.setEmail(results.getString("email"));
-                
-                makers.add(maker);
-
-            }
-
-            results.close();
-            statement.close();
-
-
+        	
         } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-                connection.close();
-                return makers;
+        	
+            e.printStackTrace();
+        
         }
+        
+        
+		return null;
 
 
     }
@@ -102,23 +82,34 @@ public class MakerDao {
 
     //  READ (Single Maker)
     public Maker read(Long id) throws SQLException{
-        return this.read(id, true);
+    	
+    	return this.jdbcTemplate.queryForObject(
+    			"SELECT * FROM makers where id = ?",
+        		new Object[] {id},
+        		new BeanPropertyRowMapper<Maker>(Maker.class)
+        	);
+        
     }  
 
     
     //  UPDATE
     public void update(Maker maker) throws SQLException {
-        String sqlQuery = "update makers label=? address=? phone=? email=? where id=?";
+    	
+        String sqlQuery = "update makers set label=? address=? phone=? email=? where id=?";
         
         try {
-            PreparedStatement statement = connection.prepareStatement(sqlQuery);
-            statement.setString(1, maker.getLabel());
-            statement.setString(2, maker.getAddress());
-            statement.setString(3, maker.getPhone());
-            statement.setString(4, maker.getEmail());
+        	this.jdbcTemplate.update(
+					sqlQuery,
+					
+					new Object[] {
+							maker.getLabel(),
+							maker.getAddress(),
+							maker.getPhone(),
+							maker.getEmail(),
+							maker.getId()
+						}
+				);
             
-            statement.execute();
-            statement.close();
             
             System.out.println("Maker successfully modified.");
         } 
@@ -128,24 +119,26 @@ public class MakerDao {
             e.printStackTrace();
         }
         
-        finally {
-            connection.close();
-        }
-        
     }
     
     
     //  DELETE
     public void delete(Long id) throws SQLException {
+    	
         String sqlQuery = "delete from makers where id=?";
 
         try {
-            PreparedStatement statement = connection.prepareStatement(sqlQuery);
-            statement.setLong(1, id);
-            statement.execute();
-            statement.close();
-            
-            System.out.println("Maker successfully deleted.");
+
+            System.out.println(
+            		String.format(
+            				"%s record successfully removed from DB!",
+            				
+            				this.jdbcTemplate.update(
+            						sqlQuery,
+            						new Object[] {id}
+        						)
+        				)
+        		);
 
         } 
 
@@ -153,58 +146,7 @@ public class MakerDao {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
-        finally {
-            connection.close();
-        }
 
     }
-  
     
-    //  PRIVATE
-    
-    @SuppressWarnings("finally")
-    private Maker read(Long id, boolean closeAfterUse) throws SQLException{
-
-        String sqlQuery = "select * from makers where id=?";
-
-        PreparedStatement statement;
-        Maker maker = new Maker();
-
-        try {
-            statement = connection.prepareStatement(sqlQuery);
-
-            //	Replacing "?" through values
-            statement.setLong(1, id);
-
-            // 	Executing statement
-            ResultSet results = statement.executeQuery();
-
-            if(results.next()){
-
-                maker.setId(results.getLong("id"));
-                maker.setLabel(results.getString("label"));
-                maker.setAddress(results.getString("address"));
-                maker.setPhone(results.getString("phone"));
-                maker.setEmail(results.getString("email"));
-
-            }
-
-            statement.close();
-
-        } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-            
-            if (closeAfterUse) {
-                connection.close();
-    
-            }
-            
-            return maker;
-        }
-
-    }
-
 }
