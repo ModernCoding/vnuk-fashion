@@ -33,7 +33,7 @@ public class CustomerDao {
         try {
             System.out.println(
             		String.format(
-            				"%s new subcategory in DB!",
+            				"%s new customer in DB!",
             				
             				this.jdbcTemplate.update(
             						sqlQuery,
