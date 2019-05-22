@@ -1,144 +1,163 @@
 package vn.edu.vnuk.fashion.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import vn.edu.vnuk.fashion.jdbc.ConnectionFactory;
-import vn.edu.vnuk.fashion.model.Gender;
-import vn.edu.vnuk.fashion.model.Product;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
 import vn.edu.vnuk.fashion.model.ProductsGender;
+import vn.edu.vnuk.fashion.rowmapper.ProductsGenderRowMapper;
 
 
+
+
+@Repository
 public class ProductsGenderDao {
 	
-    private Connection connection;
-
-    public ProductsGenderDao(){
-        this.connection = new ConnectionFactory().getConnection();
-    }
-
-    public ProductsGenderDao(Connection connection){
-        this.connection = connection;
+    private final JdbcTemplate jdbcTemplate;
+    
+    @Autowired
+    public ProductsGenderDao(JdbcTemplate jdbcTemplate) {
+	  this.jdbcTemplate = jdbcTemplate;
     }
 
 
     //  CREATE
-    public void create(ProductsGender productsGender) throws SQLException{
+    public void create(ProductsGender  productsGender) throws SQLException{
 
-        String sqlQuery = "insert into products_lengths (product_id, gender_id) "
+        String sqlQuery = "insert into productsGenders (product_id, size_id) "
                         +	"values (? , ?)";
 
-        PreparedStatement statement;
-
         try {
-                statement = connection.prepareStatement(sqlQuery);
+            System.out.println(
+            		String.format(
+            				"%s new productsGender in DB!",
+            				
+            				this.jdbcTemplate.update(
+            						sqlQuery,
+            						new Object[] {
+            								productsGender.getGenderId(),
+            								productsGender.getProductId()
+            							}
+        						)
+        				)
+        		);
 
-                //	Replacing "?" through values
-                statement.setLong(1, productsGender.getProduct().getId());
-                statement.setLong(2, productsGender.getGender().getId());
-
-                // 	Executing statement
-                statement.execute();
-
-                System.out.println("New record in DB !");
-
+            
         } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-                System.out.println("Done !");
-                connection.close();
+        	
+            e.printStackTrace();
+        
         }
 
     }
     
     
-    //  READ (List of ProductsLength)
-    @SuppressWarnings("finally")
-    public List<ProductsGender> read() throws SQLException {
+    //  READ (List of ProductsGenders)
+    public List<ProductsGender> read(String productId , String genderId) throws SQLException {
+    	
+    	String sqlQuery = "select t01.id"
+		    			+ "     , t02.id as product_id"
+		    			+ "     , t02.name"
+		    			+ "     , t02.subcategory_id"
+		    			+ "     , t02.sleeve_id"
+		    			+ "     , t02.shape_id"
+		    			+ "     , t02.collar_id"
+		    			+ "     , t02.height_id"
+		    			+ "     , t02.material_id"
+		    			+ "     , t02.maker_id"
+		    			+ "     , t03.id as gender_id"
+		    			+ "     , t03.label"
+						+ "  from productsGenders t01, products t02, genders t03"
 
-        String sqlQuery = "select * from products_genders";
-        PreparedStatement statement;
-        List<ProductsGender> productsGenders = new ArrayList<ProductsGender>();
-
+						+ " where t02.id = t01.product_id"
+						+ "and t03.id = t01.gender_id"
+				;
+    	
+    	if (productId != null && genderId != null) {
+    		sqlQuery += String.format("   and t02.id = %s", productId, "   and t03.id = %s", genderId );
+    		sqlQuery += " order by t01.id asc;";
+    	}
+    	
+    	else {
+        	sqlQuery += " order by t03.id asc, t02.id asc, t01.id asc;";
+    	}
+    	
+    	
         try {
-
-            statement = connection.prepareStatement(sqlQuery);
-
-            // 	Executing statement
-            ResultSet results = statement.executeQuery();
-            
-            while(results.next()){
-
-            	ProductsGender productsGender = new ProductsGender();
-                
-            	productsGender.setId(results.getLong("id"));
-                
-                // Process foreign key
-                Long productIdFromDB = results.getLong("product_id");
-                Long genderIdFromDB = results.getLong("gender_id");
-                
-                ProductDao productDao = new ProductDao();
-                GenderDao genderDao = new GenderDao();
-                
-                Product product = productDao.read(productIdFromDB);
-                Gender gender  = genderDao.read(genderIdFromDB);
-                
-                productsGender.setProduct(product);
-                productsGender.setGender(gender);
-                
-                productsGenders.add(productsGender);
-
-            }
-
-            results.close();
-            statement.close();
-
-
+        	
+        	return new ProductsGenderRowMapper().mapRows(this.jdbcTemplate.queryForList(sqlQuery));
+        	
         } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-                connection.close();
-                return productsGenders;
+        	
+            e.printStackTrace();
+        
         }
-
+        
+        
+		return null;
 
     }
 
 
     //  READ (Single ProductsGender)
     public ProductsGender read(Long id) throws SQLException{
-        return this.read(id, true);
+
+    	String sqlQuery = "select t01.id"
+    			+ "     , t02.id as product_id"
+    			+ "     , t02.name"
+    			+ "     , t02.subcategory_id"
+    			+ "     , t02.sleeve_id"
+    			+ "     , t02.shape_id"
+    			+ "     , t02.collar_id"
+    			+ "     , t02.height_id"
+    			+ "     , t02.material_id"
+    			+ "     , t02.maker_id"
+    			+ "     , t03.id as size_id"
+    			+ "     , t03.label"
+				+ "  from productsPatterns t01, products t02, genders t03"
+				+ " where t01.id = ?"
+				+ "   and t02.id = t01.product_id"
+				+ "   and t03.id = t01.gender_id"	
+				+ " order by t01.id asc, t02.id asc, t01.id asc"
+				+ ";"
+		;
+
+    	return this.jdbcTemplate.queryForObject(
+    			sqlQuery,
+        		new Object[] {id},
+        		new ProductsGenderRowMapper()
+        	);
+        
     }  
 
     
     //  UPDATE
     public void update(ProductsGender productsGender) throws SQLException {
-        String sqlQuery = "update products_genders product_id=? gender_id=? where id=?";
         
+    	String sqlQuery = "update productsGenders set product_id=?, gender_id=? where id=?";
+        
+
         try {
-            PreparedStatement statement = connection.prepareStatement(sqlQuery);
-            statement.setLong(1, productsGender.getProduct().getId());
-            statement.setLong(2, productsGender.getGender().getId());
+        	this.jdbcTemplate.update(
+					sqlQuery,
+					
+					new Object[] {
+							productsGender.getId(),
+							productsGender.getProductId(),
+							productsGender.getGenderId()
+						}
+				);
             
-            statement.execute();
-            statement.close();
             
-            System.out.println("products_genders successfully modified.");
+            System.out.println("ProductsGender successfully modified.");
         } 
 
         catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }
-        
-        finally {
-            connection.close();
         }
         
     }
@@ -146,81 +165,27 @@ public class ProductsGenderDao {
     
     //  DELETE
     public void delete(Long id) throws SQLException {
-        String sqlQuery = "delete from products_genders where id=?";
+        
+    	String sqlQuery = "delete from productsGenders where id=?";
 
         try {
-            PreparedStatement statement = connection.prepareStatement(sqlQuery);
-            statement.setLong(1, id);
-            statement.execute();
-            statement.close();
-            
-            System.out.println("products_genders successfully deleted.");
+
+            System.out.println(
+            		String.format(
+            				"%s record successfully removed from DB!",
+            				
+            				this.jdbcTemplate.update(
+            						sqlQuery,
+            						new Object[] {id}
+        						)
+        				)
+        		);
 
         } 
 
         catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }
-        
-        finally {
-            connection.close();
-        }
-
-    }
-  
-    
-    //  PRIVATE
-    
-    @SuppressWarnings("finally")
-    private ProductsGender read(Long id, boolean closeAfterUse) throws SQLException{
-
-        String sqlQuery = "select * from products_genders where id=?";
-
-        PreparedStatement statement;
-        ProductsGender productsGender = new ProductsGender();
-
-        try {
-            statement = connection.prepareStatement(sqlQuery);
-
-            //	Replacing "?" through values
-            statement.setLong(1, id);
-
-            // 	Executing statement
-            ResultSet results = statement.executeQuery();
-
-            if(results.next()){
-
-            	productsGender.setId(results.getLong("id"));
-                
-                // Process foreign key
-                Long productIdFromDB = results.getLong("product_id");
-                Long genderIdFromDB = results.getLong("gender_id");
-                
-                ProductDao productDao = new ProductDao();
-                GenderDao genderDao = new GenderDao();
-                
-                Product product = productDao.read(productIdFromDB);
-                Gender gender  = genderDao.read(genderIdFromDB);
-                
-                productsGender.setProduct(product);
-                productsGender.setGender(gender);
-
-            }
-
-            statement.close();
-
-        } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-            
-            if (closeAfterUse) {
-                connection.close();
-    
-            }
-            
-            return productsGender;
         }
 
     }
