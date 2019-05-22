@@ -2,13 +2,10 @@
 	
 	<title th:fragment="title">Create a new category</title>
 	
-	
 	<section th:fragment="content">
 		<div class="container my-5">
-			<div class="row">
-				<div class="col-md-6 offset-md-3">
-					<form th:replace="~{/category/_form :: form(@{/categories}, 'post', @{/categories})}"></form>
-				</div>
+			<div class="row my-5">
+				<form th:replace="~{/category/_form :: form('Create a new category', @{/categories}, 'post', @{/categories})}"></form>
 			</div>
 		</div>
 	</section>

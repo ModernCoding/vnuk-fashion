@@ -1,6 +1,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	
-	<title th:fragment="title" th:text="'Edit category #' + ${category.id}"></title>
+	<title th:fragment="title" th:text="'Edit collar #' + ${collar.id}"></title>
 	
 	
 	<section th:fragment="content">
@@ -9,13 +9,13 @@
 				<form
 			    	th:replace="
 			    			~{
-			    				/category/_form
+			    				/collar/_form
 			    				::
 			    				form(
-			    					'Edit category #' + ${category.id},
-			    					@{/categories/{id}(id=${category.id}, backToShow=${backToShow})},
+			    					'Edit collar #' + ${collar.id},
+			    					@{/collars/{id}(id=${collar.id}, backToShow=${backToShow})},
 			    					'patch',
-			    					@{/categories{urlCompletion}(urlCompletion=${urlCompletion})}
+			    					@{/collars{urlCompletion}(urlCompletion=${urlCompletion})}
 			    				)
 			    			}
 			    		">

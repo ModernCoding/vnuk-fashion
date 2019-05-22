@@ -1,17 +1,20 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	
-    <form th:fragment="form(action, method, cancelLink)" th:action="${action}" th:object="${subcategory}" th:method="${method}">
+    <form th:fragment="form(title, action, method, cancelLink)" 
+    	  th:action="${action}" 
+    	  th:object="${subcategory}" 
+    	  th:method="${method}"
+    	  class="px-5 py-5 col-md-6 offset-md-3"
+		  style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
 
-    	<div>
+		<h3 class="my-margin-bottom-28 text-center">
+			<em th:text="${title}"></em>
+		</h3>
 
-    		<!-- LABEL -->
-    		
-    		<div>
-    			<label>Label</label>
-    		</div>
-    		
-        	<div class="my-margin-top-4">
-	    		<input type="text" th:field="*{label}">
+		<div>
+        	<div class="mt-4 form-group">
+				<label for="name">Name</label>
+	    		<input class="form-control" id="name" placeholder="Name" type="text" th:field="*{label}">
         	</div>
         	
         	<div th:if="${labelFieldError}" class="my-error-field">
@@ -21,16 +24,10 @@
 				
 		    	<span th:text="${labelFieldError}"></span>
         	</div>
-
         	
-        	<!-- CATEGORY -->
-    		
-    		<div class="my-margin-top-19">
-    			<label>Category</label>
-    		</div>
-    		
-        	<div class="my-margin-top-4">
-	        	<select th:field="*{categoryId}">
+        	<div class="mt-4 form-group">
+        		<label for="category">Category</label>
+	        	<select class="form-control" th:field="*{categoryId}" id="category">
 				    <option
 				    	th:each="category : ${categories}"
 				    	th:value="${category.id}"
@@ -39,11 +36,9 @@
 				    </option>
 				</select>
         	</div>
-        	
         </div>
         
-        
-        <div class="my-margin-top-19">
+        <div class="my-margin-top-19 text-center">
 
 		    <a th:href="${cancelLink}" class="btn btn-sm btn-danger my-margin-right-19">
 				<span class="my-margin-right-19">
@@ -63,7 +58,6 @@
 		    </button>
 		    
 		</div>
-		
 	</form>
 	
 </html>

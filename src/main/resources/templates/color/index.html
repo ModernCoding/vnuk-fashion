@@ -1,0 +1,85 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	
+	<title th:fragment="title">List of all the colors</title>
+	
+	<section th:fragment="content">
+		<div class="container my-5">
+			<h3 class="my-margin-bottom-28 text-center">
+				<em th:if="${color == null}">List of all colors</em>
+
+				<em th:unless="${color == null}">
+					Colors of <b th:text="${color.label}"></b>
+				</em>
+			</h3>
+
+			<a href="colors/new" class="btn btn-sm btn-success my-margin-bottom-19">
+			<span class="my-margin-right-19">
+				<i class="fa fa-plus" aria-hidden="true"></i>
+			</span>
+
+				<span>Create a new colors</span>
+			</a>
+
+
+			<div id="my-notice" class="my-no-line-height">
+	        <span class="my-margin-right-19">
+				<i aria-hidden="true"></i>
+			</span>
+
+				<span></span>
+			</div>
+
+
+			<table class="table table-bordered text-center">
+				<thead class="thead-dark">
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Label</th>
+					<th scope="col">Actions</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr th:each="color : ${colors}" th:attr="data-color-id=${color.id}">
+
+					<td scope="row" th:text="${color.id}"></td>
+					<td th:text="${color.label}"></td>
+					<td>
+						<a
+								th:href="@{/colors/{id}(id=${color.id})}"
+								class="btn btn-sm btn-light"
+								data-toggle="tooltip"
+								title="Show color"
+								data-placement="bottom"
+						>
+							<i class="far fa-eye" aria-hidden="true"></i>
+						</a>
+						
+						<a
+								th:href="@{/colors/{id}/edit(id=${color.id})}"
+								class="btn btn-sm btn-primary my-color-to-edit"
+								data-toggle="tooltip"
+								title="Edit color"
+								data-placement="bottom"
+						>
+							<i class="far fa-edit" aria-hidden="true"></i>
+						</a>
+						
+						<button
+								type="button"
+								class="btn btn-sm btn-danger my-color-to-delete"
+								th:value="${color.id}"
+								data-toggle="tooltip"
+								title="Delete color"
+								data-placement="bottom"
+						>
+							<i class="far fa-trash-alt" aria-hidden="true"></i>
+						</button>
+					</td>
+				</tr>
+
+				</tbody>
+			</table>
+		</div>
+	</section>
+	
+</html>
