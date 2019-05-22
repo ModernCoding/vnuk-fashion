@@ -7,8 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import vn.edu.vnuk.fashion.model.Subcategory;
-import vn.edu.vnuk.fashion.rowmapper.SubcategoryRowMapper;
+import vn.edu.vnuk.fashion.model.ProductsPattern;
+import vn.edu.vnuk.fashion.rowmapper.ProductsPatternRowMapper;
+
 
 
 @Repository
@@ -23,21 +24,21 @@ public class ProductsPatternDao {
 
 
     //  CREATE
-    public void create(Subcategory subcategory) throws SQLException{
+    public void create(ProductsPattern productsPattern) throws SQLException{
 
-        String sqlQuery = "insert into subcategories (category_id, label) "
+        String sqlQuery = "insert into productsPatterns (product_id, pattern_id) "
                         +	"values (? , ?)";
 
         try {
             System.out.println(
             		String.format(
-            				"%s new subcategory in DB!",
+            				"%s new productsPattern in DB!",
             				
             				this.jdbcTemplate.update(
             						sqlQuery,
             						new Object[] {
-            								subcategory.getCategoryId(),
-            								subcategory.getLabel()
+            								productsPattern.getPatternId(),
+            								productsPattern.getProductId()
             							}
         						)
         				)
@@ -53,30 +54,40 @@ public class ProductsPatternDao {
     }
     
     
-    //  READ (List of Subcategories)
-    public List<Subcategory> read(String categoryId) throws SQLException {
+    //  READ (List of ProductsPatterns)
+    public List<ProductsPattern> read(String productId , String patternId) throws SQLException {
     	
     	String sqlQuery = "select t01.id"
-		    			+ "     , t01.label"
-		    			+ "     , t02.id as category_id"
-						+ "     , t02.label as category_label"
-						+ "  from subcategories t01, categories t02"
-						+ " where t02.id = t01.category_id"
+		    			+ "     , t02.id as product_id"
+		    			+ "     , t02.name"
+		    			+ "     , t02.subcategory_id"
+		    			+ "     , t02.sleeve_id"
+		    			+ "     , t02.shape_id"
+		    			+ "     , t02.collar_id"
+		    			+ "     , t02.height_id"
+		    			+ "     , t02.material_id"
+		    			+ "     , t02.maker_id"
+		    			+ "     , t03.id as pattern_id"
+		    			+ "     , t03.id label"
+						+ "  from productsPatterns t01, products t02, patterns t02"
+
+						+ " where t02.id = t01.product_id"
+						+ "and t03.id = t01.pattern_id"
 				;
     	
-    	if (categoryId != null) {
-    		sqlQuery += String.format("   and t02.id = %s", categoryId);
+    	if (productId != null && patternId != null) {
+    		sqlQuery += String.format("   and t02.id = %s", productId, "   and t03.id = %s", patternId );
     		sqlQuery += " order by t01.id asc;";
     	}
     	
     	else {
-        	sqlQuery += " order by t02.id asc, t01.id asc;";
+        	sqlQuery += " order by t03.id asc, t02.id asc, t01.id asc;";
     	}
     	
     	
         try {
         	
-        	return new SubcategoryRowMapper().mapRows(this.jdbcTemplate.queryForList(sqlQuery));
+        	return new ProductsPatternRowMapper().mapRows(this.jdbcTemplate.queryForList(sqlQuery));
         	
         } catch (Exception e) {
         	
@@ -90,33 +101,42 @@ public class ProductsPatternDao {
     }
 
 
-    //  READ (Single Subcategory)
-    public Subcategory read(Long id) throws SQLException{
+    //  READ (Single ProductsPattern)
+    public ProductsPattern read(Long id) throws SQLException{
 
     	String sqlQuery = "select t01.id"
-    			+ "     , t01.label"
-    			+ "     , t02.id as category_id"
-				+ "     , t02.label as category_label"
-				+ "  from subcategories t01, categories t02"
+    			+ "     , t02.id as product_id"
+    			+ "     , t02.name"
+    			+ "     , t02.subcategory_id"
+    			+ "     , t02.sleeve_id"
+    			+ "     , t02.shape_id"
+    			+ "     , t02.collar_id"
+    			+ "     , t02.height_id"
+    			+ "     , t02.material_id"
+    			+ "     , t02.maker_id"
+    			+ "     , t03.id as pattern_id"
+    			+ "     , t03.id label"
+				+ "  from productsPatterns t01, products t02, patterns t03"
 				+ " where t01.id = ?"
-				+ "   and t02.id = t01.category_id"
-				+ " order by t02.id asc, t01.id asc"
+				+ "   and t02.id = t01.product_id"
+				+ "   and t03.id = t01.pattern_id"	
+				+ " order by t01.id asc, t02.id asc, t01.id asc"
 				+ ";"
 		;
 
     	return this.jdbcTemplate.queryForObject(
     			sqlQuery,
         		new Object[] {id},
-        		new SubcategoryRowMapper()
+        		new ProductsPatternRowMapper()
         	);
         
     }  
 
     
     //  UPDATE
-    public void update(Subcategory subcategory) throws SQLException {
+    public void update(ProductsPattern productsPattern) throws SQLException {
         
-    	String sqlQuery = "update subcategories set category_id=?, label=? where id=?";
+    	String sqlQuery = "update productsPattern set product_id=?, pattern_id=? where id=?";
         
 
         try {
@@ -124,14 +144,14 @@ public class ProductsPatternDao {
 					sqlQuery,
 					
 					new Object[] {
-							subcategory.getCategoryId(),
-							subcategory.getLabel(),
-							subcategory.getId()
+							productsPattern.getId(),
+							productsPattern.getPatternId(),
+							productsPattern.getProductId()
 						}
 				);
             
             
-            System.out.println("Subcategory successfully modified.");
+            System.out.println("ProductsPattern successfully modified.");
         } 
 
         catch (Exception e) {
@@ -145,7 +165,7 @@ public class ProductsPatternDao {
     //  DELETE
     public void delete(Long id) throws SQLException {
         
-    	String sqlQuery = "delete from subcategories where id=?";
+    	String sqlQuery = "delete from productsPatterns where id=?";
 
         try {
 
