@@ -126,7 +126,7 @@ public class SubcategoryDao {
 					new Object[] {
 							subcategory.getCategoryId(),
 							subcategory.getLabel(),
-							subcategory.getId()
+							subcategory.getId(),
 						}
 				);
             

@@ -68,8 +68,8 @@ public class ProductsPatternDao {
 		    			+ "     , t02.material_id"
 		    			+ "     , t02.maker_id"
 		    			+ "     , t03.id as pattern_id"
-		    			+ "     , t03.id label"
-						+ "  from productsPatterns t01, products t02, patterns t02"
+		    			+ "     , t03.label"
+						+ "  from productsPatterns t01, products t02, patterns t03"
 
 						+ " where t02.id = t01.product_id"
 						+ "and t03.id = t01.pattern_id"
@@ -136,7 +136,7 @@ public class ProductsPatternDao {
     //  UPDATE
     public void update(ProductsPattern productsPattern) throws SQLException {
         
-    	String sqlQuery = "update productsPattern set product_id=?, pattern_id=? where id=?";
+    	String sqlQuery = "update productsPatterns set product_id=?, pattern_id=? where id=?";
         
 
         try {
