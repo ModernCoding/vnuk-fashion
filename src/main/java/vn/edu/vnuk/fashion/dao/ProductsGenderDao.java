@@ -27,13 +27,13 @@ public class ProductsGenderDao {
     //  CREATE
     public void create(ProductsGender  productsGender) throws SQLException{
 
-        String sqlQuery = "insert into productsGenders (product_id, size_id) "
+        String sqlQuery = "insert into products_genders (product_id, gender_id) "
                         +	"values (? , ?)";
 
         try {
             System.out.println(
             		String.format(
-            				"%s new productsGender in DB!",
+            				"%s new products_genders in DB!",
             				
             				this.jdbcTemplate.update(
             						sqlQuery,
@@ -70,7 +70,7 @@ public class ProductsGenderDao {
 		    			+ "     , t02.maker_id"
 		    			+ "     , t03.id as gender_id"
 		    			+ "     , t03.label"
-						+ "  from productsGenders t01, products t02, genders t03"
+						+ "  from products_genders t01, products t02, genders t03"
 
 						+ " where t02.id = t01.product_id"
 						+ "and t03.id = t01.gender_id"
@@ -117,7 +117,7 @@ public class ProductsGenderDao {
     			+ "     , t02.maker_id"
     			+ "     , t03.id as size_id"
     			+ "     , t03.label"
-				+ "  from productsPatterns t01, products t02, genders t03"
+				+ "  from products_genders t01, products t02, genders t03"
 				+ " where t01.id = ?"
 				+ "   and t02.id = t01.product_id"
 				+ "   and t03.id = t01.gender_id"	
@@ -137,7 +137,7 @@ public class ProductsGenderDao {
     //  UPDATE
     public void update(ProductsGender productsGender) throws SQLException {
         
-    	String sqlQuery = "update productsGenders set product_id=?, gender_id=? where id=?";
+    	String sqlQuery = "update products_genders set product_id=?, gender_id=? where id=?";
         
 
         try {
@@ -166,7 +166,7 @@ public class ProductsGenderDao {
     //  DELETE
     public void delete(Long id) throws SQLException {
         
-    	String sqlQuery = "delete from productsGenders where id=?";
+    	String sqlQuery = "delete from products_genders where id=?";
 
         try {
 

@@ -26,7 +26,7 @@ public class ProductsSizeDao {
     //  CREATE
     public void create(ProductsSize  productsSize) throws SQLException{
 
-        String sqlQuery = "insert into productsSizes (product_id, size_id) "
+        String sqlQuery = "insert into products_sizes (product_id, size_id) "
                         +	"values (? , ?)";
 
         try {
@@ -76,7 +76,7 @@ public class ProductsSizeDao {
 		    			+ "     , t03.germany"
 		    			+ "     , t03.australia"
 		    			+ "     , t03.japan"
-						+ "  from productsSizes t01, products t02, sizes t03"
+						+ "  from products_sizes t01, products t02, sizes t03"
 
 						+ " where t02.id = t01.product_id"
 						+ "and t03.id = t01.size_id"
@@ -130,7 +130,7 @@ public class ProductsSizeDao {
     			+ "     , t03.germany"
     			+ "     , t03.australia"
     			+ "     , t03.japan"
-				+ "  from productsPatterns t01, products t02, sizes t03"
+				+ "  from products_sizes t01, products t02, sizes t03"
 				+ " where t01.id = ?"
 				+ "   and t02.id = t01.product_id"
 				+ "   and t03.id = t01.size_id"	
@@ -150,7 +150,7 @@ public class ProductsSizeDao {
     //  UPDATE
     public void update(ProductsSize productsSize) throws SQLException {
         
-    	String sqlQuery = "update productsSizes set product_id=?, size_id=? where id=?";
+    	String sqlQuery = "update products_sizes set product_id=?, size_id=? where id=?";
         
 
         try {
@@ -179,7 +179,7 @@ public class ProductsSizeDao {
     //  DELETE
     public void delete(Long id) throws SQLException {
         
-    	String sqlQuery = "delete from productsSizes where id=?";
+    	String sqlQuery = "delete from products_sizes where id=?";
 
         try {
 

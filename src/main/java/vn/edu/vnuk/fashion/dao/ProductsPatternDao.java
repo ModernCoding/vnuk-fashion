@@ -26,7 +26,7 @@ public class ProductsPatternDao {
     //  CREATE
     public void create(ProductsPattern productsPattern) throws SQLException{
 
-        String sqlQuery = "insert into productsPatterns (product_id, pattern_id) "
+        String sqlQuery = "insert into products_patterns (product_id, pattern_id) "
                         +	"values (? , ?)";
 
         try {
@@ -69,7 +69,7 @@ public class ProductsPatternDao {
 		    			+ "     , t02.maker_id"
 		    			+ "     , t03.id as pattern_id"
 		    			+ "     , t03.label"
-						+ "  from productsPatterns t01, products t02, patterns t03"
+						+ "  from products_patterns t01, products t02, patterns t03"
 
 						+ " where t02.id = t01.product_id"
 						+ "and t03.id = t01.pattern_id"
@@ -116,7 +116,7 @@ public class ProductsPatternDao {
     			+ "     , t02.maker_id"
     			+ "     , t03.id as pattern_id"
     			+ "     , t03.id label"
-				+ "  from productsPatterns t01, products t02, patterns t03"
+				+ "  from products_patterns t01, products t02, patterns t03"
 				+ " where t01.id = ?"
 				+ "   and t02.id = t01.product_id"
 				+ "   and t03.id = t01.pattern_id"	
@@ -136,7 +136,7 @@ public class ProductsPatternDao {
     //  UPDATE
     public void update(ProductsPattern productsPattern) throws SQLException {
         
-    	String sqlQuery = "update productsPatterns set product_id=?, pattern_id=? where id=?";
+    	String sqlQuery = "update products_patterns set product_id=?, pattern_id=? where id=?";
         
 
         try {
@@ -165,7 +165,7 @@ public class ProductsPatternDao {
     //  DELETE
     public void delete(Long id) throws SQLException {
         
-    	String sqlQuery = "delete from productsPatterns where id=?";
+    	String sqlQuery = "delete from products_patterns where id=?";
 
         try {
 

@@ -33,7 +33,7 @@ public class SizeDao {
         try {
             System.out.println(
             		String.format(
-            				"%s new collar in DB!",
+            				"%s new size in DB!",
             				
             				this.jdbcTemplate.update(
             						sqlQuery,
@@ -89,7 +89,7 @@ public class SizeDao {
     public Size read(Long id) throws SQLException{
     	
     	return this.jdbcTemplate.queryForObject(
-    			"SELECT * FROM sleeves where id = ?",
+    			"SELECT * FROM sizes where id = ?",
         		new Object[] {id},
         		new BeanPropertyRowMapper<Size>(Size.class)
         	);

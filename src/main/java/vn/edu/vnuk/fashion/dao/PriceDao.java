@@ -1,4 +1,4 @@
-package vn.edu.vnuk.fashion.dao;
+  package vn.edu.vnuk.fashion.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

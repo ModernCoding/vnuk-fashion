@@ -26,7 +26,7 @@ public class MaterialDao {
     //  CREATE
     public void create(Material material) throws SQLException{
 
-        String sqlQuery = "insert into material (label) values (?)";
+        String sqlQuery = "insert into materials (label) values (?)";
 
         try {
             System.out.println(
