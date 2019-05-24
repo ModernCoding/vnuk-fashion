@@ -1,143 +1,164 @@
 package vn.edu.vnuk.fashion.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import vn.edu.vnuk.fashion.jdbc.ConnectionFactory;
-import vn.edu.vnuk.fashion.model.Length;
-import vn.edu.vnuk.fashion.model.Product;
-import vn.edu.vnuk.fashion.model.ProductsLength;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
+import vn.edu.vnuk.fashion.model.ProductsLength;
+import vn.edu.vnuk.fashion.rowmapper.ProductsLengthRowMapper;
+
+
+
+
+
+@Repository
 public class ProductsLengthDao {
 	
-    private Connection connection;
-
-    public ProductsLengthDao(){
-        this.connection = new ConnectionFactory().getConnection();
-    }
-
-    public ProductsLengthDao(Connection connection){
-        this.connection = connection;
+    private final JdbcTemplate jdbcTemplate;
+    
+    @Autowired
+    public ProductsLengthDao(JdbcTemplate jdbcTemplate) {
+	  this.jdbcTemplate = jdbcTemplate;
     }
 
 
     //  CREATE
-    public void create(ProductsLength productsLength) throws SQLException{
+    public void create(ProductsLength  productsLength) throws SQLException{
 
         String sqlQuery = "insert into products_lengths (product_id, length_id) "
                         +	"values (? , ?)";
 
-        PreparedStatement statement;
-
         try {
-                statement = connection.prepareStatement(sqlQuery);
+            System.out.println(
+            		String.format(
+            				"%s new productsLength in DB!",
+            				
+            				this.jdbcTemplate.update(
+            						sqlQuery,
+            						new Object[] {
+            								productsLength.getLengthId(),
+            								productsLength.getProductId()
+            							}
+        						)
+        				)
+        		);
 
-                //	Replacing "?" through values
-                statement.setLong(1, productsLength.getProduct().getId());
-                statement.setLong(2, productsLength.getLength().getId());
-
-                // 	Executing statement
-                statement.execute();
-
-                System.out.println("New record in DB !");
-
+            
         } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-                System.out.println("Done !");
-                connection.close();
+        	
+            e.printStackTrace();
+        
         }
 
     }
     
     
-    //  READ (List of ProductsLength)
-    @SuppressWarnings("finally")
-    public List<ProductsLength> read() throws SQLException {
+    //  READ (List of ProductsLengths)
+    public List<ProductsLength> read(String productId , String lengthId) throws SQLException {
+    	
+    	String sqlQuery = "select t01.id"
+		    			+ "     , t02.id as product_id"
+		    			+ "     , t02.name"
+		    			+ "     , t02.subcategory_id"
+		    			+ "     , t02.sleeve_id"
+		    			+ "     , t02.shape_id"
+		    			+ "     , t02.collar_id"
+		    			+ "     , t02.height_id"
+		    			+ "     , t02.material_id"
+		    			+ "     , t02.maker_id"
+		    			+ "     , t03.id as length_id"
+		    			+ "     , t03.label"
+						+ "  from products_lengths t01, products t02, lengths t03"
 
-        String sqlQuery = "select * from products_lengths";
-        PreparedStatement statement;
-        List<ProductsLength> productsLengths = new ArrayList<ProductsLength>();
-
+						+ " where t02.id = t01.product_id"
+						+ "and t03.id = t01.length_id"
+				;
+    	
+    	if (productId != null && lengthId != null) {
+    		sqlQuery += String.format("   and t02.id = %s", productId, "   and t03.id = %s", lengthId );
+    		sqlQuery += " order by t01.id asc;";
+    	}
+    	
+    	else {
+        	sqlQuery += " order by t03.id asc, t02.id asc, t01.id asc;";
+    	}
+    	
+    	
         try {
-
-            statement = connection.prepareStatement(sqlQuery);
-
-            // 	Executing statement
-            ResultSet results = statement.executeQuery();
-            
-            while(results.next()){
-
-            	ProductsLength productsLength = new ProductsLength();
-                
-            	productsLength.setId(results.getLong("id"));
-                
-                // Process foreign key
-                Long productIdFromDB = results.getLong("product_id");
-                Long lengthIdFromDB = results.getLong("length_id");
-                
-                ProductDao productDao = new ProductDao();
-                LengthDao lengthDao = new LengthDao();
-                
-                Product product = productDao.read(productIdFromDB);
-                Length length = lengthDao.read(lengthIdFromDB);
-                
-                productsLength.setProduct(product);
-                productsLength.setLength(length);
-                
-                productsLengths.add(productsLength);
-
-            }
-
-            results.close();
-            statement.close();
-
-
+        	
+        	return new ProductsLengthRowMapper().mapRows(this.jdbcTemplate.queryForList(sqlQuery));
+        	
         } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-                connection.close();
-                return productsLengths;
+        	
+            e.printStackTrace();
+        
         }
-
+        
+        
+		return null;
 
     }
 
 
     //  READ (Single ProductsLength)
     public ProductsLength read(Long id) throws SQLException{
-        return this.read(id, true);
+
+    	String sqlQuery = "select t01.id"
+    			+ "     , t02.id as product_id"
+    			+ "     , t02.name"
+    			+ "     , t02.subcategory_id"
+    			+ "     , t02.sleeve_id"
+    			+ "     , t02.shape_id"
+    			+ "     , t02.collar_id"
+    			+ "     , t02.height_id"
+    			+ "     , t02.material_id"
+    			+ "     , t02.maker_id"
+    			+ "     , t03.id as length_id"
+    			+ "     , t03.label"
+				+ "  from products_lengths t01, products t02, lengths t03"
+				+ " where t01.id = ?"
+				+ "   and t02.id = t01.product_id"
+				+ "   and t03.id = t01.length_id"	
+				+ " order by t01.id asc, t02.id asc, t01.id asc"
+				+ ";"
+		;
+
+    	return this.jdbcTemplate.queryForObject(
+    			sqlQuery,
+        		new Object[] {id},
+        		new ProductsLengthRowMapper()
+        	);
+        
     }  
 
     
     //  UPDATE
     public void update(ProductsLength productsLength) throws SQLException {
-        String sqlQuery = "update products_lengths product_id=? length_id=? where id=?";
         
+    	String sqlQuery = "update products_lengths set product_id=?, length_id=? where id=?";
+        
+
         try {
-            PreparedStatement statement = connection.prepareStatement(sqlQuery);
-            statement.setLong(1, productsLength.getProduct().getId());
-            statement.setLong(2, productsLength.getLength().getId());
+        	this.jdbcTemplate.update(
+					sqlQuery,
+					
+					new Object[] {
+							productsLength.getId(),
+							productsLength.getProductId(),
+							productsLength.getLengthId()
+						}
+				);
             
-            statement.execute();
-            statement.close();
             
-            System.out.println("products_lengths successfully modified.");
+            System.out.println("ProductsLength successfully modified.");
         } 
 
         catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }
-        
-        finally {
-            connection.close();
         }
         
     }
@@ -145,82 +166,27 @@ public class ProductsLengthDao {
     
     //  DELETE
     public void delete(Long id) throws SQLException {
-        String sqlQuery = "delete from products_lengths where id=?";
+        
+    	String sqlQuery = "delete from products_lengths where id=?";
 
         try {
-            PreparedStatement statement = connection.prepareStatement(sqlQuery);
-            statement.setLong(1, id);
-            statement.execute();
-            statement.close();
-            
-            System.out.println("products_lengths successfully deleted.");
+
+            System.out.println(
+            		String.format(
+            				"%s record successfully removed from DB!",
+            				
+            				this.jdbcTemplate.update(
+            						sqlQuery,
+            						new Object[] {id}
+        						)
+        				)
+        		);
 
         } 
 
         catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }
-        
-        finally {
-            connection.close();
-        }
-
-    }
-  
-    
-    //  PRIVATE
-    
-    @SuppressWarnings("finally")
-    private ProductsLength read(Long id, boolean closeAfterUse) throws SQLException{
-
-        String sqlQuery = "select * from products_lengths where id=?";
-
-        PreparedStatement statement;
-        ProductsLength productsLength = new ProductsLength();
-
-        try {
-            statement = connection.prepareStatement(sqlQuery);
-
-            //	Replacing "?" through values
-            statement.setLong(1, id);
-
-            // 	Executing statement
-            ResultSet results = statement.executeQuery();
-
-            if(results.next()){
-
-            	productsLength.setId(results.getLong("id"));
-                
-                // Process foreign key
-                Long productIdFromDB = results.getLong("product_id");
-                Long lengthIdFromDB = results.getLong("length_id");
-                
-                ProductDao productDao = new ProductDao();
-                LengthDao lengthDao = new LengthDao();
-                
-                Product product = productDao.read(productIdFromDB);
-                Length length = lengthDao.read(lengthIdFromDB);
-                
-                productsLength.setProduct(product);
-                productsLength.setLength(length);
-
-
-            }
-
-            statement.close();
-
-        } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-            
-            if (closeAfterUse) {
-                connection.close();
-    
-            }
-            
-            return productsLength;
         }
 
     }

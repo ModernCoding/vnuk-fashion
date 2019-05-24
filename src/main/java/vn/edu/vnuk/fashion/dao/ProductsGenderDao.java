@@ -33,7 +33,7 @@ public class ProductsGenderDao {
         try {
             System.out.println(
             		String.format(
-            				"%s new products_genders in DB!",
+            				"%s new productsGender in DB!",
             				
             				this.jdbcTemplate.update(
             						sqlQuery,
@@ -115,7 +115,7 @@ public class ProductsGenderDao {
     			+ "     , t02.height_id"
     			+ "     , t02.material_id"
     			+ "     , t02.maker_id"
-    			+ "     , t03.id as size_id"
+    			+ "     , t03.id as gender_id"
     			+ "     , t03.label"
 				+ "  from products_genders t01, products t02, genders t03"
 				+ " where t01.id = ?"
