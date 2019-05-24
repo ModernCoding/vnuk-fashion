@@ -134,7 +134,7 @@ public class OrderRowMapper implements RowMapper<Order> {
 		priceType.setLabel(rs.getString("price_type_label"));
 		
 		price.setId(rs.getLong("price_id"));
-		price.setValue(rs.getFloat("value"));
+		price.setValue(rs.getFloat("price_value"));
 		price.setProductsSizeId(rs.getLong("products_size_id"));
 		price.setProductsSize(productsSize);
 		price.setProductsPatternId(rs.getLong("products_pattern_id"));

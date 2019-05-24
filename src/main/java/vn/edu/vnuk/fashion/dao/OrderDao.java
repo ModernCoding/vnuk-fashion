@@ -1,124 +1,161 @@
 package vn.edu.vnuk.fashion.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import vn.edu.vnuk.fashion.jdbc.ConnectionFactory;
-import vn.edu.vnuk.fashion.model.Order;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
+import vn.edu.vnuk.fashion.model.Order;
+import vn.edu.vnuk.fashion.rowmapper.OrderRowMapper;
+
+
+@Repository
 public class OrderDao {
 	
-    private Connection connection;
-
-    public OrderDao(){
-        this.connection = new ConnectionFactory().getConnection();
-    }
-
-    public OrderDao(Connection connection){
-        this.connection = connection;
+    private final JdbcTemplate jdbcTemplate;
+    
+    @Autowired
+    public OrderDao(JdbcTemplate jdbcTemplate) {
+	  this.jdbcTemplate = jdbcTemplate;
     }
 
 
     //  CREATE
     public void create(Order order) throws SQLException{
 
-        String sqlQuery = "insert into orders (customer_id , price_id , qty) "
-                        +	"values (? , ? , ?)";
-
-        PreparedStatement statement;
+        String sqlQuery = "insert into orders (customer_id, price_id, qty) "
+                        +	"values (? , ?, ?)";
 
         try {
-                statement = connection.prepareStatement(sqlQuery);
+            System.out.println(
+            		String.format(
+            				"%s new order in DB!",
+            				
+            				this.jdbcTemplate.update(
+            						sqlQuery,
+            						new Object[] {
+            								order.getCustomerId(),
+            								order.getPriceId(),
+            								order.getQty()
+            							}
+        						)
+        				)
+        		);
 
-                //	Replacing "?" through values
-                statement.setLong(1, order.getCustomer().getId());
-                statement.setLong(2, order.getPrice().getId());
-                statement.setInt(3, order.getQty());
-
-                // 	Executing statement
-                statement.execute();
-
-                System.out.println("New record in DB !");
-
-        } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-                System.out.println("Done !");
-                connection.close();
-        }
-
-    }
-    
-    
-    //  READ (List of Orders)
-    @SuppressWarnings("finally")
-    public List<Order> read() throws SQLException {
-
-        String sqlQuery = "select * from orders";
-        PreparedStatement statement;
-        List<Order> orders = new ArrayList<Order>();
-
-        try {
-
-            statement = connection.prepareStatement(sqlQuery);
-
-            // 	Executing statement
-            ResultSet results = statement.executeQuery();
             
-            while(results.next()){
-
-                Order order = new Order();
-                order.setId(results.getLong("id"));
-                CustomerDao customerDao = new CustomerDao();
-                order.setCustomer(customerDao.read(results.getLong("customer_id")));
-                PriceDao priceDao = new PriceDao();
-                order.setPrice(priceDao.read(results.getLong("price_id")));
-                order.setQty(results.getInt("qty"));
-                
-                orders.add(order);
-
-            }
-
-            results.close();
-            statement.close();
-
-
         } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-                connection.close();
-                return orders;
+        	
+            e.printStackTrace();
+        
         }
 
+    }
+    
+    
+    //  READ (List of order)
+    public List<Order> read(String customerId, String priceId) throws SQLException {
+    	
+    	String sqlQuery = "select t01.id"
+		    			+ "     , t01.qty"
+		    			+ "     , t02.id as customer_id"
+						+ "     , t02.title_id as title_id"
+						+ "     , t02.label as customer_title"
+						+ "     , t02.address as customer_address"
+						+ "     , t02.phone as customer_phone"
+						+ "     , t02.email as customer_email"
+						+ "     , t03.id as price_id"
+						+ "     , t03.products_size_id as products_size_id"
+						+ "     , t03.products_color_id as products_color_id"
+						+ "     , t03.products_pattern_id as products_pattern_id"
+						+ "     , t03.products_length_id as products_length_id"
+						+ "     , t03.seller_id as seller_id"
+						+ "     , t03.price_type_id as price_type_id"
+						+ "     , t03.value as price_value"
+						+ "  from orders t01, customers t02, prices t03"
+						+ " where t02.id = t01.customer_id and t03.id = t01.price_id"
+				;
+    	
+    	if (customerId != null && priceId != null) {
+    		sqlQuery += String.format("   and t02.id = %s", customerId, " and t03.id = %s", priceId);
+    		sqlQuery += " order by t01.id asc;";
+    	}
+    	
+    	else {
+        	sqlQuery += " order by t03.id asc, t02.id asc, t01.id asc;";
+    	}
+    	
+    	
+        try {
+        	
+        	return new OrderRowMapper().mapRows(this.jdbcTemplate.queryForList(sqlQuery));
+        	
+        } catch (Exception e) {
+        	
+            e.printStackTrace();
+        
+        }
+        
+        
+		return null;
 
     }
 
 
-    //  READ (Single Order)
+    //  READ (Single order)
     public Order read(Long id) throws SQLException{
-        return this.read(id, true);
+
+    	String sqlQuery =  "select t01.id"
+    			+ "     , t01.qty"
+    			+ "     , t02.id as customer_id"
+				+ "     , t02.title_id as title_id"
+				+ "     , t02.label as customer_title"
+				+ "     , t02.address as customer_address"
+				+ "     , t02.phone as customer_phone"
+				+ "     , t02.email as customer_email"
+				+ "     , t03.id as price_id"
+				+ "     , t03.products_size_id as products_size_id"
+				+ "     , t03.products_color_id as products_color_id"
+				+ "     , t03.products_pattern_id as products_pattern_id"
+				+ "     , t03.products_length_id as products_length_id"
+				+ "     , t03.seller_id as seller_id"
+				+ "     , t03.price_type_id as price_type_id"
+				+ "     , t03.value as price_value"
+				+ "  from orders t01, customers t02, prices t03"
+				+ " where t01.id = ?"
+				+ "   and t02.id = t01.customer_id and t03.id = t01.price_id"
+				+ " order by t03.id asc, t02.id asc, t01.id asc"
+				+ ";"
+		;
+
+    	return this.jdbcTemplate.queryForObject(
+    			sqlQuery,
+        		new Object[] {id},
+        		new OrderRowMapper()
+        	);
+        
     }  
 
     
     //  UPDATE
     public void update(Order order) throws SQLException {
-        String sqlQuery = "update orders customer_id=? price_id=? qty=? where id=?";
         
+    	String sqlQuery = "update orders set customer_id=?, price_id=?, qty=? where id=?";
+        
+
         try {
-            PreparedStatement statement = connection.prepareStatement(sqlQuery);
-            statement.setLong(1, order.getCustomer().getId());
-            statement.setLong(2, order.getPrice().getId());
-            statement.setInt(3, order.getQty());
+        	this.jdbcTemplate.update(
+					sqlQuery,
+					
+					new Object[] {
+							order.getCustomerId(),
+							order.getPriceId(),
+							order.getQty(),
+							order.getId(),
+						}
+				);
             
-            
-            statement.execute();
-            statement.close();
             
             System.out.println("Order successfully modified.");
         } 
@@ -128,82 +165,32 @@ public class OrderDao {
             e.printStackTrace();
         }
         
-        finally {
-            connection.close();
-        }
-        
     }
     
     
     //  DELETE
     public void delete(Long id) throws SQLException {
-        String sqlQuery = "delete from orders where id=?";
+        
+    	String sqlQuery = "delete from orders where id=?";
 
         try {
-            PreparedStatement statement = connection.prepareStatement(sqlQuery);
-            statement.setLong(1, id);
-            statement.execute();
-            statement.close();
-            
-            System.out.println("Order successfully deleted.");
+
+            System.out.println(
+            		String.format(
+            				"%s record successfully removed from DB!",
+            				
+            				this.jdbcTemplate.update(
+            						sqlQuery,
+            						new Object[] {id}
+        						)
+        				)
+        		);
 
         } 
 
         catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }
-        
-        finally {
-            connection.close();
-        }
-
-    }
-  
-    
-    //  PRIVATE
-    
-    @SuppressWarnings("finally")
-    private Order read(Long id, boolean closeAfterUse) throws SQLException{
-
-        String sqlQuery = "select * from orders where id=?";
-
-        PreparedStatement statement;
-        Order order = new Order();
-
-        try {
-            statement = connection.prepareStatement(sqlQuery);
-
-            //	Replacing "?" through values
-            statement.setLong(1, id);
-
-            // 	Executing statement
-            ResultSet results = statement.executeQuery();
-
-            if(results.next()){
-
-                order.setId(results.getLong("id"));
-                CustomerDao customerDao = new CustomerDao();
-                order.setCustomer(customerDao.read(results.getLong("customer_id")));
-                PriceDao priceDao = new PriceDao();
-                order.setPrice(priceDao.read(results.getLong("price_id")));
-                order.setQty(results.getInt("qty"));
-
-            }
-
-            statement.close();
-
-        } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-            
-            if (closeAfterUse) {
-                connection.close();
-    
-            }
-            
-            return order;
         }
 
     }
