@@ -1,0 +1,28 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	
+	<title th:fragment="title" th:text="'Edit maker #' + ${maker.id}"></title>
+	
+	
+	<section th:fragment="content">
+	    <div class="container">
+			<div class="row my-5">
+				<form
+			    	th:replace="
+			    			~{
+			    				/maker/_form
+			    				::
+			    				form(
+			    					'Edit maker #' + ${maker.id},
+			    					@{/makers/{id}(id=${maker.id}, backToShow=${backToShow})},
+			    					'patch',
+			    					@{/makers{urlCompletion}(urlCompletion=${urlCompletion})}
+			    				)
+			    			}
+			    		">
+			    </form>
+			</div>
+		</div>
+	
+	</section>
+	
+</html>

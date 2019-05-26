@@ -14,14 +14,9 @@ import vn.edu.vnuk.fashion.model.Maker;
 @Repository
 public class MakerDao {
 	
-    private final JdbcTemplate jdbcTemplate;
+	@Autowired
+    private JdbcTemplate jdbcTemplate;
     
-    @Autowired
-    public MakerDao(JdbcTemplate jdbcTemplate) {
-	  this.jdbcTemplate = jdbcTemplate;
-    }
-	
-
 
     //  CREATE
     public void create(Maker maker) throws SQLException{
@@ -95,8 +90,8 @@ public class MakerDao {
     //  UPDATE
     public void update(Maker maker) throws SQLException {
     	
-        String sqlQuery = "update makers set label=? address=? phone=? email=? where id=?";
-        
+        String sqlQuery = "update makers set label=?, address=?, phone=?, email=? where id=?;";
+        System.out.println(maker.getLabel());
         try {
         	this.jdbcTemplate.update(
 					sqlQuery,

@@ -14,14 +14,8 @@ import vn.edu.vnuk.fashion.model.Collar;
 @Repository
 public class CollarDao {
 	
-    private final JdbcTemplate jdbcTemplate;
-    
-    @Autowired
-    public CollarDao(JdbcTemplate jdbcTemplate) {
-	  this.jdbcTemplate = jdbcTemplate;
-    }
-	
-
+	@Autowired
+    private JdbcTemplate jdbcTemplate;
 
     //  CREATE
     public void create(Collar collar) throws SQLException{

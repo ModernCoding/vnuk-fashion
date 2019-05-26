@@ -20,13 +20,13 @@ public class Sql2170CreateProducts {
 				+ "height_id BIGINT NULL,"
 				+ "material_id BIGINT NULL,"
 				+ "maker_id BIGINT NOT NULL,"
-				+ "CONSTRAINT fk_products_subcategory_id FOREIGN KEY (subcategory_id) REFERENCES subcategories(id),"
-				+ "CONSTRAINT fk_products_sleeve_id FOREIGN KEY (sleeve_id) REFERENCES sleeves(id),"
-				+ "CONSTRAINT fk_products_shape_id FOREIGN KEY (shape_id) REFERENCES shapes(id),"
-				+ "CONSTRAINT fk_products_collar_id FOREIGN KEY (collar_id) REFERENCES collars(id),"
-				+ "CONSTRAINT fk_products_height_id FOREIGN KEY (height_id) REFERENCES heights(id),"
-				+ "CONSTRAINT fk_products_material_id FOREIGN KEY (material_id) REFERENCES materials(id),"
-				+ "CONSTRAINT fk_products_maker_id FOREIGN KEY (maker_id) REFERENCES makers(id)"				
+				+ "CONSTRAINT fk_products_subcategory_id FOREIGN KEY (subcategory_id) REFERENCES subcategories(id) ON DELETE CASCADE,"
+				+ "CONSTRAINT fk_products_sleeve_id FOREIGN KEY (sleeve_id) REFERENCES sleeves(id) ON DELETE CASCADE,"
+				+ "CONSTRAINT fk_products_shape_id FOREIGN KEY (shape_id) REFERENCES shapes(id) ON DELETE CASCADE,"
+				+ "CONSTRAINT fk_products_collar_id FOREIGN KEY (collar_id) REFERENCES collars(id) ON DELETE CASCADE,"
+				+ "CONSTRAINT fk_products_height_id FOREIGN KEY (height_id) REFERENCES heights(id) ON DELETE CASCADE,"
+				+ "CONSTRAINT fk_products_material_id FOREIGN KEY (material_id) REFERENCES materials(id) ON DELETE CASCADE,"
+				+ "CONSTRAINT fk_products_maker_id FOREIGN KEY (maker_id) REFERENCES makers(id) ON DELETE CASCADE"				
 				+ 	") CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 			;
 	}
@@ -38,7 +38,7 @@ public class Sql2170CreateProducts {
 		
 		try {
 	        connection.prepareStatement(sqlQuery).execute();
-	        System.out.println("   TABLE \'productsproducts \' successfully created");
+	        System.out.println("   TABLE \'products \' successfully created");
 		
 		}
 		

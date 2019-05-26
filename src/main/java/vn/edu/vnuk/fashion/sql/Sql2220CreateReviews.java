@@ -15,7 +15,7 @@ public class Sql2220CreateReviews {
 				+ "order_id BIGINT NOT NULL," 
 				+ "rating INT NOT NULL,"
 				+ "description VARCHAR(255) NULL,"
-				+ "CONSTRAINT fk_reviews_order_id FOREIGN KEY (order_id) REFERENCES orders(id)"
+				+ "CONSTRAINT fk_reviews_order_id FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE"
 				+ 	") CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 			;
 	}

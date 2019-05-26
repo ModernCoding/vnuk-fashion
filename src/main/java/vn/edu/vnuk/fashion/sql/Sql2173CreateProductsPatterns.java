@@ -14,8 +14,8 @@ public class Sql2173CreateProductsPatterns {
 				+ "id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, "
 				+ "product_id BIGINT NOT NULL, "
 				+ "pattern_id BIGINT NULL, "
-				+ "CONSTRAINT fk_products_patterns_product_id FOREIGN KEY (product_id) REFERENCES products(id),"
-				+ "CONSTRAINT fk_products_patterns_pattern_id FOREIGN KEY (pattern_id) REFERENCES patterns(id)"				
+				+ "CONSTRAINT fk_products_patterns_product_id FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,"
+				+ "CONSTRAINT fk_products_patterns_pattern_id FOREIGN KEY (pattern_id) REFERENCES patterns(id) ON DELETE CASCADE"				
 				+ 	") CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 			;
 	}

@@ -17,7 +17,7 @@ public class Sql2200CreateCustomers {
 				+ "address VARCHAR(255) NOT NULL," 
 				+ "phone VARCHAR(255) NOT NULL," 
 				+ "email VARCHAR(255) NULL," 				
-				+ "CONSTRAINT fk_customers_title_id FOREIGN KEY (title_id) REFERENCES titles(id)"
+				+ "CONSTRAINT fk_customers_title_id FOREIGN KEY (title_id) REFERENCES titles(id) ON DELETE CASCADE"
 				+ 	") CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 			;
 	}

@@ -15,8 +15,8 @@ public class Sql2210CreateOrders {
 				+ "customer_id BIGINT NOT NULL," 
 				+ "price_id BIGINT NOT NULL," 
 				+ "qty INT NOT NULL,"
-				+ "CONSTRAINT fk_orders_customer_id FOREIGN KEY (customer_id) REFERENCES customers(id),"
-				+ "CONSTRAINT fk_orders_price_id FOREIGN KEY (price_id) REFERENCES prices(id)" 
+				+ "CONSTRAINT fk_orders_customer_id FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE,"
+				+ "CONSTRAINT fk_orders_price_id FOREIGN KEY (price_id) REFERENCES prices(id) ON DELETE CASCADE" 
 				+ 	") CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 			;
 	}

@@ -20,31 +20,31 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import vn.edu.vnuk.fashion.dao.HeightDao;
-import vn.edu.vnuk.fashion.model.Height;
+import vn.edu.vnuk.fashion.dao.MakerDao;
+import vn.edu.vnuk.fashion.model.Maker;
 
 @Controller
-public class HeightsController {
+public class MakersController {
 	
 	@Autowired
-	private HeightDao dao;
+	private MakerDao dao;
 
-	@RequestMapping("/heights")
+	@RequestMapping("/makers")
     public String index(Model model, ServletRequest request) throws SQLException{
-        model.addAttribute("heights", dao.read());
-        model.addAttribute("template", "height/index");
+        model.addAttribute("makers", dao.read());
+        model.addAttribute("template", "maker/index");
         return "_layout";
     }
     
-    @RequestMapping("/heights/{id}")
+    @RequestMapping("/makers/{id}")
     public String show(@PathVariable("id") Long id, Model model, ServletRequest request) throws SQLException{
-        model.addAttribute("height", dao.read(id));
-        model.addAttribute("template", "height/show");
+        model.addAttribute("maker", dao.read(id));
+        model.addAttribute("template", "maker/show");
         return "_layout";
     }
     
-    @RequestMapping("/heights/new")
-    public String add(Height height, Model model, @ModelAttribute("fieldErrors") ArrayList<FieldError> fieldErrors){
+    @RequestMapping("/makers/new")
+    public String add(Maker maker, Model model, @ModelAttribute("fieldErrors") ArrayList<FieldError> fieldErrors){
     	
     	for(FieldError fieldError : fieldErrors) {
     		model.addAttribute(
@@ -53,21 +53,22 @@ public class HeightsController {
     			);
     	}
     	
-        model.addAttribute("template", "height/new");
+        model.addAttribute("template", "maker/new");
         return "_layout";
     }
     
-    @RequestMapping("/heights/{id}/edit")
+    @RequestMapping("/makers/{id}/edit")
     public String edit(
     		
 		@RequestParam(value="backToShow", defaultValue="false") Boolean backToShow,
 		@PathVariable("id") Long id,
-		Height height,
+		Maker maker,
 		Model model,
 		ServletRequest request,
 		@ModelAttribute("fieldErrors") ArrayList<FieldError> fieldErrors
 		
 	) throws SQLException{
+    	
     	
     	for(FieldError fieldError : fieldErrors) {
     		model.addAttribute(
@@ -78,39 +79,42 @@ public class HeightsController {
     	
     	model.addAttribute("backToShow", backToShow);
     	model.addAttribute("urlCompletion", backToShow ? String.format("/%s", id) : "");
-    	model.addAttribute("height", dao.read(id));
-        model.addAttribute("template", "height/edit");
+    	model.addAttribute("maker", dao.read(id));
+        model.addAttribute("template", "maker/edit");
 
         return "_layout";
+    
         
     }
     
-    @RequestMapping(value="/heights", method=RequestMethod.POST)
+    
+    @RequestMapping(value="/makers", method=RequestMethod.POST)
     public String create(
 		
-    	@Valid Height height,
+    	@Valid Maker maker,
     	BindingResult bindingResult,
     	ServletRequest request,
     	RedirectAttributes redirectAttributes
     
     ) throws SQLException {
+        
     	
         if (bindingResult.hasErrors()) {
         	redirectAttributes.addFlashAttribute("fieldErrors", bindingResult.getAllErrors());
-            return "redirect:/heights/new";
+            return "redirect:/makers/new";
         }
         
-        dao.create(height);
-        return "redirect:/heights";
+        dao.create(maker);
+        return "redirect:/makers";
         
     }
     
-    @RequestMapping(value="/heights/{id}", method=RequestMethod.PATCH)
+    @RequestMapping(value="/makers/{id}", method=RequestMethod.PATCH)
     public String update(
     		
     		@RequestParam(value="backToShow", defaultValue="false") Boolean backToShow,
     		@PathVariable("id") Long id,
-    		@Valid Height height,
+    		@Valid Maker maker,
     		BindingResult bindingResult,
     		ServletRequest request,
     		RedirectAttributes redirectAttributes
@@ -119,16 +123,16 @@ public class HeightsController {
     	
     	if (bindingResult.hasErrors()) {
         	redirectAttributes.addFlashAttribute("fieldErrors", bindingResult.getAllErrors());
-            return String.format("redirect:/heights/%s/edit", id);
+            return String.format("redirect:/makers/%s/edit", id);
         }
         
-        dao.update(height);
-        return backToShow ? String.format("redirect:/heights/%s", id) : "redirect:/heights";
+        dao.update(maker);
+        return backToShow ? String.format("redirect:/makers/%s", id) : "redirect:/makers";
         
     }
     
     //  delete with ajax
-    @RequestMapping(value="/heights/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value="/makers/{id}", method = RequestMethod.DELETE)
     public void delete(@PathVariable("id") Long id, ServletRequest request, HttpServletResponse response) throws SQLException {
     	dao.delete(id);
         response.setStatus(200);

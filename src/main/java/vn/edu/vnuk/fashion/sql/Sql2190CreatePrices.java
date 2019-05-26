@@ -19,12 +19,12 @@ public class Sql2190CreatePrices {
 				+	"seller_id BIGINT NOT NULL,"
 				+ 	"price_type_id BIGINT NOT NULL, "
 				+ 	"value FLOAT NOT NULL,"
-				+ 	"CONSTRAINT fk_prices_products_size_id FOREIGN KEY (products_size_id) REFERENCES products_sizes(id),"
-				+ 	"CONSTRAINT fk_prices_products_color_id FOREIGN KEY (products_color_id) REFERENCES products_colors(id),"
-				+ 	"CONSTRAINT fk_prices_products_pattern_id FOREIGN KEY (products_pattern_id) REFERENCES products_patterns(id),"
-				+ 	"CONSTRAINT fk_prices_products_length_id FOREIGN KEY (products_length_id) REFERENCES products_lengths(id),"
-				+ 	"CONSTRAINT fk_prices_seller_id FOREIGN KEY (seller_id) REFERENCES sellers(id), "
-				+ 	"CONSTRAINT fk_prices_price_type_id FOREIGN KEY (price_type_id) REFERENCES price_types(id)"
+				+ 	"CONSTRAINT fk_prices_products_size_id FOREIGN KEY (products_size_id) REFERENCES products_sizes(id) ON DELETE CASCADE,"
+				+ 	"CONSTRAINT fk_prices_products_color_id FOREIGN KEY (products_color_id) REFERENCES products_colors(id) ON DELETE CASCADE,"
+				+ 	"CONSTRAINT fk_prices_products_pattern_id FOREIGN KEY (products_pattern_id) REFERENCES products_patterns(id) ON DELETE CASCADE,"
+				+ 	"CONSTRAINT fk_prices_products_length_id FOREIGN KEY (products_length_id) REFERENCES products_lengths(id) ON DELETE CASCADE,"
+				+ 	"CONSTRAINT fk_prices_seller_id FOREIGN KEY (seller_id) REFERENCES sellers(id) ON DELETE CASCADE, "
+				+ 	"CONSTRAINT fk_prices_price_type_id FOREIGN KEY (price_type_id) REFERENCES price_types(id) ON DELETE CASCADE"
 				+ 	") CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 			;
 	}
