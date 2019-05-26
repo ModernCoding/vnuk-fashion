@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import vn.edu.vnuk.fashion.jdbc.ConnectionFactory;
 import vn.edu.vnuk.fashion.model.Price;
 import vn.edu.vnuk.fashion.model.PriceType;
@@ -18,8 +20,26 @@ import vn.edu.vnuk.fashion.model.Seller;
 
 public class PriceDao {
 	
+	@Autowired
+    private ProductsSizeDao productsSizeDao;
+	
+	@Autowired
+	private ProductsColorDao productsColorDao;
+	
+	@Autowired
+	private ProductsPatternDao productsPatternDao;
+	
+	@Autowired
+	private ProductsLengthDao productsLengthDao;
+	
+	@Autowired
+	private SellerDao sellerDao;
+	
+	@Autowired
+	private PriceTypeDao priceTypeDao;
+	
     private Connection connection;
-
+        
     public PriceDao(){
         this.connection = new ConnectionFactory().getConnection();
     }
@@ -92,14 +112,7 @@ public class PriceDao {
                 Long productsLengthIdFromDb = results.getLong("products_length_id");
                 Long sellerIdFromDb = results.getLong("seller_id");
                 Long priceTypeIdFromDb = results.getLong("price_type_id");
-                
-                ProductsSizeDao productsSizeDao = new ProductsSizeDao();
-                ProductsColorDao productsColorDao = new ProductsColorDao();
-                ProductsPatternDao productsPatternDao = new ProductsPatternDao();
-                ProductsLengthDao productsLengthDao = new ProductsLengthDao();
-                SellerDao sellerDao = new SellerDao();
-                PriceTypeDao priceTypeDao = new PriceTypeDao();
-                
+                                
                 ProductsSize productsSize = productsSizeDao.read(productsSizeIdFromDb);
                 ProductsColor productsColor = productsColorDao.read(productsColorIdFromDb);
                 ProductsPattern productsPattern = productsPatternDao.read(productsPatternIdFromDb);
@@ -227,13 +240,6 @@ public class PriceDao {
                  Long productsLengthIdFromDb = results.getLong("products_length_id");
                  Long sellerIdFromDb = results.getLong("seller_id");
                  Long priceTypeIdFromDb = results.getLong("price_type_id");
-                 
-                 ProductsSizeDao productsSizeDao = new ProductsSizeDao();
-                 ProductsColorDao productsColorDao = new ProductsColorDao();
-                 ProductsPatternDao productsPatternDao = new ProductsPatternDao();
-                 ProductsLengthDao productsLengthDao = new ProductsLengthDao();
-                 SellerDao sellerDao = new SellerDao();
-                 PriceTypeDao priceTypeDao = new PriceTypeDao();
                  
                  ProductsSize productsSize = productsSizeDao.read(productsSizeIdFromDb);
                  ProductsColor productsColor = productsColorDao.read(productsColorIdFromDb);

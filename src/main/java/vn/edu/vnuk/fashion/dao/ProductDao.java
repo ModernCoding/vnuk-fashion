@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import vn.edu.vnuk.fashion.jdbc.ConnectionFactory;
 import vn.edu.vnuk.fashion.model.Collar;
 import vn.edu.vnuk.fashion.model.Height;
@@ -18,6 +20,24 @@ import vn.edu.vnuk.fashion.model.Sleeve;
 
 public class ProductDao {
 	
+	@Autowired
+    private SleeveDao sleeveDao;
+
+    @Autowired
+    private ShapeDao shapeDao;
+    
+    @Autowired
+    private CollarDao collarDao;
+
+    @Autowired
+    private HeightDao heightDao;
+
+    @Autowired
+    private MaterialDao materialDao;
+
+    @Autowired
+    private MakerDao makerDao;	
+    
     private Connection connection;
 
     public ProductDao(){
@@ -99,12 +119,7 @@ public class ProductDao {
                 
                 
 //                SubcategoryDao subcategoryDao = new SubcategoryDao();
-                SleeveDao sleeveDao = new SleeveDao();
-                ShapeDao shapeDao = new ShapeDao();
-                CollarDao collarDao = new CollarDao();
-                HeightDao heightDao = new HeightDao();
-                MaterialDao materialDao = new MaterialDao();
-                MakerDao makerDao = new MakerDao();	
+                
                 
 //                Subcategory subcategory = subcategoryDao.read(subcategoryIdFromDB);
                 Sleeve sleeve = sleeveDao.read(sleeveIdFromDB);
@@ -238,16 +253,6 @@ public class ProductDao {
                 Long heightIdFromDB = results.getLong("height_id");
                 Long materialIdFromDB = results.getLong("material_id");
                 Long makerIdFromDB = results.getLong("maker_id");
-
-                
-                
-//                SubcategoryDao subcategoryDao = new SubcategoryDao();
-                SleeveDao sleeveDao = new SleeveDao();
-                ShapeDao shapeDao = new ShapeDao();
-                CollarDao collarDao = new CollarDao();
-                HeightDao heightDao = new HeightDao();
-                MaterialDao materialDao = new MaterialDao();
-                MakerDao makerDao = new MakerDao();	
                 
 //                Subcategory subcategory = subcategoryDao.read(subcategoryIdFromDB);
                 Sleeve sleeve = sleeveDao.read(sleeveIdFromDB);

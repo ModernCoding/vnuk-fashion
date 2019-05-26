@@ -7,9 +7,6 @@ public class Customer {
 	private Long id;
 	
 	@NotNull
-	private Title title;
-	
-	@NotNull
 	private Long titleId;
 	
 	@NotNull
@@ -25,6 +22,8 @@ public class Customer {
 	private String phone;
 	
 	private String email;
+	
+	private Title title;
 
 	public Long getId() {
 		return id;
@@ -81,4 +80,11 @@ public class Customer {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	@Override
+	public String toString() {
+		return "Customer [id=" + id + ", title=" + title + ", titleId=" + titleId + ", label=" + label + ", address="
+				+ address + ", phone=" + phone + ", email=" + email + "]";
+	}
+	
 }

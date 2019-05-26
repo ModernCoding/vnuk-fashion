@@ -14,15 +14,9 @@ import vn.edu.vnuk.fashion.model.Height;
 @Repository
 public class HeightDao {
 	
-    private final JdbcTemplate jdbcTemplate;
+	@Autowired
+    private JdbcTemplate jdbcTemplate;
     
-    @Autowired
-    public HeightDao(JdbcTemplate jdbcTemplate) {
-	  this.jdbcTemplate = jdbcTemplate;
-    }
-	
-
-
     //  CREATE
     public void create(Height height) throws SQLException{
 

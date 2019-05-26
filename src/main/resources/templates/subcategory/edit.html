@@ -3,29 +3,25 @@
 	<title th:fragment="title" th:text="'Edit subcategory #' + ${subcategory.id}"></title>
 	
 	
-	<section th:fragment="content">
-	
-		<h3 class="my-margin-bottom-28">
-			<em th:text="'Edit subcategory #' + ${subcategory.id}"></em>
-		</h3>
-		
-		
-	    <form
-	    	th:replace="
-	    			~{
-	    				/subcategory/_form
-	    				
-	    				::
-	    				
-	    				form(
-	    					@{/subcategories/{id}(id=${subcategory.id}, backToShow=${backToShow})},
-	    					'patch',
-	    					@{/subcategories{urlCompletion}(urlCompletion=${urlCompletion})}
-	    				)
-	    			}
-	    		"
-	    >
-	    </form>
+	<section th:fragment="content">	
+		<div class="row my-5">	
+		    <form
+		    	th:replace="
+		    			~{
+		    				/subcategory/_form
+		    				
+		    				::
+		    				
+		    				form('Edit subcategory #' + ${subcategory.id},
+		    					@{/subcategories/{id}(id=${subcategory.id}, backToShow=${backToShow})},
+		    					'patch',
+		    					@{/subcategories{urlCompletion}(urlCompletion=${urlCompletion})}
+		    				)
+		    			}
+		    		"
+		    >
+		    </form>
+	    </div>
 	
 	</section>
 	

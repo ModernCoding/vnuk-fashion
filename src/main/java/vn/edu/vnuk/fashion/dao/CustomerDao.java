@@ -8,22 +8,15 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import vn.edu.vnuk.fashion.model.Customer;
-import vn.edu.vnuk.fashion.model.Subcategory;
 import vn.edu.vnuk.fashion.rowmapper.CustomerRowMapper;
-import vn.edu.vnuk.fashion.rowmapper.SubcategoryRowMapper;
 
 
 @Repository
 public class CustomerDao {
 	
-    private final JdbcTemplate jdbcTemplate;
+	@Autowired
+    private JdbcTemplate jdbcTemplate;
     
-    @Autowired
-    public CustomerDao(JdbcTemplate jdbcTemplate) {
-	  this.jdbcTemplate = jdbcTemplate;
-    }
-
-
     //  CREATE
     public void create(Customer customer) throws SQLException{
 
@@ -99,7 +92,7 @@ public class CustomerDao {
 
 
     //  READ (Single Customer)
-    public Subcategory read(Long id) throws SQLException{
+    public Customer read(Long id) throws SQLException{
 
     	String sqlQuery = "select t01.id"
     			+ "     , t01.label"
@@ -118,7 +111,7 @@ public class CustomerDao {
     	return this.jdbcTemplate.queryForObject(
     			sqlQuery,
         		new Object[] {id},
-        		new SubcategoryRowMapper()
+        		new CustomerRowMapper()
         	);
         
     }  
@@ -139,7 +132,8 @@ public class CustomerDao {
 							customer.getLabel(),
 							customer.getAddress(),
 							customer.getPhone(),
-							customer.getEmail()
+							customer.getEmail(),
+							customer.getId()
 						}
 				);
             

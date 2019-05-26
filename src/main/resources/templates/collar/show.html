@@ -1,12 +1,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	
-	<title th:fragment="title" th:text="'Category #' + ${category.id}"></title>
+	<title th:fragment="title" th:text="'Collar #' + ${collar.id}"></title>
 	
 	
 	<section th:fragment="content">
 		<div class="container my-5">
 			<h3 class="my-margin-bottom-28 text-center">
-				<em th:text="'Category #' + ${category.id}"></em>
+				<em th:text="'Collar #' + ${collar.id}"></em>
 			</h3>
 			
 			<div class="row">
@@ -21,31 +21,31 @@
 						<tbody>
 							<tr>
 								<td>Label</td>
-								<td th:text="${category.label}"></td>
+								<td th:text="${collar.label}"></td>
 							</tr>
 						</tbody>
 						
 					</table>
 					
 					<div class="my-margin-top-19">
-					    <a th:href="@{/categories}" class="btn btn-sm btn-secondary mr-2">
+					    <a th:href="@{/collars}" class="btn btn-sm btn-secondary mr-2">
 							<span>
 								<i class="far fa-arrow-alt-circle-left" aria-hidden="true"></i>
 							</span>
 							
-					    	<span>Back to the list of categories</span>
+					    	<span>Back to the list of collars</span>
 					    </a>
 				
 				
 					    <a
-			                th:href="@{/categories/{id}/edit(id=${category.id}, backToShow=true)}"
+			                th:href="@{/collars/{id}/edit(id=${collar.id}, backToShow=true)}"
 					    	class="btn btn-sm btn-primary"
 					    >
 							<span>
 								<i class="far fa-edit" aria-hidden="true"></i>
 							</span>
 							
-					    	<span>Edit category #<span th:text="${category.id}"></span></span>
+					    	<span>Edit collar #<span th:text="${collar.id}"></span></span>
 					    </a>
 					    
 					</div>

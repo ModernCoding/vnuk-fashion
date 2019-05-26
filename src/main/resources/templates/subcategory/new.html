@@ -2,15 +2,13 @@
 	
 	<title th:fragment="title">Create a new subcategory</title>
 	
-	
 	<section th:fragment="content">
-	
-		<h3 class="my-margin-bottom-28">
-			<em>Create a new subcategory</em>
-		</h3>
-		
-		<form th:replace="~{/subcategory/_form :: form(@{/subcategories}, 'post', @{/subcategories})}"></form>
-
+		<div class="container">			
+			<div class="row my-5">
+				<form th:replace="~{/subcategory/_form :: form('Create a new subcategory', 
+						@{/subcategories}, 'post', @{/subcategories})}"></form>
+			</div>
+		</div>
 	</section>
-	
+		
 </html>

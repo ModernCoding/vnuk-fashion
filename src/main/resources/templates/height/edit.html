@@ -1,6 +1,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	
-	<title th:fragment="title" th:text="'Edit category #' + ${category.id}"></title>
+	<title th:fragment="title" th:text="'Edit height #' + ${height.id}"></title>
 	
 	
 	<section th:fragment="content">
@@ -9,13 +9,13 @@
 				<form
 			    	th:replace="
 			    			~{
-			    				/category/_form
+			    				/height/_form
 			    				::
 			    				form(
-			    					'Edit category #' + ${category.id},
-			    					@{/categories/{id}(id=${category.id}, backToShow=${backToShow})},
+			    					'Edit height #' + ${height.id},
+			    					@{/heights/{id}(id=${height.id}, backToShow=${backToShow})},
 			    					'patch',
-			    					@{/categories{urlCompletion}(urlCompletion=${urlCompletion})}
+			    					@{/heights{urlCompletion}(urlCompletion=${urlCompletion})}
 			    				)
 			    			}
 			    		">

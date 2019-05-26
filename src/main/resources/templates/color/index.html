@@ -1,19 +1,19 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	
-	<title th:fragment="title">List of all the categories</title>
+	<title th:fragment="title">List of all the collars</title>
 	
 	
 	<section th:fragment="content">
 		<div class="container my-5">
 			<h3 class="my-margin-bottom-28 text-center">
-				<em>List of all categories</em>
+				<em>List of all collars</em>
 			</h3>
 
-			<a href="categories/new" class="btn btn-sm btn-success my-margin-bottom-19">
+			<a href="collars/new" class="btn btn-sm btn-success my-margin-bottom-19">
 				<span class="my-margin-right-19">
 					<i class="fa fa-plus" aria-hidden="true"></i>
 				</span>
-				<span>Create a new category</span>
+				<span>Create a new collar</span>
 			</a>
 
 
@@ -30,58 +30,58 @@
 					<tr>
 						<th scope="col">#</th>
 						<th scope="col">Label</th>
-						<th scope="col">Subcategories</th>
+						<th scope="col">Products</th>
 						<th scope="col">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="category : ${categories}" th:attr="data-category-id=${category.id}">
-						<td scope="row" th:text="${category.id}"></td>
+					<tr th:each="collar : ${collars}" th:attr="data-collar-id=${collar.id}">
+						<td scope="row" th:text="${collar.id}"></td>
 						<td>
-							<div th:text="${category.label}" class="my-margin-bottom-4 d-inline-block" ></div>
+							<div th:text="${collar.label}" class="my-margin-bottom-4 d-inline-block" ></div>
 
 						</td>
 						<td>
 							<div class="d-inline-block">
-								<a th:href="@{/subcategories?categoryId={id}(id=${category.id})}" class="btn btn-sm btn-info">
+								<a th:href="@{/products?collarId={id}(id=${collar.id})}" class="btn btn-sm btn-info">
 									<i class="fas fa-angle-double-right" aria-hidden="true"></i>
 									<span class="my-margin-left-19">
-										<i>Subcategories</i>
+										<i>Products</i>
 									</span>
 								</a>
 							</div>
 						</td>
 						<td>
-							<!-- Show category -->
+							<!-- Show title -->
 							<a
-									th:href="@{/categories/{id}(id=${category.id})}"
+									th:href="@{/collars/{id}(id=${collar.id})}"
 									class="btn btn-sm btn-light"
 									data-toggle="tooltip"
-									title="Show category"
+									title="Show collar"
 									data-placement="bottom"
 							>
 								<i class="far fa-eye" aria-hidden="true"></i>
 							</a>
 
 
-							<!-- Edit category -->
+							<!-- Edit title -->
 							<a
-									th:href="@{/categories/{id}/edit(id=${category.id})}"
-									class="btn btn-sm btn-primary my-category-to-edit"
+									th:href="@{/collars/{id}/edit(id=${collar.id})}"
+									class="btn btn-sm btn-primary my-collar-to-edit"
 									data-toggle="tooltip"
-									title="Edit category"
+									title="Edit collar"
 									data-placement="bottom"
 							>
 								<i class="far fa-edit" aria-hidden="true"></i>
 							</a>
 
-							<!-- Delete category -->
+							<!-- Delete title -->
 							<button
 									type="button"
-									class="btn btn-sm btn-danger my-category-to-delete"
-									th:value="${category.id}"
+									class="btn btn-sm btn-danger my-collar-to-delete"
+									th:value="${collar.id}"
 									data-toggle="tooltip"
-									title="Delete category"
+									title="Delete collar"
 									data-placement="bottom"
 							>
 								<i class="far fa-trash-alt" aria-hidden="true"></i>
