@@ -1,0 +1,13 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	
+	<title th:fragment="title">Create a new size</title>
+	
+	<section th:fragment="content">
+		<div class="container">
+			<div class="row my-5">
+				<form th:replace="~{/size/_form :: form('Create a new size', @{/sizes}, 'post', @{/sizes})}"></form>
+			</div>
+		</div>
+	</section>
+	
+</html>

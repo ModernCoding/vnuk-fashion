@@ -1,0 +1,92 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	
+	<title th:fragment="title" th:text="'Size #' + ${size.id}"></title>
+	
+	
+	<section th:fragment="content">
+		<div class="container my-5">
+			<h3 class="my-margin-bottom-28 text-center">
+				<em th:text="'Size #' + ${size.id}"></em>
+			</h3>
+			
+			<div class="row">
+				<div class="col-md-8 offset-md-2">
+					<table class="table table-bordered text-center">
+						<thead class="thead-dark">
+							<tr>
+								<th scope="col">Field</th>
+								<th scope="col">Value</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Universal</td>
+								<td th:text="${size.universal}"></td>
+							</tr>
+							
+							<tr>
+								<td>US</td>
+								<td th:text="${size.us}"></td>
+							</tr>
+							
+							<tr>
+								<td>UK</td>
+								<td th:text="${size.uk}"></td>
+							</tr>
+							
+							<tr>
+								<td>France</td>
+								<td th:text="${size.france}"></td>
+							</tr>
+							
+							<tr>
+								<td>Italy</td>
+								<td th:text="${size.italy}"></td>
+							</tr>
+							
+							<tr>
+								<td>Germany</td>
+								<td th:text="${size.germany}"></td>
+							</tr>
+							
+							<tr>
+								<td>Australia</td>
+								<td th:text="${size.australia}"></td>
+							</tr>
+							
+							<tr>
+								<td>Japan</td>
+								<td th:text="${size.japan}"></td>
+							</tr>
+						</tbody>
+						
+					</table>
+					
+					<div class="my-margin-top-19">
+					    <a th:href="@{/sizes}" class="btn btn-sm btn-secondary mr-2">
+							<span>
+								<i class="far fa-arrow-alt-circle-left" aria-hidden="true"></i>
+							</span>
+							
+					    	<span>Back to the list of sizes</span>
+					    </a>
+				
+				
+					    <a
+			                th:href="@{/sizes/{id}/edit(id=${size.id}, backToShow=true)}"
+					    	class="btn btn-sm btn-primary"
+					    >
+							<span>
+								<i class="far fa-edit" aria-hidden="true"></i>
+							</span>
+							
+					    	<span>Edit size #<span th:text="${size.id}"></span></span>
+					    </a>
+					    
+					</div>
+				</div>
+			</div>			
+		</div>
+	</section>
+	
+</html>

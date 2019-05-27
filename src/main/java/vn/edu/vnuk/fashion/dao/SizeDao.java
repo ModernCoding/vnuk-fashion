@@ -97,7 +97,16 @@ public class SizeDao {
     //  UPDATE
     public void update(Size size) throws SQLException {
     	
-        String sqlQuery = "update sizes set universal=? us=? uk=? france=? italy=? germany=? australia=? japan=? where id=?";
+        String sqlQuery = "update sizes "
+        		+ "set universal=?, "
+        		+ "us=?, "
+        		+ "uk=?, "
+        		+ "france=?, "
+        		+ "italy=?, "
+        		+ "germany=?, "
+        		+ "australia=?, "
+        		+ "japan=? "
+        		+ "where id=?";
         
         try {
         	this.jdbcTemplate.update(

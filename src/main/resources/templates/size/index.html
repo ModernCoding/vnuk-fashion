@@ -1,0 +1,107 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	
+	<title th:fragment="title">List of all the sizes</title>
+	
+	
+	<section th:fragment="content">
+		<div class="container my-5">
+			<h3 class="my-margin-bottom-28 text-center">
+				<em>List of all sizes</em>
+			</h3>
+
+			<a href="sizes/new" class="btn btn-sm btn-success my-margin-bottom-19">
+				<span class="my-margin-right-19">
+					<i class="fa fa-plus" aria-hidden="true"></i>
+				</span>
+				<span>Create a new size</span>
+			</a>
+
+
+			<div id="my-notice" class="my-no-line-height">
+				<span class="my-margin-right-19">
+					<i aria-hidden="true"></i>
+				</span>
+				<span></span>
+			</div>
+
+
+			<table class="table table-bordered text-center">
+				<thead class="thead-dark">
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">Universal</th>
+						<th scope="col">US</th>
+						<th scope="col">UK</th>
+						<th scope="col">France</th>
+						<th scope="col">Italy</th>
+						<th scope="col">Germany</th>
+						<th scope="col">Australia</th>
+						<th scope="col">Japan</th>
+						<th scope="col">Products sizes</th>
+						<th scope="col">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="size : ${sizes}" th:attr="data-size-id=${size.id}">
+						<td scope="row" th:text="${size.id}"></td>
+						<td th:text="${size.universal}"></td>
+						<td th:text="${size.us}"></td>
+						<td th:text="${size.uk}"></td>
+						<td th:text="${size.france}"></td>
+						<td th:text="${size.italy}"></td>
+						<td th:text="${size.germany}"></td>
+						<td th:text="${size.australia}"></td>
+						<td th:text="${size.japan}"></td>
+						<td>
+							<div class="d-inline-block">
+								<a th:href="@{/products-sizes?sizeId={id}(id=${size.id})}" class="btn btn-sm btn-info">
+									<i class="fas fa-angle-double-right" aria-hidden="true"></i>
+									<span class="my-margin-left-19">
+										<i>Product size</i>
+									</span>
+								</a>
+							</div>
+						</td>
+						<td>
+							<!-- Show category -->
+							<a
+									th:href="@{/sizes/{id}(id=${size.id})}"
+									class="btn btn-sm btn-light"
+									data-toggle="tooltip"
+									title="Show size"
+									data-placement="bottom"
+							>
+								<i class="far fa-eye" aria-hidden="true"></i>
+							</a>
+
+
+							<!-- Edit category -->
+							<a
+									th:href="@{/sizes/{id}/edit(id=${size.id})}"
+									class="btn btn-sm btn-primary my-size-to-edit"
+									data-toggle="tooltip"
+									title="Edit size"
+									data-placement="bottom"
+							>
+								<i class="far fa-edit" aria-hidden="true"></i>
+							</a>
+
+							<!-- Delete category -->
+							<button
+									type="button"
+									class="btn btn-sm btn-danger my-size-to-delete"
+									th:value="${size.id}"
+									data-toggle="tooltip"
+									title="Delete size"
+									data-placement="bottom"
+							>
+								<i class="far fa-trash-alt" aria-hidden="true"></i>
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</section>
+	
+</html>
