@@ -10,9 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import vn.edu.vnuk.fashion.model.Size;
 
-
-
-
 @Repository
 public class SizeDao {
 	

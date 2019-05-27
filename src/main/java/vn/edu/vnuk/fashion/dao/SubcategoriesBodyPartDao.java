@@ -14,13 +14,8 @@ import vn.edu.vnuk.fashion.rowmapper.SubcategoriesBodyPartRowMapper;
 @Repository
 public class SubcategoriesBodyPartDao {
 	
-    private final JdbcTemplate jdbcTemplate;
-    
-    @Autowired
-    public SubcategoriesBodyPartDao(JdbcTemplate jdbcTemplate) {
-	  this.jdbcTemplate = jdbcTemplate;
-    }
-
+	@Autowired
+    private JdbcTemplate jdbcTemplate;
 
     //  CREATE
     public void create(SubcategoriesBodyPart subcategoriesBodyPart) throws SQLException{

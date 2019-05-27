@@ -11,7 +11,6 @@ public class ProductsSize {
 	@NotNull
 	private Long sizeId;
 	
-	@NotNull
 	private Product product;
 	
 	private Size size;

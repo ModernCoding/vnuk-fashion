@@ -7,21 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import vn.edu.vnuk.fashin.helper.DaoHelpers;
 import vn.edu.vnuk.fashion.model.ProductsSize;
 import vn.edu.vnuk.fashion.rowmapper.ProductsSizeRowMapper;
-
-
 
 @Repository
 public class ProductsSizeDao {
 	
-    private final JdbcTemplate jdbcTemplate;
+	@Autowired
+    private JdbcTemplate jdbcTemplate;
     
-    @Autowired
-    public ProductsSizeDao(JdbcTemplate jdbcTemplate) {
-	  this.jdbcTemplate = jdbcTemplate;
-    }
-
 
     //  CREATE
     public void create(ProductsSize  productsSize) throws SQLException{
@@ -57,40 +52,22 @@ public class ProductsSizeDao {
     //  READ (List of ProductsSizes)
     public List<ProductsSize> read(String productId , String sizeId) throws SQLException {
     	
-    	String sqlQuery = "select t01.id"
-		    			+ "     , t02.id as product_id"
-		    			+ "     , t02.name"
-		    			+ "     , t02.subcategory_id"
-		    			+ "     , t02.sleeve_id"
-		    			+ "     , t02.shape_id"
-		    			+ "     , t02.collar_id"
-		    			+ "     , t02.height_id"
-		    			+ "     , t02.material_id"
-		    			+ "     , t02.maker_id"
-		    			+ "     , t03.id as size_id"
-		    			+ "     , t03.universal"
-		    			+ "     , t03.us"
-		    			+ "     , t03.uk"
-		    			+ "     , t03.france"
-		    			+ "     , t03.italy"
-		    			+ "     , t03.germany"
-		    			+ "     , t03.australia"
-		    			+ "     , t03.japan"
-						+ "  from products_sizes t01, products t02, sizes t03"
-
-						+ " where t02.id = t01.product_id"
-						+ "and t03.id = t01.size_id"
-				;
+    	String sqlQuery = "select products.id as product_id,"
+    			+ "	products.name as product_name, "
+    			+ " sizes.id as size_id, "
+    			+ " sizes.universal as size_universal, "
+    			+ " products_sizes.id as id "
+    			+ "from products_sizes "
+    			+ "inner join products on products_sizes.product_id = products.id "
+    			+ "inner join sizes on products_sizes.size_id = sizes.id ";
     	
-    	if (productId != null && sizeId != null) {
-    		sqlQuery += String.format("   and t02.id = %s", productId, "   and t03.id = %s", sizeId );
-    		sqlQuery += " order by t01.id asc;";
-    	}
+    	if (productId != null)
+    		sqlQuery = DaoHelpers.addConditionForQuery(sqlQuery, "product_id", productId);
     	
-    	else {
-        	sqlQuery += " order by t03.id asc, t02.id asc, t01.id asc;";
-    	}
+    	if (sizeId != null)
+    		sqlQuery = DaoHelpers.addConditionForQuery(sqlQuery, "size_id", sizeId);
     	
+    	sqlQuery += " order by products_sizes.id asc, products.id asc, sizes.id asc;";
     	
         try {
         	
@@ -107,50 +84,30 @@ public class ProductsSizeDao {
 
     }
 
-
     //  READ (Single ProductsSize)
     public ProductsSize read(Long id) throws SQLException{
 
-    	String sqlQuery = "select t01.id"
-    			+ "     , t02.id as product_id"
-    			+ "     , t02.name"
-    			+ "     , t02.subcategory_id"
-    			+ "     , t02.sleeve_id"
-    			+ "     , t02.shape_id"
-    			+ "     , t02.collar_id"
-    			+ "     , t02.height_id"
-    			+ "     , t02.material_id"
-    			+ "     , t02.maker_id"
-    			+ "     , t03.id as size_id"
-    			+ "     , t03.universal"
-    			+ "     , t03.us"
-    			+ "     , t03.uk"
-    			+ "     , t03.france"
-    			+ "     , t03.italy"
-    			+ "     , t03.germany"
-    			+ "     , t03.australia"
-    			+ "     , t03.japan"
-				+ "  from products_sizes t01, products t02, sizes t03"
-				+ " where t01.id = ?"
-				+ "   and t02.id = t01.product_id"
-				+ "   and t03.id = t01.size_id"	
-				+ " order by t01.id asc, t02.id asc, t01.id asc"
-				+ ";"
-		;
+    	String sqlQuery = "select p.id as product_id,"
+    			+ "	p.name as product_name, "
+    			+ " s.id as size_id, "
+    			+ " s.universal as size_universal, "
+    			+ " ps.id as id "
+    			+ "from products_sizes ps "
+    			+ "inner join products p on ps.product_id = p.id "
+    			+ "inner join sizes s on ps.size_id = s.id "
+    			+ "where ps.id=?;";
 
     	return this.jdbcTemplate.queryForObject(
     			sqlQuery,
         		new Object[] {id},
         		new ProductsSizeRowMapper()
         	);
-        
     }  
-
     
     //  UPDATE
     public void update(ProductsSize productsSize) throws SQLException {
         
-    	String sqlQuery = "update products_sizes set product_id=?, size_id=? where id=?";
+    	String sqlQuery = "update products_sizes set product_id=?, size_id=? where id=?;";
         
 
         try {
@@ -158,9 +115,9 @@ public class ProductsSizeDao {
 					sqlQuery,
 					
 					new Object[] {
-							productsSize.getId(),
 							productsSize.getProductId(),
-							productsSize.getSizeId()
+							productsSize.getSizeId(),
+							productsSize.getId()
 						}
 				);
             
@@ -197,7 +154,6 @@ public class ProductsSizeDao {
         } 
 
         catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 

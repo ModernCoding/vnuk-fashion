@@ -1,53 +1,21 @@
 package vn.edu.vnuk.fashion.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
-import vn.edu.vnuk.fashion.jdbc.ConnectionFactory;
-import vn.edu.vnuk.fashion.model.Collar;
-import vn.edu.vnuk.fashion.model.Height;
-import vn.edu.vnuk.fashion.model.Maker;
-import vn.edu.vnuk.fashion.model.Material;
+import vn.edu.vnuk.fashin.helper.DaoHelpers;
 import vn.edu.vnuk.fashion.model.Product;
-import vn.edu.vnuk.fashion.model.Shape;
-import vn.edu.vnuk.fashion.model.Sleeve;
+import vn.edu.vnuk.fashion.rowmapper.ProductRowMapper;
 
+@Repository
 public class ProductDao {
 	
-	@Autowired
-    private SleeveDao sleeveDao;
-
     @Autowired
-    private ShapeDao shapeDao;
-    
-    @Autowired
-    private CollarDao collarDao;
-
-    @Autowired
-    private HeightDao heightDao;
-
-    @Autowired
-    private MaterialDao materialDao;
-
-    @Autowired
-    private MakerDao makerDao;	
-    
-    private Connection connection;
-
-    public ProductDao(){
-        this.connection = new ConnectionFactory().getConnection();
-    }
-
-    public ProductDao(Connection connection){
-        this.connection = connection;
-    }
-
+    private JdbcTemplate jdbcTemplate;
 
     //  CREATE
     public void create(Product product) throws SQLException{
@@ -55,131 +23,168 @@ public class ProductDao {
         String sqlQuery = "insert into products (name , subcategory_id , sleeve_id , shape_id , collar_id , height_id , material_id , maker_id) "
                         +	"values (? , ? , ? , ? , ? , ? , ? , ?)";
 
-        PreparedStatement statement;
-
         try {
-                statement = connection.prepareStatement(sqlQuery);
+            System.out.println(
+            		String.format(
+            				"%s new product in DB!",
+            				
+            				this.jdbcTemplate.update(
+            						sqlQuery,
+            						new Object[] {
+            								product.getName(),
+            				                product.getSubcategory().getId(),
+            				                product.getSleeve().getId(),
+            				                product.getShape().getId(),
+            				                product.getCollar().getId(),
+            				                product.getHeight().getId(),
+            				                product.getMaterial().getId(),
+            				                product.getMaker().getId()
+            							}
+        						)
+        				)
+        		);
 
-                //	Replacing "?" through values
-                statement.setString(1, product.getName());
-                statement.setLong(2, product.getSubcategory().getId());
-                statement.setLong(3, product.getSleeve().getId());
-                statement.setLong(4, product.getShape().getId());
-                statement.setLong(5, product.getCollar().getId());
-                statement.setLong(6, product.getHeight().getId());
-                statement.setLong(7, product.getMaterial().getId());
-                statement.setLong(8, product.getMaker().getId());
-
-                // 	Executing statement
-                statement.execute();
-
-                System.out.println("New record in DB !");
-
+            
         } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-                System.out.println("Done !");
-                connection.close();
+        	
+            e.printStackTrace();
+        
         }
-
+        
     }
     
     
     //  READ (List of Products)
-    @SuppressWarnings("finally")
-    public List<Product> read() throws SQLException {
+    public List<Product> read(Product product) {
 
-        String sqlQuery = "select * from subcategories";
-        PreparedStatement statement;
-        List<Product> products = new ArrayList<Product>();
-
+        String sqlQuery = "select subcategories.id as subcategory_id, "
+        		+ "subcategories.label as subcategory_label, "
+        		+ "sleeves.id as sleeve_id, "
+        		+ "sleeves.label as sleeve_label, "
+        		+ "shapes.id as shape_id, "
+        		+ "shapes.label as shape_label, "
+        		+ "collars.id as collar_id, "
+        		+ "collars.label as collar_label, "
+        		+ "heights.id as height_id, "
+        		+ "heights.label as height_label, "
+        		+ "materials.id as material_id, "
+        		+ "materials.label as material_label, "
+        		+ "makers.id as maker_id, "
+        		+ "makers.label as maker_label, "
+        		+ "products.id as id, "
+        		+ "products.name as name "
+        		+ "from products "
+        		+ "inner join subcategories on products.subcategory_id = subcategories.id "
+        		+ "inner join sleeves on products.sleeve_id = sleeves.id "
+        		+ "inner join shapes on products.shape_id = shapes.id "
+        		+ "inner join collars on products.collar_id = collars.id "
+        		+ "inner join heights on products.height_id = heights.id "
+        		+ "inner join materials on products.material_id = materials.id "
+        		+ "inner join makers on products.maker_id = makers.id ";
+        
+        if (product.getSubcategoryId() != null)
+        	sqlQuery = DaoHelpers.addConditionForQuery(sqlQuery, "products.subcategory_id", String.valueOf(product.getSubcategoryId()));
+        
+        if (product.getSleeveId() != null) 
+        	sqlQuery = DaoHelpers.addConditionForQuery(sqlQuery, "products.sleeve_id", String.valueOf(product.getSleeveId()));
+        
+        if (product.getShapeId() != null)
+        	sqlQuery = DaoHelpers.addConditionForQuery(sqlQuery, "products.shape_id", String.valueOf(product.getShapeId()));
+        
+        if (product.getCollarId() != null)
+        	sqlQuery = DaoHelpers.addConditionForQuery(sqlQuery, "products.collar_id", String.valueOf(product.getCollarId()));
+        
+        if (product.getHeightId() != null)
+        	sqlQuery = DaoHelpers.addConditionForQuery(sqlQuery, "products.height_id", String.valueOf(product.getHeightId()));
+        
+        if (product.getMaterialId() != null)
+        	sqlQuery = DaoHelpers.addConditionForQuery(sqlQuery, "products.material_id", String.valueOf(product.getMaterialId()));
+        
+        if (product.getMakerId() != null)
+        	sqlQuery = DaoHelpers.addConditionForQuery(sqlQuery, "products.maker_id", String.valueOf(product.getMakerId()));
+        
+        sqlQuery += " order by products.id asc;";
+        
         try {
-
-            statement = connection.prepareStatement(sqlQuery);
-
-            // 	Executing statement
-            ResultSet results = statement.executeQuery();
-            
-            while(results.next()){
-
-            	Product product = new Product();
-                
-                product.setName(results.getString("name"));
-                
-                // Process foreign key
-                Long subcategoryIdFromDB = results.getLong("subcategory_id");
-                Long sleeveIdFromDB = results.getLong("sleeve_id");
-                Long shapeIdFromDB = results.getLong("shape_id");
-                Long collarIdFromDB = results.getLong("collar_id");
-                Long heightIdFromDB = results.getLong("height_id");
-                Long materialIdFromDB = results.getLong("material_id");
-                Long makerIdFromDB = results.getLong("maker_id");
-
-                
-                
-//                SubcategoryDao subcategoryDao = new SubcategoryDao();
-                
-                
-//                Subcategory subcategory = subcategoryDao.read(subcategoryIdFromDB);
-                Sleeve sleeve = sleeveDao.read(sleeveIdFromDB);
-                Shape shape = shapeDao.read(shapeIdFromDB);
-                Collar collar = collarDao.read(collarIdFromDB);
-                Height height = heightDao.read(heightIdFromDB);
-                Material material = materialDao.read(materialIdFromDB);
-                Maker maker = makerDao.read(makerIdFromDB);
-                
-//                product.setSubcategory(subcategory);
-                product.setSleeve(sleeve);
-                product.setShape(shape);
-                product.setCollar(collar);
-                product.setHeight(height);
-                product.setMaterial(material);
-                product.setMaker(maker);
-
-                products.add(product);
-
-            }
-
-            results.close();
-            statement.close();
-
-
+        	
+        	return new ProductRowMapper().mapRows(this.jdbcTemplate.queryForList(sqlQuery));
+        	
         } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-                connection.close();
-                return products;
+        	
+            e.printStackTrace();
+            
         }
-
-
+        
+        return null;
+        
     }
 
 
     //  READ (Single Category)
     public Product read(Long id) throws SQLException{
-        return this.read(id, true);
+    	String sqlQuery = "select subcategory.id as subcategory_id, "
+        		+ "subcategory.label as subcategory_label, "
+        		+ "sleeve.id as sleeve_id, "
+        		+ "sleeve.label as sleeve_label, "
+        		+ "shape.id as shape_id, "
+        		+ "shape.label as shape_label, "
+        		+ "collar.id as collar_id, "
+        		+ "collar.label as collar_label, "
+        		+ "height.id as height_id, "
+        		+ "height.label as height_label, "
+        		+ "material.id as material_id, "
+        		+ "material.label as material_label, "
+        		+ "maker.id as maker_id, "
+        		+ "maker.label as maker_label "
+        		+ "from product "
+        		+ "inner join subcategory on product.subcategory_id = subcategory.id "
+        		+ "inner join sleeve on product.sleeve_id = sleeve.id "
+        		+ "inner join shape on product.shape_id = shape.id "
+        		+ "inner join collar on product.collar_id = collar.id "
+        		+ "inner join height on product.height_id = height.id "
+        		+ "inner join material on product.material_id = material.id "
+        		+ "inner join maker on product.maker_id = maker.id "
+        		+ "where product.id = ? "
+        		+ "order by product.id asc;";
+        
+        return this.jdbcTemplate.queryForObject(
+    			sqlQuery,
+        		new Object[] {id},
+        		new ProductRowMapper()
+        	);
     }  
 
     
     //  UPDATE
     public void update(Product product) throws SQLException {
-        String sqlQuery = "update products name=? subcategory_id=? sleeve_id=? shape_id=? collar_id=? height_id=? material_id=? maker_id=? where id=?";
+        
+    	String sqlQuery = "update products "
+    			+ "set name=?, "
+    			+ "subcategory_id=?, "
+    			+ "sleeve_id=?, "
+    			+ "shape_id=?, "
+    			+ "collar_id=?, "
+    			+ "height_id=?, "
+    			+ "material_id=?, "
+    			+ "maker_id=? "
+    			+ "where id=?;";
         
         try {
-            PreparedStatement statement = connection.prepareStatement(sqlQuery);
-            statement.setString(1, product.getName());
-            statement.setLong(2, product.getSubcategory().getId());
-            statement.setLong(3, product.getSleeve().getId());
-            statement.setLong(4, product.getShape().getId());
-            statement.setLong(5, product.getCollar().getId());
-            statement.setLong(6, product.getHeight().getId());
-            statement.setLong(7, product.getMaterial().getId());
-            statement.setLong(8, product.getMaker().getId());
+        	this.jdbcTemplate.update(
+					sqlQuery,
+					
+					new Object[] {
+							product.getName(),
+							product.getSubcategory().getId(),
+							product.getSleeve().getId(),
+				            product.getShape().getId(),
+				            product.getCollar().getId(),
+				            product.getHeight().getId(),
+				            product.getMaterial().getId(),
+				            product.getMaker().getId()
+						}
+				);
             
-            statement.execute();
-            statement.close();
             
             System.out.println("Product successfully modified.");
         } 
@@ -188,103 +193,31 @@ public class ProductDao {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
-        finally {
-            connection.close();
-        }
-        
     }
     
     
     //  DELETE
     public void delete(Long id) throws SQLException {
-        String sqlQuery = "delete from products where id=?";
+    	String sqlQuery = "delete from products where id=?;";
 
         try {
-            PreparedStatement statement = connection.prepareStatement(sqlQuery);
-            statement.setLong(1, id);
-            statement.execute();
-            statement.close();
-            
-            System.out.println("Product successfully deleted.");
+
+            System.out.println(
+            		String.format(
+            				"%s record successfully removed from DB!",
+            				
+            				this.jdbcTemplate.update(
+            						sqlQuery,
+            						new Object[] {id}
+        						)
+        				)
+        		);
 
         } 
 
         catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }
-        
-        finally {
-            connection.close();
-        }
-
-    }
-  
-    
-    //  PRIVATE
-    
-    @SuppressWarnings("finally")
-    private Product read(Long id, boolean closeAfterUse) throws SQLException{
-
-        String sqlQuery = "select * from products where id=?";
-
-        PreparedStatement statement;
-        Product product = new Product();
-
-        try {
-            statement = connection.prepareStatement(sqlQuery);
-
-            //	Replacing "?" through values
-            statement.setLong(1, id);
-
-            // 	Executing statement
-            ResultSet results = statement.executeQuery();
-
-            if(results.next()){
-
-            	product.setName(results.getString("name"));
-                
-                // Process foreign key
-                Long subcategoryIdFromDB = results.getLong("subcategory_id");
-                Long sleeveIdFromDB = results.getLong("sleeve_id");
-                Long shapeIdFromDB = results.getLong("shape_id");
-                Long collarIdFromDB = results.getLong("collar_id");
-                Long heightIdFromDB = results.getLong("height_id");
-                Long materialIdFromDB = results.getLong("material_id");
-                Long makerIdFromDB = results.getLong("maker_id");
-                
-//                Subcategory subcategory = subcategoryDao.read(subcategoryIdFromDB);
-                Sleeve sleeve = sleeveDao.read(sleeveIdFromDB);
-                Shape shape = shapeDao.read(shapeIdFromDB);
-                Collar collar = collarDao.read(collarIdFromDB);
-                Height height = heightDao.read(heightIdFromDB);
-                Material material = materialDao.read(materialIdFromDB);
-                Maker maker = makerDao.read(makerIdFromDB);
-                
-//                product.setSubcategory(subcategory);
-                product.setSleeve(sleeve);
-                product.setShape(shape);
-                product.setCollar(collar);
-                product.setHeight(height);
-                product.setMaterial(material);
-                product.setMaker(maker);
-
-            }
-
-            statement.close();
-
-        } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-            
-            if (closeAfterUse) {
-                connection.close();
-    
-            }
-            
-            return product;
         }
 
     }

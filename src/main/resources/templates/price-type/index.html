@@ -35,7 +35,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="priceType : ${priceTypes}" th:attr="data-collar-id=${priceType.id}">
+					<tr th:each="priceType : ${priceTypes}" th:attr="data-price-type-id=${priceType.id}">
 						<td scope="row" th:text="${priceType.id}"></td>
 						<td>
 							<div th:text="${priceType.label}" class="my-margin-bottom-4 d-inline-block" ></div>
@@ -64,7 +64,7 @@
 							</a>
 
 
-							<!-- Edit collar -->
+							<!-- Edit price type -->
 							<a
 									th:href="@{/price-types/{id}/edit(id=${priceType.id})}"
 									class="btn btn-sm btn-primary my-price-type-to-edit"
@@ -75,7 +75,7 @@
 								<i class="far fa-edit" aria-hidden="true"></i>
 							</a>
 
-							<!-- Delete collar -->
+							<!-- Delete price type -->
 							<button
 									type="button"
 									class="btn btn-sm btn-danger my-price-type-to-delete"

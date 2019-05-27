@@ -23,8 +23,6 @@ public class ProductRowMapper implements RowMapper<Product> {
 	@Override
 	public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
 		
-		
-		Category category = new Category();
 		Subcategory subcategory = new Subcategory();
 		Sleeve sleeve = new Sleeve();
 		Shape shape = new Shape();
@@ -34,13 +32,8 @@ public class ProductRowMapper implements RowMapper<Product> {
 		Maker maker = new Maker();
 		Product product = new Product();
 		
-		category.setId(rs.getLong("category_id"));
-		category.setLabel(rs.getString("category_label"));
-		
 		subcategory.setId(rs.getLong("subcategory_id"));
-		subcategory.setCategoryId(rs.getLong("category_id"));
 		subcategory.setLabel(rs.getString("subcategory_label"));
-		subcategory.setCategory(category);
 		
 		sleeve.setId(rs.getLong("sleeve_id"));
 		sleeve.setLabel(rs.getString("sleeve_label"));
@@ -89,7 +82,6 @@ public class ProductRowMapper implements RowMapper<Product> {
 		
     	for (Map<String, Object> row : rows) {
 			
-    		Category category = new Category();
     		Subcategory subcategory = new Subcategory();
     		Sleeve sleeve = new Sleeve();
     		Shape shape = new Shape();
@@ -99,13 +91,8 @@ public class ProductRowMapper implements RowMapper<Product> {
     		Maker maker = new Maker();
     		Product product = new Product();
     		
-    		category.setId((Long) row.get("category_id"));
-    		category.setLabel((String) row.get("category_label"));
-    		
     		subcategory.setId((Long) row.get("subcategory_id"));
-    		subcategory.setCategoryId((Long) row.get("category_id"));
     		subcategory.setLabel((String) row.get("subcategory_label"));
-    		subcategory.setCategory(category);
     		
     		sleeve.setId((Long) row.get("sleeve_id"));
     		sleeve.setLabel((String) row.get("sleeve_label"));

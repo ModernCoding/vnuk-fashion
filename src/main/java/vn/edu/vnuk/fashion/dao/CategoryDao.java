@@ -14,15 +14,9 @@ import vn.edu.vnuk.fashion.model.Category;
 @Repository
 public class CategoryDao {
 	
-    private final JdbcTemplate jdbcTemplate;
+	@Autowired
+    private JdbcTemplate jdbcTemplate;
     
-    @Autowired
-    public CategoryDao(JdbcTemplate jdbcTemplate) {
-	  this.jdbcTemplate = jdbcTemplate;
-    }
-	
-
-
     //  CREATE
     public void create(Category category) throws SQLException{
 
