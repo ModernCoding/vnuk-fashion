@@ -1,0 +1,57 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	
+	<title th:fragment="title" th:text="'Material #' + ${material.id}"></title>
+	
+	
+	<section th:fragment="content">
+		<div class="container my-5">
+			<h3 class="my-margin-bottom-28 text-center">
+				<em th:text="'Material #' + ${material.id}"></em>
+			</h3>
+			
+			<div class="row">
+				<div class="col-md-8 offset-md-2">
+					<table class="table table-bordered text-center">
+						<thead class="thead-dark">
+							<tr>
+								<th scope="col">Field</th>
+								<th scope="col">Value</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Label</td>
+								<td th:text="${material.label}"></td>
+							</tr>
+						</tbody>
+						
+					</table>
+					
+					<div class="my-margin-top-19">
+					    <a th:href="@{/materials}" class="btn btn-sm btn-secondary mr-2">
+							<span>
+								<i class="far fa-arrow-alt-circle-left" aria-hidden="true"></i>
+							</span>
+							
+					    	<span>Back to the list of materials</span>
+					    </a>
+				
+				
+					    <a
+			                th:href="@{/materials/{id}/edit(id=${material.id}, backToShow=true)}"
+					    	class="btn btn-sm btn-primary"
+					    >
+							<span>
+								<i class="far fa-edit" aria-hidden="true"></i>
+							</span>
+							
+					    	<span>Edit material #<span th:text="${material.id}"></span></span>
+					    </a>
+					    
+					</div>
+				</div>
+			</div>			
+		</div>
+	</section>
+	
+</html>

@@ -95,7 +95,7 @@ public class SellerDao {
     //  UPDATE
     public void update(Seller seller) throws SQLException {
     	
-        String sqlQuery = "update sellers set label=? address=? phone=? email=? where id=?";
+        String sqlQuery = "update sellers set label=?, address=?, phone=?, email=? where id=?";
         
         try {
         	this.jdbcTemplate.update(

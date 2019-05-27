@@ -1,0 +1,28 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	
+	<title th:fragment="title" th:text="'Edit material #' + ${material.id}"></title>
+	
+	
+	<section th:fragment="content">
+	    <div class="container">
+			<div class="row my-5">
+				<form
+			    	th:replace="
+			    			~{
+			    				/material/_form
+			    				::
+			    				form(
+			    					'Edit material #' + ${material.id},
+			    					@{/materials/{id}(id=${material.id}, backToShow=${backToShow})},
+			    					'patch',
+			    					@{/materials{urlCompletion}(urlCompletion=${urlCompletion})}
+			    				)
+			    			}
+			    		">
+			    </form>
+			</div>
+		</div>
+	
+	</section>
+	
+</html>

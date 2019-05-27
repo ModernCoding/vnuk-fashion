@@ -1,0 +1,28 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	
+	<title th:fragment="title" th:text="'Edit shape #' + ${shape.id}"></title>
+	
+	
+	<section th:fragment="content">
+	    <div class="container">
+			<div class="row my-5">
+				<form
+			    	th:replace="
+			    			~{
+			    				/shape/_form
+			    				::
+			    				form(
+			    					'Edit shape #' + ${shape.id},
+			    					@{/shapes/{id}(id=${shape.id}, backToShow=${backToShow})},
+			    					'patch',
+			    					@{/shapes{urlCompletion}(urlCompletion=${urlCompletion})}
+			    				)
+			    			}
+			    		">
+			    </form>
+			</div>
+		</div>
+	
+	</section>
+	
+</html>

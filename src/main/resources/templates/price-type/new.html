@@ -1,0 +1,13 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	
+	<title th:fragment="title">Create a new price type</title>
+	
+	<section th:fragment="content">
+		<div class="container my-5">
+			<div class="row my-5">
+				<form th:replace="~{/price-type/_form :: form('Create a new price type', @{/price-types}, 'post', @{/price-types})}"></form>
+			</div>
+		</div>
+	</section>
+	
+</html>

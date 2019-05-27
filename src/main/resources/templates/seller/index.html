@@ -1,0 +1,96 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	
+	<title th:fragment="title">List of all the sellers</title>
+	
+	
+	<section th:fragment="content">
+		<div class="container my-5">
+			<h3 class="my-margin-bottom-28 text-center">
+				<em>List of all sellers</em>
+			</h3>
+
+			<a href="sellers/new" class="btn btn-sm btn-success my-margin-bottom-19">
+				<span class="my-margin-right-19">
+					<i class="fa fa-plus" aria-hidden="true"></i>
+				</span>
+				<span>Create a new seller</span>
+			</a>
+
+
+			<div id="my-notice" class="my-no-line-height">
+				<span class="my-margin-right-19">
+					<i aria-hidden="true"></i>
+				</span>
+				<span></span>
+			</div>
+
+
+			<table class="table table-bordered text-center">
+				<thead class="thead-dark">
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">Label</th>
+						<th scope="col">Prices</th>
+						<th scope="col">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="seller : ${sellers}" th:attr="data-seller-id=${seller.id}">
+						<td scope="row" th:text="${seller.id}"></td>
+						<td>
+							<div th:text="${seller.label}" class="my-margin-bottom-4 d-inline-block" ></div>
+
+						</td>
+						<td>
+							<div class="d-inline-block">
+								<a th:href="@{/prices?sellerId={id}(id=${seller.id})}" class="btn btn-sm btn-info">
+									<i class="fas fa-angle-double-right" aria-hidden="true"></i>
+									<span class="my-margin-left-19">
+										<i>Prices</i>
+									</span>
+								</a>
+							</div>
+						</td>
+						<td>
+							<!-- Show maker -->
+							<a
+									th:href="@{/sellers/{id}(id=${seller.id})}"
+									class="btn btn-sm btn-light"
+									data-toggle="tooltip"
+									title="Show seller"
+									data-placement="bottom"
+							>
+								<i class="far fa-eye" aria-hidden="true"></i>
+							</a>
+
+
+							<!-- Edit maker -->
+							<a
+									th:href="@{/sellers/{id}/edit(id=${seller.id})}"
+									class="btn btn-sm btn-primary my-seller-to-edit"
+									data-toggle="tooltip"
+									title="Edit seller"
+									data-placement="bottom"
+							>
+								<i class="far fa-edit" aria-hidden="true"></i>
+							</a>
+
+							<!-- Delete maker -->
+							<button
+									type="button"
+									class="btn btn-sm btn-danger my-seller-to-delete"
+									th:value="${seller.id}"
+									data-toggle="tooltip"
+									title="Delete seller"
+									data-placement="bottom"
+							>
+								<i class="far fa-trash-alt" aria-hidden="true"></i>
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</section>
+	
+</html>

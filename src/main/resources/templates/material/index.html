@@ -1,0 +1,96 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	
+	<title th:fragment="title">List of all the materials</title>
+	
+	
+	<section th:fragment="content">
+		<div class="container my-5">
+			<h3 class="my-margin-bottom-28 text-center">
+				<em>List of all materials</em>
+			</h3>
+
+			<a href="materials/new" class="btn btn-sm btn-success my-margin-bottom-19">
+				<span class="my-margin-right-19">
+					<i class="fa fa-plus" aria-hidden="true"></i>
+				</span>
+				<span>Create a new material</span>
+			</a>
+
+
+			<div id="my-notice" class="my-no-line-height">
+				<span class="my-margin-right-19">
+					<i aria-hidden="true"></i>
+				</span>
+				<span></span>
+			</div>
+
+
+			<table class="table table-bordered text-center">
+				<thead class="thead-dark">
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">Label</th>
+						<th scope="col">Products</th>
+						<th scope="col">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="material : ${materials}" th:attr="data-material-id=${material.id}">
+						<td scope="row" th:text="${material.id}"></td>
+						<td>
+							<div th:text="${material.label}" class="my-margin-bottom-4 d-inline-block" ></div>
+
+						</td>
+						<td>
+							<div class="d-inline-block">
+								<a th:href="@{/products?materialId={id}(id=${material.id})}" class="btn btn-sm btn-info">
+									<i class="fas fa-angle-double-right" aria-hidden="true"></i>
+									<span class="my-margin-left-19">
+										<i>Products</i>
+									</span>
+								</a>
+							</div>
+						</td>
+						<td>
+							<!-- Show maker -->
+							<a
+									th:href="@{/materials/{id}(id=${material.id})}"
+									class="btn btn-sm btn-light"
+									data-toggle="tooltip"
+									title="Show material"
+									data-placement="bottom"
+							>
+								<i class="far fa-eye" aria-hidden="true"></i>
+							</a>
+
+
+							<!-- Edit material -->
+							<a
+									th:href="@{/materials/{id}/edit(id=${material.id})}"
+									class="btn btn-sm btn-primary my-material-to-edit"
+									data-toggle="tooltip"
+									title="Edit material"
+									data-placement="bottom"
+							>
+								<i class="far fa-edit" aria-hidden="true"></i>
+							</a>
+
+							<!-- Delete material -->
+							<button
+									type="button"
+									class="btn btn-sm btn-danger my-material-to-delete"
+									th:value="${material.id}"
+									data-toggle="tooltip"
+									title="Delete material"
+									data-placement="bottom"
+							>
+								<i class="far fa-trash-alt" aria-hidden="true"></i>
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</section>
+	
+</html>
