@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import vn.edu.vnuk.fashion.helper.DaoHelpers;
 import vn.edu.vnuk.fashion.model.Order;
 import vn.edu.vnuk.fashion.rowmapper.OrderRowMapper;
 
@@ -14,14 +15,9 @@ import vn.edu.vnuk.fashion.rowmapper.OrderRowMapper;
 @Repository
 public class OrderDao {
 	
-    private final JdbcTemplate jdbcTemplate;
-    
-    @Autowired
-    public OrderDao(JdbcTemplate jdbcTemplate) {
-	  this.jdbcTemplate = jdbcTemplate;
-    }
-
-
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
+   
     //  CREATE
     public void create(Order order) throws SQLException{
 
@@ -55,36 +51,25 @@ public class OrderDao {
     
     
     //  READ (List of order)
-    public List<Order> read(String customerId, String priceId) throws SQLException {
+    public List<Order> read(Order order) throws SQLException {
     	
-    	String sqlQuery = "select t01.id"
-		    			+ "     , t01.qty"
-		    			+ "     , t02.id as customer_id"
-						+ "     , t02.title_id as title_id"
-						+ "     , t02.label as customer_title"
-						+ "     , t02.address as customer_address"
-						+ "     , t02.phone as customer_phone"
-						+ "     , t02.email as customer_email"
-						+ "     , t03.id as price_id"
-						+ "     , t03.products_size_id as products_size_id"
-						+ "     , t03.products_color_id as products_color_id"
-						+ "     , t03.products_pattern_id as products_pattern_id"
-						+ "     , t03.products_length_id as products_length_id"
-						+ "     , t03.seller_id as seller_id"
-						+ "     , t03.price_type_id as price_type_id"
-						+ "     , t03.value as price_value"
-						+ "  from orders t01, customers t02, prices t03"
-						+ " where t02.id = t01.customer_id and t03.id = t01.price_id"
-				;
+    	String sqlQuery = "select orders.id"
+		    			+ "     , orders.qty"
+		    			+ "     , customers.id as customer_id"
+						+ "     , customers.label as customer_label"
+						+ "     , prices.id as price_id "
+						+ "     , prices.value as price_value "
+						+ "from orders "
+						+ "inner join customers on orders.customer_id = customers.id "
+						+ "inner join prices on orders.price_id = prices.id ";
     	
-    	if (customerId != null && priceId != null) {
-    		sqlQuery += String.format("   and t02.id = %s", customerId, " and t03.id = %s", priceId);
-    		sqlQuery += " order by t01.id asc;";
-    	}
+    	if (order.getCustomerId() != null)
+    		sqlQuery = DaoHelpers.addConditionForQuery(sqlQuery, "customers.id", String.valueOf(order.getCustomerId()));
     	
-    	else {
-        	sqlQuery += " order by t03.id asc, t02.id asc, t01.id asc;";
-    	}
+    	if (order.getPriceId() != null)
+    		sqlQuery = DaoHelpers.addConditionForQuery(sqlQuery, "prices.id", String.valueOf(order.getPriceId()));
+    	
+    	sqlQuery += " order by orders.id asc, customers.id asc, prices.id asc;";
     	
     	
         try {
@@ -97,37 +82,24 @@ public class OrderDao {
         
         }
         
-        
 		return null;
-
     }
 
 
     //  READ (Single order)
     public Order read(Long id) throws SQLException{
 
-    	String sqlQuery =  "select t01.id"
-    			+ "     , t01.qty"
-    			+ "     , t02.id as customer_id"
-				+ "     , t02.title_id as title_id"
-				+ "     , t02.label as customer_title"
-				+ "     , t02.address as customer_address"
-				+ "     , t02.phone as customer_phone"
-				+ "     , t02.email as customer_email"
-				+ "     , t03.id as price_id"
-				+ "     , t03.products_size_id as products_size_id"
-				+ "     , t03.products_color_id as products_color_id"
-				+ "     , t03.products_pattern_id as products_pattern_id"
-				+ "     , t03.products_length_id as products_length_id"
-				+ "     , t03.seller_id as seller_id"
-				+ "     , t03.price_type_id as price_type_id"
-				+ "     , t03.value as price_value"
-				+ "  from orders t01, customers t02, prices t03"
-				+ " where t01.id = ?"
-				+ "   and t02.id = t01.customer_id and t03.id = t01.price_id"
-				+ " order by t03.id asc, t02.id asc, t01.id asc"
-				+ ";"
-		;
+    	String sqlQuery = "select orders.id"
+    			+ "     , orders.qty"
+    			+ "     , customers.id as customer_id"
+				+ "     , customers.label as customer_label"
+				+ "     , prices.id as price_id"
+				+ "     , prices.value as price_value "
+				+ "from orders "
+				+ "inner join customers on orders.customer_id = customers.id "
+				+ "inner join prices on orders.price_id = prices.id "
+				+ "where orders.id = ? "
+				+ "order by orders.id asc, customers.id asc, prices.id asc;";
 
     	return this.jdbcTemplate.queryForObject(
     			sqlQuery,

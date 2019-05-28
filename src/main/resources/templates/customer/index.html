@@ -40,6 +40,7 @@
 					<th scope="col">Phone</th>
 					<th scope="col">Email</th>
 					<th scope="col">Title</th>
+					<th scope="col">Orders</th>
 					<th scope="col">Actions</th>
 				</tr>
 				</thead>
@@ -52,6 +53,16 @@
 					<td th:text="${customer.phone}"></td>
 					<td th:text="${customer.email}"></td>
 					<td th:text="${customer.title.label}"></td>
+					<td>
+						<div class="d-inline-block">
+							<a th:href="@{/orders?customerId={id}(id=${customer.id})}" class="btn btn-sm btn-info">
+								<i class="fas fa-angle-double-right" aria-hidden="true"></i>
+								<span class="my-margin-left-19">
+									<i>Orders</i>
+								</span>
+							</a>
+						</div>
+					</td>
 					<td>
 						<!-- Show customer -->
 						<a

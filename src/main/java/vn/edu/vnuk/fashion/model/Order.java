@@ -11,10 +11,8 @@ public class Order {
 	@NotNull
 	private Long priceId;
 	
-	@NotNull
 	private Customer customer;
 	
-	@NotNull
 	private Price price;
 	
 	@NotNull

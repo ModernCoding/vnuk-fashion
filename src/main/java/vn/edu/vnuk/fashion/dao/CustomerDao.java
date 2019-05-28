@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import vn.edu.vnuk.fashion.helper.DaoHelpers;
 import vn.edu.vnuk.fashion.model.Customer;
 import vn.edu.vnuk.fashion.rowmapper.CustomerRowMapper;
 
@@ -52,27 +53,22 @@ public class CustomerDao {
     
     
     //  READ (List of Customers)
-    public List<Customer> read(String titleId) throws SQLException {
+    public List<Customer> read(Customer customer) throws SQLException {
     	
-    	String sqlQuery = "select t01.id"
-		    			+ "     , t01.label"
-		    			+ "     , t02.id as title_id"
-						+ "     , t02.label as title_label"
-						+ "     , t01.address"
-						+ "     , t01.phone"
-						+ "     , t01.email"
-						+ "  from customers t01, titles t02"
-						+ " where t02.id = t01.title_id"
-				;
+    	String sqlQuery = "select customers.id"
+		    			+ "     , customers.label "
+		    			+ "     , titles.id as title_id"
+						+ "     , titles.label as title_label"
+						+ "     , customers.address "
+						+ "     , customers.phone "
+						+ "     , customers.email "
+						+ "from customers "
+						+ "inner join titles on customers.title_id = titles.id ";
     	
-    	if (titleId != null) {
-    		sqlQuery += String.format("   and t02.id = %s", titleId);
-    		sqlQuery += " order by t01.id asc;";
-    	}
+    	if (customer.getTitleId() != null)
+    		sqlQuery = DaoHelpers.addConditionForQuery(sqlQuery, "titles.id", String.valueOf(customer.getTitleId()));
     	
-    	else {
-        	sqlQuery += " order by t01.id asc, t02.id asc;";
-    	}
+    	sqlQuery += " order by customers.id asc, titles.id asc;";
     	
     	
         try {
@@ -94,19 +90,16 @@ public class CustomerDao {
     //  READ (Single Customer)
     public Customer read(Long id) throws SQLException{
 
-    	String sqlQuery = "select t01.id"
-    			+ "     , t01.label"
-    			+ "     , t02.id as title_id"
-				+ "     , t02.label as title_label"
-				+ "     , t01.address"
-				+ "     , t01.phone"
-				+ "     , t01.email"
-				+ "  from customers t01, titles t02"
-				+ " where t01.id = ?"
-				+ "   and t02.id = t01.title_id"
-				+ " order by t01.id asc, t02.id asc"
-				+ ";"
-		;
+    	String sqlQuery = "select customers.id"
+    			+ "     , customers.label as customer_label"
+    			+ "     , titles.id as title_id"
+				+ "     , titles.label as title_label"
+				+ "     , customers.address as customer_address"
+				+ "     , customers.phone as customer_phone"
+				+ "     , customers.email as customer_email "
+				+ "from customers "
+				+ "inner join titles on customers.title_id = titles.id "
+				+ "where customers.id = ?;";
 
     	return this.jdbcTemplate.queryForObject(
     			sqlQuery,

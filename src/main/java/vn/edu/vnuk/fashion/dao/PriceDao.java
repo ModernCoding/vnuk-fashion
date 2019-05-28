@@ -1,173 +1,180 @@
   package vn.edu.vnuk.fashion.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
-import vn.edu.vnuk.fashion.jdbc.ConnectionFactory;
+import vn.edu.vnuk.fashion.helper.DaoHelpers;
 import vn.edu.vnuk.fashion.model.Price;
-import vn.edu.vnuk.fashion.model.PriceType;
-import vn.edu.vnuk.fashion.model.ProductsColor;
-import vn.edu.vnuk.fashion.model.ProductsLength;
-import vn.edu.vnuk.fashion.model.ProductsPattern;
-import vn.edu.vnuk.fashion.model.ProductsSize;
-import vn.edu.vnuk.fashion.model.Seller;
+import vn.edu.vnuk.fashion.rowmapper.PriceRowMapper;
 
+@Repository
 public class PriceDao {
 	
 	@Autowired
-    private ProductsSizeDao productsSizeDao;
-	
-	@Autowired
-	private ProductsColorDao productsColorDao;
-	
-	@Autowired
-	private ProductsPatternDao productsPatternDao;
-	
-	@Autowired
-	private ProductsLengthDao productsLengthDao;
-	
-	@Autowired
-	private SellerDao sellerDao;
-	
-	@Autowired
-	private PriceTypeDao priceTypeDao;
-	
-    private Connection connection;
-        
-    public PriceDao(){
-        this.connection = new ConnectionFactory().getConnection();
-    }
-
-    public PriceDao(Connection connection){
-        this.connection = connection;
-    }
-
+    private JdbcTemplate jdbcTemplate;
 
     //  CREATE
     public void create(Price price) throws SQLException{
 
-        String sqlQuery = "insert into subcategories (products_size_id, products_color_id, products_pattern_id, products_lenght_id, seller_id, price_type_id, value) "
-                        +	"values (? , ?)";
-
-        PreparedStatement statement;
+        String sqlQuery = "insert into subcategories (products_size_id, "
+        		+ "products_color_id, "
+        		+ "products_pattern_id, "
+        		+ "products_lenght_id, "
+        		+ "seller_id, "
+        		+ "price_type_id, "
+        		+ "value) "
+                + "values (?, ?, ?, ?, ?, ?, ?)";
 
         try {
-                statement = connection.prepareStatement(sqlQuery);
+            System.out.println(
+            		String.format(
+            				"%s new customer in DB!",
+            				
+            				this.jdbcTemplate.update(
+            						sqlQuery,
+            						new Object[] {
+            								price.getProductsSizeId(),
+            								price.getProductsColorId(),
+            								price.getProductsPatternId(),
+            								price.getProductsLengthId(),
+            								price.getSellerId(),
+            								price.getPriceTypeId(),
+            								price.getValue()
+            							}
+        						)
+        				)
+        		);
 
-                //	Replacing "?" through values
-                statement.setLong(1, price.getProductsSize().getId());
-                statement.setLong(2, price.getProductsColor().getId());
-                statement.setLong(3, price.getProductsPattern().getId());
-                statement.setLong(4, price.getProductsLength().getId());
-                statement.setLong(5, price.getPriceType().getId());
-                statement.setFloat(6, price.getValue());
-
-                // 	Executing statement
-                statement.execute();
-
-                System.out.println("New record in DB !");
-
+            
         } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-                System.out.println("Done !");
-                connection.close();
+        	
+            e.printStackTrace();
+        
         }
-
     }
     
     
     //  READ (List of Tasks)
     @SuppressWarnings("finally")
-    public List<Price> read() throws SQLException {
-
-        String sqlQuery = "select * from prices";
-        PreparedStatement statement;
-        List<Price> prices = new ArrayList<Price>();
-
+    public List<Price> read(Price price) throws SQLException {
+    	
+    	String sqlQuery = "select prices.id as id"
+    			+ "		, prices.value as value"
+    			+ "		, products_patterns.id as product_pattern_id"
+    			+ "		, products_colors.id as product_color_id"
+    			+ "		, products_lengths.id as product_lengths_id"
+    			+ "		, products_sizes.id as product_size_id"
+    			+ "		, price_types.id as price_type_id"
+    			+ "		, price_types.label as price_type_label"
+    			+ "		, sellers.id as seller_id"
+    			+ "		, sellers.label as seller_label "
+				+ "from prices "
+				+ "inner join products_patterns on prices.products_pattern_id = products_patterns.id "
+				+ "inner join products_colors on prices.products_color_id = products_colors.id "
+				+ "inner join products_lengths on prices.products_length_id = products_lengths.id "
+				+ "inner join products_sizes on prices.products_size_id = products_sizes.id "
+				+ "inner join price_types on prices.price_type_id = price_types.id "
+				+ "inner join sellers on prices.seller_id = sellers.id ";
+    	
+    	if (price.getProductsPatternId() != null)
+    		sqlQuery = DaoHelpers.addConditionForQuery(sqlQuery, "products_patterns.id", String.valueOf(price.getProductsPatternId()));
+    	
+    	if (price.getProductsColorId() != null)
+    		sqlQuery = DaoHelpers.addConditionForQuery(sqlQuery, "products_colors.id", String.valueOf(price.getProductsColorId()));
+    	
+    	if (price.getProductsLengthId() != null)
+    		sqlQuery = DaoHelpers.addConditionForQuery(sqlQuery, "products_lengths.id", String.valueOf(price.getProductsLengthId()));
+    	
+    	if (price.getProductsSizeId() != null)
+    		sqlQuery = DaoHelpers.addConditionForQuery(sqlQuery, "products_sizes.id", String.valueOf(price.getProductsSizeId()));
+    	
+    	if (price.getPriceTypeId() != null)
+    		sqlQuery = DaoHelpers.addConditionForQuery(sqlQuery, "price_types.id", String.valueOf(price.getPriceTypeId()));
+    	
+    	if (price.getSellerId() != null)
+    		sqlQuery = DaoHelpers.addConditionForQuery(sqlQuery, "sellers.id", String.valueOf(price.getSellerId()));
+    	
+    	sqlQuery += " order by prices.id asc, "
+    			+ "products_patterns.id asc, "
+    			+ "products_colors.id asc, "
+    			+ "products_lengths.id asc, "
+    			+ "products_sizes.id asc,"
+    			+ "price_types.id asc,"
+    			+ "sellers.id asc;";
+    	
+    	
         try {
-
-            statement = connection.prepareStatement(sqlQuery);
-
-            // 	Executing statement
-            ResultSet results = statement.executeQuery();
-            
-            while(results.next()){
-
-            	Price price = new Price();
-                
-                price.setValue(results.getFloat("value"));
-                
-                // Process foreign key
-                Long productsSizeIdFromDb = results.getLong("products_size_id");
-                Long productsColorIdFromDb = results.getLong("products_color_id");
-                Long productsPatternIdFromDb = results.getLong("products_pattern_id");
-                Long productsLengthIdFromDb = results.getLong("products_length_id");
-                Long sellerIdFromDb = results.getLong("seller_id");
-                Long priceTypeIdFromDb = results.getLong("price_type_id");
-                                
-                ProductsSize productsSize = productsSizeDao.read(productsSizeIdFromDb);
-                ProductsColor productsColor = productsColorDao.read(productsColorIdFromDb);
-                ProductsPattern productsPattern = productsPatternDao.read(productsPatternIdFromDb);
-                ProductsLength productsLength = productsLengthDao.read(productsLengthIdFromDb);
-                Seller seller = sellerDao.read(sellerIdFromDb);
-                PriceType priceType = priceTypeDao.read(priceTypeIdFromDb);
-                 
-                price.setProductsSize(productsSize);
-                price.setProductsColor(productsColor);
-                price.setProductsPattern(productsPattern);
-                price.setProductsLength(productsLength);
-                price.setPriceType(priceType);
-                price.setSeller(seller);
-                
-                prices.add(price);
-
-            }
-
-            results.close();
-            statement.close();
-
-
+        	
+        	return new PriceRowMapper().mapRows(this.jdbcTemplate.queryForList(sqlQuery));
+        	
         } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-                connection.close();
-                return prices;
+            e.printStackTrace();
         }
-
-
+        
+		return null;
     }
 
 
     //  READ (Single Price)
     public Price read(Long id) throws SQLException{
-        return this.read(id, true);
+    	String sqlQuery = "select prices.id as id"
+    			+ "		, prices.value as value"
+    			+ "		, products_patterns.id as product_pattern_id"
+    			+ "		, products_colors.id as product_color_id"
+    			+ "		, products_lengths.id as product_lengths_id"
+    			+ "		, products_sizes.id as product_size_id"
+    			+ "		, price_types.id as price_type_id"
+    			+ "		, price_types.label as price_type_label"
+    			+ "		, sellers.id as seller_id"
+    			+ "		, sellers.label as seller_label"
+				+ "from prices "
+				+ "inner join products_patterns on prices.products_pattern_id = products_patterns.id "
+				+ "inner join products_colors on prices.products_color_id = products_colors.id "
+				+ "inner join products_lengths on prices.products_length_id = products_lengths.id "
+				+ "inner join products_sizes on prices.products_size_id = products_sizes.id "
+				+ "inner join price_types on prices.price_type_id = prices_types.id "
+				+ "inner join sellers on prices.seller_id = sellers.id "
+				+ "where prices.id = ?;";
+    	
+    	return this.jdbcTemplate.queryForObject(
+    			sqlQuery,
+        		new Object[] {id},
+        		new PriceRowMapper()
+        	);
     }  
-
     
     //  UPDATE
     public void update(Price price) throws SQLException {
-        String sqlQuery = "update subcategories products_size_id=? products_color_id=? products_pattern_id=? products_length_id=? seller_id=? price_type_id=? value=? where id=?";
+        String sqlQuery = "update prices set "
+        		+ "products_size_id=?, "
+        		+ "products_color_id=?, "
+        		+ "products_pattern_id=?, "
+        		+ "products_length_id=?, "
+        		+ "seller_id=?, "
+        		+ "price_type_id=?, "
+        		+ "value=?, "
+        		+ "where id=?";
         
         try {
-            PreparedStatement statement = connection.prepareStatement(sqlQuery);
-            statement.setLong(1, price.getProductsSize().getId());
-            statement.setLong(2, price.getProductsColor().getId());
-            statement.setLong(3, price.getProductsPattern().getId());
-            statement.setLong(4, price.getProductsLength().getId());
-            statement.setLong(5, price.getPriceType().getId());
-            statement.setFloat(6, price.getValue());
+        	this.jdbcTemplate.update(
+					sqlQuery,
+					
+					new Object[] {
+							price.getProductsSizeId(),
+							price.getProductsColorId(),
+							price.getProductsPatternId(),
+							price.getProductsLengthId(),
+							price.getSellerId(),
+							price.getPriceTypeId(),
+							price.getValue(),
+							price.getId()
+						}
+				);
             
-            statement.execute();
-            statement.close();
             
             System.out.println("Price successfully modified.");
         } 
@@ -177,100 +184,31 @@ public class PriceDao {
             e.printStackTrace();
         }
         
-        finally {
-            connection.close();
-        }
-        
     }
     
     
     //  DELETE
     public void delete(Long id) throws SQLException {
-        String sqlQuery = "delete from prices where id=?";
+    	String sqlQuery = "delete from prices where id=?";
 
         try {
-            PreparedStatement statement = connection.prepareStatement(sqlQuery);
-            statement.setLong(1, id);
-            statement.execute();
-            statement.close();
-            
-            System.out.println("Price successfully deleted.");
+
+            System.out.println(
+            		String.format(
+            				"%s record successfully removed from DB!",
+            				
+            				this.jdbcTemplate.update(
+            						sqlQuery,
+            						new Object[] {id}
+        						)
+        				)
+        		);
 
         } 
 
         catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }
-        
-        finally {
-            connection.close();
-        }
-
-    }
-  
-    
-    //  PRIVATE
-    
-    @SuppressWarnings("finally")
-    private Price read(Long id, boolean closeAfterUse) throws SQLException{
-
-        String sqlQuery = "select * from prices where id=?";
-
-        PreparedStatement statement;
-        Price price = new Price();
-
-        try {
-            statement = connection.prepareStatement(sqlQuery);
-
-            //	Replacing "?" through values
-            statement.setLong(1, id);
-
-            // 	Executing statement
-            ResultSet results = statement.executeQuery();
-
-            if(results.next()){
-
-            	price.setValue(results.getFloat("value"));
-                
-                // Process foreign key
-            	 Long productsSizeIdFromDb = results.getLong("products_size_id");
-                 Long productsColorIdFromDb = results.getLong("products_color_id");
-                 Long productsPatternIdFromDb = results.getLong("products_pattern_id");
-                 Long productsLengthIdFromDb = results.getLong("products_length_id");
-                 Long sellerIdFromDb = results.getLong("seller_id");
-                 Long priceTypeIdFromDb = results.getLong("price_type_id");
-                 
-                 ProductsSize productsSize = productsSizeDao.read(productsSizeIdFromDb);
-                 ProductsColor productsColor = productsColorDao.read(productsColorIdFromDb);
-                 ProductsPattern productsPattern = productsPatternDao.read(productsPatternIdFromDb);
-                 ProductsLength productsLength = productsLengthDao.read(productsLengthIdFromDb);
-                 Seller seller = sellerDao.read(sellerIdFromDb);
-                 PriceType priceType = priceTypeDao.read(priceTypeIdFromDb);
-                 
-                 price.setProductsSize(productsSize);
-                 price.setProductsColor(productsColor);
-                 price.setProductsPattern(productsPattern);
-                 price.setProductsLength(productsLength);
-                 price.setPriceType(priceType);
-                 price.setSeller(seller);
-
-
-            }
-
-            statement.close();
-
-        } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        } finally {
-            
-            if (closeAfterUse) {
-                connection.close();
-    
-            }
-            
-            return price;
         }
 
     }

@@ -1,0 +1,85 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	
+	<title th:fragment="title">List of all the orders</title>
+	
+	
+	<section th:fragment="content">
+		<div class="container my-5">
+			<h3 class="my-margin-bottom-28 text-center">
+				<em>List of orders</em>
+			</h3>
+
+			<a href="orders/new" class="btn btn-sm btn-success my-margin-bottom-19">
+			<span class="my-margin-right-19">
+				<i class="fa fa-plus" aria-hidden="true"></i>
+			</span>
+
+				<span>Create a new order</span>
+			</a>
+
+
+			<div id="my-notice" class="my-no-line-height">
+	        <span class="my-margin-right-19">
+				<i aria-hidden="true"></i>
+			</span>
+
+				<span></span>
+			</div>
+
+
+			<table class="table table-bordered text-center">
+				<thead class="thead-dark">
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Customer</th>
+					<th scope="col">Price</th>
+					<th scope="col">Actions</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr th:each="order : ${orders}" th:attr="data-order-id=${order.id}">
+
+					<td scope="row" th:text="${order.id}"></td>
+					<td th:text="${order.customer.label}"></td>
+					<td th:text="${order.price.value}"></td>
+					<td>
+						<!-- Show product gender -->
+						<a
+								th:href="@{/orders/{id}(id=${order.id})}"
+								class="btn btn-sm btn-light"
+								data-toggle="tooltip"
+								title="Show order"
+								data-placement="bottom"
+						>
+							<i class="far fa-eye" aria-hidden="true"></i>
+						</a>
+						<!-- Edit product gender -->
+						<a
+								th:href="@{/orders/{id}/edit(id=${order.id})}"
+								class="btn btn-sm btn-primary my-order-to-edit"
+								data-toggle="tooltip"
+								title="Edit order"
+								data-placement="bottom"
+						>
+							<i class="far fa-edit" aria-hidden="true"></i>
+						</a>
+						<!-- Delete product gender -->
+						<button
+								type="button"
+								class="btn btn-sm btn-danger my-order-to-delete"
+								th:value="${order.id}"
+								data-toggle="tooltip"
+								title="Delete order"
+								data-placement="bottom"
+						>
+							<i class="far fa-trash-alt" aria-hidden="true"></i>
+						</button>
+					</td>
+				</tr>
+
+				</tbody>
+			</table>
+		</div>
+	</section>
+	
+</html>

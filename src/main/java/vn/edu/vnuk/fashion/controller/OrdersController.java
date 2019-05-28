@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package vn.edu.vnuk.fashion.controller;
 
 import java.sql.SQLException;
@@ -25,56 +20,57 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import vn.edu.vnuk.fashion.dao.CustomerDao;
-import vn.edu.vnuk.fashion.dao.TitleDao;
+import vn.edu.vnuk.fashion.dao.OrderDao;
+import vn.edu.vnuk.fashion.dao.PriceDao;
 import vn.edu.vnuk.fashion.model.Customer;
+import vn.edu.vnuk.fashion.model.Order;
+import vn.edu.vnuk.fashion.model.Price;
 
-/**
- *
- * @author michel
- */
 @Controller
-public class CustomersController {
+public class OrdersController {
 	
 	@Autowired
 	private CustomerDao customerDao;
 	
 	@Autowired
-	private TitleDao titleDao;
+	private PriceDao priceDao;	
 	
+	@Autowired
+	private OrderDao orderDao;
 
-	@RequestMapping("/customers")
+	@RequestMapping("/orders")
     public String index(
 		
-		@RequestParam(value="titleId", required = false) String titleId,
+		@RequestParam(value="customerId", required = false) String customerId,
+		@RequestParam(value="priceId", required = false) String priceId,
 		Model model,
 		ServletRequest request
 
 	) throws SQLException{
-        Customer customer = new Customer();
-        
-        if (titleId != null)
-        	customer.setTitleId(Long.valueOf(titleId));
-        
-		model.addAttribute("customers", customerDao.read(customer));
 		
-        model.addAttribute("template", "customer/index");
+		Order order = new Order();
+		if (customerId != null)
+			order.setCustomerId(Long.valueOf(customerId));
+		
+		if (priceId != null)
+			order.setPriceId(Long.valueOf(priceId));
+		
+		model.addAttribute("orders", orderDao.read(order));
+        model.addAttribute("template", "order/index");
         return "_layout";
-   
 	}
     
-    
-    @RequestMapping("/customers/{id}")
+    @RequestMapping("/orders/{id}")
     public String show(@PathVariable("id") Long id, Model model, ServletRequest request) throws SQLException{
-        model.addAttribute("customer", customerDao.read(id));
-        model.addAttribute("template", "customer/show");
+        model.addAttribute("order", orderDao.read(id));
+        model.addAttribute("template", "order/show");
         return "_layout";
     }
     
-    
-    @RequestMapping("/customers/new")
+    @RequestMapping("/orders/new")
     public String add(
     		
-		Customer customer,
+		Order order,
 		Model model,
 		@ModelAttribute("fieldErrors") ArrayList<FieldError> fieldErrors
 	
@@ -87,25 +83,24 @@ public class CustomersController {
     			);
     	}
     	
-    	model.addAttribute("template", "customer/new");
-    	model.addAttribute("titles", titleDao.read());
+    	model.addAttribute("template", "order/new");
+    	model.addAttribute("customers", customerDao.read(new Customer()));
+    	model.addAttribute("prices", priceDao.read(new Price()));
         return "_layout";
     }
     
-    
-    @RequestMapping("/customers/{id}/edit")
+    @RequestMapping("/orders/{id}/edit")
     public String edit(
     		
 		@RequestParam(value="backToShow", defaultValue="false") Boolean backToShow,
 		@PathVariable("id") Long id,
-		Customer customer,
+		Order order,
 		Model model,
 		ServletRequest request,
 		@ModelAttribute("fieldErrors") ArrayList<FieldError> fieldErrors
 		
 	) throws SQLException{
     	
-    	
     	for(FieldError fieldError : fieldErrors) {
     		model.addAttribute(
     				String.format("%sFieldError", fieldError.getField()),
@@ -113,71 +108,58 @@ public class CustomersController {
     			);
     	}
     	
-    	
     	model.addAttribute("backToShow", backToShow);
     	model.addAttribute("urlCompletion", backToShow ? String.format("/%s", id) : "");
-    	model.addAttribute("customer", customerDao.read(id));
-    	model.addAttribute("titles", titleDao.read());
-        model.addAttribute("template", "customer/edit");
+    	model.addAttribute("order", orderDao.read(id));
+    	model.addAttribute("customers", customerDao.read(new Customer()));
+    	model.addAttribute("prices", priceDao.read(new Price()));
+        model.addAttribute("template", "order/edit");
 
         return "_layout";
-    
     }
     
-    
-    @RequestMapping(value="/customers", method=RequestMethod.POST)
-    public String create(
-		
-    	@Valid Customer customer,
+    @RequestMapping(value="/orders", method=RequestMethod.POST)
+    public String create(		
+    	@Valid Order order,
     	BindingResult bindingResult,
     	ServletRequest request,
-    	RedirectAttributes redirectAttributes
-    
+    	RedirectAttributes redirectAttributes    
     ) throws SQLException{
-    	
-    	System.out.println(customer.toString());
     	
         if (bindingResult.hasErrors()) {
         	redirectAttributes.addFlashAttribute("fieldErrors", bindingResult.getAllErrors());
-            return "redirect:/customers/new";
+            return "redirect:/orders/new";
         }
         
-        
-        customerDao.create(customer);
-        return "redirect:/customers";
-        
+        orderDao.create(order);
+        return "redirect:/orders";
     }
     
-    
-    @RequestMapping(value="/customers/{id}", method=RequestMethod.PATCH)
+    @RequestMapping(value="/orders/{id}", method=RequestMethod.PATCH)
     public String update(
     		
     		@RequestParam(value="backToShow", defaultValue="false") Boolean backToShow,
     		@PathVariable("id") Long id,
-    		@Valid Customer customer,
+    		@Valid Order order,
     		BindingResult bindingResult,
     		ServletRequest request,
     		RedirectAttributes redirectAttributes
     		
     	) throws SQLException{
-    	
         
     	if (bindingResult.hasErrors()) {
         	redirectAttributes.addFlashAttribute("fieldErrors", bindingResult.getAllErrors());
-            return String.format("redirect:/customers/%s/edit", id);
+            return String.format("redirect:/orders/%s/edit", id);
         }
         
-        customerDao.update(customer);
-        return backToShow ? String.format("redirect:/customers/%s", id) : "redirect:/customers";
-        
-        
+        orderDao.update(order);
+        return backToShow ? String.format("redirect:/orders/%s", id) : "redirect:/orders";
     }
     
-    
     //  delete with ajax
-    @RequestMapping(value="/customers/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value="/orders/{id}", method = RequestMethod.DELETE)
     public void delete(@PathVariable("id") Long id, ServletRequest request, HttpServletResponse response) throws SQLException {
-    	customerDao.delete(id);
+    	orderDao.delete(id);
         response.setStatus(200);
     }
     
