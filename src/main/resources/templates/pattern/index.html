@@ -1,19 +1,19 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	
-	<title th:fragment="title">List of all the colors</title>
+	<title th:fragment="title">List of all the patterns</title>
 	
 	
 	<section th:fragment="content">
 		<div class="container my-5">
 			<h3 class="my-margin-bottom-28 text-center">
-				<em>List of all colors</em>
+				<em>List of all patterns</em>
 			</h3>
 
-			<a href="colors/new" class="btn btn-sm btn-success my-margin-bottom-19">
+			<a href="patterns/new" class="btn btn-sm btn-success my-margin-bottom-19">
 				<span class="my-margin-right-19">
 					<i class="fa fa-plus" aria-hidden="true"></i>
 				</span>
-				<span>Create a new color</span>
+				<span>Create a new patterns</span>
 			</a>
 
 
@@ -30,23 +30,23 @@
 					<tr>
 						<th scope="col">#</th>
 						<th scope="col">Label</th>
-						<th scope="col">Products Colors</th>
+						<th scope="col">Products Patterns</th>
 						<th scope="col">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="color : ${colors}" th:attr="data-color-id=${color.id}">
-						<td scope="row" th:text="${color.id}"></td>
+					<tr th:each="pattern : ${patterns}" th:attr="data-pattern-id=${pattern.id}">
+						<td scope="row" th:text="${pattern.id}"></td>
 						<td>
-							<div th:text="${color.label}" class="my-margin-bottom-4 d-inline-block" ></div>
+							<div th:text="${pattern.label}" class="my-margin-bottom-4 d-inline-block" ></div>
 
 						</td>
 						<td>
 							<div class="d-inline-block">
-								<a th:href="@{/products-colors?colorId={id}(id=${color.id})}" class="btn btn-sm btn-info">
+								<a th:href="@{/products-patterns?patternId={id}(id=${pattern.id})}" class="btn btn-sm btn-info">
 									<i class="fas fa-angle-double-right" aria-hidden="true"></i>
 									<span class="my-margin-left-19">
-										<i>Products Colors</i>
+										<i>Products Patterns</i>
 									</span>
 								</a>
 							</div>
@@ -54,10 +54,10 @@
 						<td>
 							<!-- Show title -->
 							<a
-									th:href="@{/colors/{id}(id=${color.id})}"
+									th:href="@{/patterns/{id}(id=${pattern.id})}"
 									class="btn btn-sm btn-light"
 									data-toggle="tooltip"
-									title="Show color"
+									title="Show pattern"
 									data-placement="bottom"
 							>
 								<i class="far fa-eye" aria-hidden="true"></i>
@@ -66,10 +66,10 @@
 
 							<!-- Edit title -->
 							<a
-									th:href="@{/colors/{id}/edit(id=${color.id})}"
-									class="btn btn-sm btn-primary my-color-to-edit"
+									th:href="@{/patterns/{id}/edit(id=${pattern.id})}"
+									class="btn btn-sm btn-primary my-pattern-to-edit"
 									data-toggle="tooltip"
-									title="Edit color"
+									title="Edit pattern"
 									data-placement="bottom"
 							>
 								<i class="far fa-edit" aria-hidden="true"></i>
@@ -78,10 +78,10 @@
 							<!-- Delete title -->
 							<button
 									type="button"
-									class="btn btn-sm btn-danger my-color-to-delete"
-									th:value="${color.id}"
+									class="btn btn-sm btn-danger my-pattern-to-delete"
+									th:value="${pattern.id}"
 									data-toggle="tooltip"
-									title="Delete color"
+									title="Delete pattern"
 									data-placement="bottom"
 							>
 								<i class="far fa-trash-alt" aria-hidden="true"></i>
