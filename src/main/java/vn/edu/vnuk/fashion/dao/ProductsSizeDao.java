@@ -32,8 +32,8 @@ public class ProductsSizeDao {
             				this.jdbcTemplate.update(
             						sqlQuery,
             						new Object[] {
-            								productsSize.getSizeId(),
-            								productsSize.getProductId()
+            								productsSize.getProductId(),
+            								productsSize.getSizeId()            								
             							}
         						)
         				)
