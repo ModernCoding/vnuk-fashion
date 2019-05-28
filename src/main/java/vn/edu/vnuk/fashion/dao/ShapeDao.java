@@ -26,7 +26,7 @@ public class ShapeDao {
     //  CREATE
     public void create(Shape shape) throws SQLException{
 
-        String sqlQuery = "insert into shape (label) values (?)";
+        String sqlQuery = "insert into shapes (label) values (?)";
 
         try {
             System.out.println(
