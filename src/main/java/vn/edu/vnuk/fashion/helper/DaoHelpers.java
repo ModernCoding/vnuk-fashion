@@ -1,4 +1,4 @@
-package vn.edu.vnuk.fashin.helper;
+package vn.edu.vnuk.fashion.helper;
 
 public class DaoHelpers {
 	public static String addConditionForQuery(String query, String name, String value) {

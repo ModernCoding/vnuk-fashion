@@ -1,0 +1,28 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	
+	<title th:fragment="title" th:text="'Edit gender #' + ${gender.id}"></title>
+	
+	
+	<section th:fragment="content">
+	    <div class="container">
+			<div class="row my-5">
+				<form
+			    	th:replace="
+			    			~{
+			    				/gender/_form
+			    				::
+			    				form(
+			    					'Edit gender #' + ${gender.id},
+			    					@{/genders/{id}(id=${gender.id}, backToShow=${backToShow})},
+			    					'patch',
+			    					@{/genders{urlCompletion}(urlCompletion=${urlCompletion})}
+			    				)
+			    			}
+			    		">
+			    </form>
+			</div>
+		</div>
+	
+	</section>
+	
+</html>

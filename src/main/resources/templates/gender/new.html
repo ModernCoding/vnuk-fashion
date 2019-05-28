@@ -1,0 +1,13 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	
+	<title th:fragment="title">Create a new gender</title>
+	
+	<section th:fragment="content">
+		<div class="container">
+			<div class="row my-5">
+				<form th:replace="~{/gender/_form :: form('Create a new gender', @{/genders}, 'post', @{/genders})}"></form>
+			</div>
+		</div>
+	</section>
+	
+</html>

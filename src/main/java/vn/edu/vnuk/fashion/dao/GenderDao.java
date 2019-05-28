@@ -10,21 +10,12 @@ import org.springframework.stereotype.Repository;
 
 import vn.edu.vnuk.fashion.model.Gender;
 
-
-
-
 @Repository
 public class GenderDao {
 	
-    private final JdbcTemplate jdbcTemplate;
+	@Autowired
+    private  JdbcTemplate jdbcTemplate;
     
-    @Autowired
-    public GenderDao(JdbcTemplate jdbcTemplate) {
-	  this.jdbcTemplate = jdbcTemplate;
-    }
-	
-
-
     //  CREATE
     public void create(Gender gender) throws SQLException{
 
@@ -42,13 +33,9 @@ public class GenderDao {
         				)
         		);
 
-            
         } catch (Exception e) {
-        	
             e.printStackTrace();
-        
         }
-
     }
     
     
@@ -71,8 +58,6 @@ public class GenderDao {
         
         
 		return null;
-
-
     }
 
 
@@ -80,11 +65,10 @@ public class GenderDao {
     public Gender read(Long id) throws SQLException{
     	
     	return this.jdbcTemplate.queryForObject(
-    			"SELECT * FROM sleeves where id = ?",
+    			"SELECT * FROM genders where id = ?",
         		new Object[] {id},
         		new BeanPropertyRowMapper<Gender>(Gender.class)
         	);
-        
     }  
 
     
@@ -111,7 +95,6 @@ public class GenderDao {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
     }
     
     
