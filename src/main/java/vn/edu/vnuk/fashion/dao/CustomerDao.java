@@ -71,7 +71,7 @@ public class CustomerDao {
     	}
     	
     	else {
-        	sqlQuery += " order by t02.id asc, t01.id asc;";
+        	sqlQuery += " order by t01.id asc, t02.id asc;";
     	}
     	
     	
@@ -104,7 +104,7 @@ public class CustomerDao {
 				+ "  from customers t01, titles t02"
 				+ " where t01.id = ?"
 				+ "   and t02.id = t01.title_id"
-				+ " order by t02.id asc, t01.id asc"
+				+ " order by t01.id asc, t02.id asc"
 				+ ";"
 		;
 
