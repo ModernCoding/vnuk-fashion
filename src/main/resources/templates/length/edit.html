@@ -1,0 +1,27 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	
+	<title th:fragment="title" th:text="'Edit length #' + ${length.id}"></title>
+	
+	<section th:fragment="content">
+	    <div class="container">
+			<div class="row my-5">
+				<form
+			    	th:replace="
+			    			~{
+			    				/length/_form
+			    				::
+			    				form(
+			    					'Edit length #' + ${length.id},
+			    					@{/lengths/{id}(id=${length.id}, backToShow=${backToShow})},
+			    					'patch',
+			    					@{/lengths{urlCompletion}(urlCompletion=${urlCompletion})}
+			    				)
+			    			}
+			    		">
+			    </form>
+			</div>
+		</div>
+	
+	</section>
+	
+</html>
