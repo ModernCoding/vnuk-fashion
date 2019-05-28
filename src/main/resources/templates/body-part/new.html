@@ -1,0 +1,13 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	
+	<title th:fragment="title">Create a new body part</title>
+	
+	<section th:fragment="content">
+		<div class="container my-5">
+			<div class="row my-5">
+				<form th:replace="~{/body-part/_form :: form('Create a new body part', @{/body-parts}, 'post', @{/body-parts})}"></form>
+			</div>
+		</div>
+	</section>
+	
+</html>
