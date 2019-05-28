@@ -11,10 +11,8 @@ public class ProductsGender {
 	@NotNull
 	private Long genderId;
 	
-	@NotNull
 	private Product product;
 	
-	@NotNull
 	private Gender gender;
 
 	public Long getId() {

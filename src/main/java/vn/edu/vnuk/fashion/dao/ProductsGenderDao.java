@@ -7,23 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import vn.edu.vnuk.fashion.helper.DaoHelpers;
 import vn.edu.vnuk.fashion.model.ProductsGender;
 import vn.edu.vnuk.fashion.rowmapper.ProductsGenderRowMapper;
 
-
-
-
 @Repository
 public class ProductsGenderDao {
-	
-    private final JdbcTemplate jdbcTemplate;
+
+	@Autowired
+    private JdbcTemplate jdbcTemplate;
     
-    @Autowired
-    public ProductsGenderDao(JdbcTemplate jdbcTemplate) {
-	  this.jdbcTemplate = jdbcTemplate;
-    }
-
-
     //  CREATE
     public void create(ProductsGender  productsGender) throws SQLException{
 
@@ -38,8 +31,8 @@ public class ProductsGenderDao {
             				this.jdbcTemplate.update(
             						sqlQuery,
             						new Object[] {
-            								productsGender.getGenderId(),
-            								productsGender.getProductId()
+            								productsGender.getProductId(),
+            								productsGender.getGenderId()
             							}
         						)
         				)
@@ -58,32 +51,22 @@ public class ProductsGenderDao {
     //  READ (List of ProductsGenders)
     public List<ProductsGender> read(String productId , String genderId) throws SQLException {
     	
-    	String sqlQuery = "select t01.id"
-		    			+ "     , t02.id as product_id"
-		    			+ "     , t02.name"
-		    			+ "     , t02.subcategory_id"
-		    			+ "     , t02.sleeve_id"
-		    			+ "     , t02.shape_id"
-		    			+ "     , t02.collar_id"
-		    			+ "     , t02.height_id"
-		    			+ "     , t02.material_id"
-		    			+ "     , t02.maker_id"
-		    			+ "     , t03.id as gender_id"
-		    			+ "     , t03.label"
-						+ "  from products_genders t01, products t02, genders t03"
-
-						+ " where t02.id = t01.product_id"
-						+ "and t03.id = t01.gender_id"
-				;
+    	String sqlQuery = "select products_genders.id"
+		    			+ "     , products.id as product_id"
+		    			+ "     , products.name as product_name"
+		    			+ "     , genders.id as gender_id"
+		    			+ "     , genders.label as gender_label"
+						+ "  from products_genders"
+						+ "  inner join products on products_genders.product_id = products.id"
+						+ "  inner join genders on products_genders.gender_id = genders.id ";
     	
-    	if (productId != null && genderId != null) {
-    		sqlQuery += String.format("   and t02.id = %s", productId, "   and t03.id = %s", genderId );
-    		sqlQuery += " order by t01.id asc;";
-    	}
+		if (productId != null)
+    		sqlQuery = DaoHelpers.addConditionForQuery(sqlQuery, "product_id", productId);
     	
-    	else {
-        	sqlQuery += " order by t03.id asc, t02.id asc, t01.id asc;";
-    	}
+    	if (genderId != null)
+    		sqlQuery = DaoHelpers.addConditionForQuery(sqlQuery, "gender_id", genderId);
+    	
+    	sqlQuery += " order by products_genders.id asc, products.id asc, genders.id asc;";
     	
     	
         try {
@@ -105,25 +88,15 @@ public class ProductsGenderDao {
     //  READ (Single ProductsGender)
     public ProductsGender read(Long id) throws SQLException{
 
-    	String sqlQuery = "select t01.id"
-    			+ "     , t02.id as product_id"
-    			+ "     , t02.name"
-    			+ "     , t02.subcategory_id"
-    			+ "     , t02.sleeve_id"
-    			+ "     , t02.shape_id"
-    			+ "     , t02.collar_id"
-    			+ "     , t02.height_id"
-    			+ "     , t02.material_id"
-    			+ "     , t02.maker_id"
-    			+ "     , t03.id as gender_id"
-    			+ "     , t03.label"
-				+ "  from products_genders t01, products t02, genders t03"
-				+ " where t01.id = ?"
-				+ "   and t02.id = t01.product_id"
-				+ "   and t03.id = t01.gender_id"	
-				+ " order by t01.id asc, t02.id asc, t01.id asc"
-				+ ";"
-		;
+    	String sqlQuery = "select products_genders.id"
+    			+ "     , products.id as product_id"
+    			+ "     , products.name as product_name"
+    			+ "     , genders.id as gender_id"
+    			+ "     , genders.label as gender_label"
+				+ "  from products_genders"
+				+ "  inner join products on products_genders.product_id = products.id"
+				+ "  inner join genders on products_genders.gender_id = genders.id "
+				+ "  where products_genders.id = ?;";
 
     	return this.jdbcTemplate.queryForObject(
     			sqlQuery,
@@ -145,9 +118,9 @@ public class ProductsGenderDao {
 					sqlQuery,
 					
 					new Object[] {
-							productsGender.getId(),
 							productsGender.getProductId(),
-							productsGender.getGenderId()
+							productsGender.getGenderId(),
+							productsGender.getId()
 						}
 				);
             
