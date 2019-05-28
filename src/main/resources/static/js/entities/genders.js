@@ -8,7 +8,7 @@ $(function(){
 
         $.ajax({
             type: "DELETE",
-            url: "/genders/" + categoryId,
+            url: "/genders/" + genderId,
             
             data: {},
             
