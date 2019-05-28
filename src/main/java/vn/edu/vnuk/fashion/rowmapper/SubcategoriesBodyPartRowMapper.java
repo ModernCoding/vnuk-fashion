@@ -18,7 +18,6 @@ public class SubcategoriesBodyPartRowMapper implements RowMapper<SubcategoriesBo
 	@Override
 public SubcategoriesBodyPart mapRow(ResultSet rs, int rowNum) throws SQLException {
 		
-		Category category = new Category();
 		BodyPart bodyPart = new BodyPart();
 		Subcategory subcategory = new Subcategory();
 		SubcategoriesBodyPart subcategoriesBodyPart = new SubcategoriesBodyPart();
@@ -26,13 +25,8 @@ public SubcategoriesBodyPart mapRow(ResultSet rs, int rowNum) throws SQLExceptio
 		bodyPart.setId(rs.getLong("body_part_id"));
 		bodyPart.setLabel(rs.getString("body_part_label"));
 		
-		category.setId(rs.getLong("category_id"));
-		category.setLabel(rs.getString("category_label"));
-		
 		subcategory.setId(rs.getLong("subcategory_id"));
-		subcategory.setCategoryId(rs.getLong("category_id"));
 		subcategory.setLabel(rs.getString("subcategory_label"));
-		subcategory.setCategory(category);
 		
 		subcategoriesBodyPart.setId(rs.getLong("id"));
 		subcategoriesBodyPart.setSubcategoryId(rs.getLong("subcategory_id"));
@@ -51,18 +45,15 @@ public SubcategoriesBodyPart mapRow(ResultSet rs, int rowNum) throws SQLExceptio
 		
     	for (Map<String, Object> row : rows) {
 			
-    		Category category = new Category();
     		BodyPart bodyPart = new BodyPart();
     		Subcategory subcategory = new Subcategory();
     		SubcategoriesBodyPart subcategoriesBodyPart = new SubcategoriesBodyPart();
 			
-			category.setId((Long) row.get("category_id"));
-			category.setLabel((String) row.get("category_label"));
-			
+    		bodyPart.setId((Long) row.get("body_part_id"));
+    		bodyPart.setLabel((String) row.get("body_part_label"));
+    		
 			subcategory.setId((Long) row.get("subcategory_id"));
-			subcategory.setCategoryId((Long) row.get("category_id"));
-			subcategory.setLabel((String) row.get("label"));
-			subcategory.setCategory(category);
+			subcategory.setLabel((String) row.get("subcategory_label"));
 			
 			subcategoriesBodyPart.setId((Long) row.get("id"));
 			subcategoriesBodyPart.setSubcategoryId((Long) row.get("subcategory_id"));

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import vn.edu.vnuk.fashion.helper.DaoHelpers;
 import vn.edu.vnuk.fashion.model.SubcategoriesBodyPart;
 import vn.edu.vnuk.fashion.rowmapper.SubcategoriesBodyPartRowMapper;
 
@@ -54,21 +55,19 @@ public class SubcategoriesBodyPartDao {
     	String sqlQuery = "select t01.id"
 		    			+ "     , t02.id as subcategory_id"
 						+ "     , t02.label as subcategory_label"
-						+ "     , t02.category_id as category_id"
 						+ "     , t03.id as body_part_id"
-						+ "     , t03.label as body_part_label"
-						+ "  from subcategories_body_parts t01, subcategories t02, body_parts t03"
-						+ " where t02.id = t01.subcategory_id and t03.id = t01.body_part_id"
-				;
+						+ "     , t03.label as body_part_label "
+						+ "from subcategories_body_parts t01 "
+						+ "inner join subcategories t02 on t01.subcategory_id = t02.id "
+						+ "inner join body_parts t03 on t01.body_part_id = t03.id ";
     	
-    	if (subcategoryId != null && bodyPartId != null) {
-    		sqlQuery += String.format("   and t02.id = %s", subcategoryId, " and t03.id = %s", bodyPartId);
-    		sqlQuery += " order by t01.id asc;";
-    	}
+    	if (subcategoryId != null)
+    		sqlQuery += DaoHelpers.addConditionForQuery(sqlQuery, "t01.subcategory_id", subcategoryId);
     	
-    	else {
-        	sqlQuery += " order by t02.id asc, t03.id asc, t01.id asc;";
-    	}
+    	if (bodyPartId != null)
+    		sqlQuery += DaoHelpers.addConditionForQuery(sqlQuery, "t01.body_part_id", bodyPartId);
+    	
+    	sqlQuery += " order by t01.id asc, t02.id asc, t03.id asc;";
     	
     	
         try {
@@ -95,13 +94,12 @@ public class SubcategoriesBodyPartDao {
 				+ "     , t02.label as subcategory_label"
 				+ "     , t02.category_id as category_id"
 				+ "     , t03.id as body_part_id"
-				+ "     , t03.label as body_part_label"
-				+ "  from subcategories_body_parts t01, subcategories t02, body_parts t03"
-				+ " where t01.id = ?"
-				+ "    t02.id = t01.subcategory_id and t03.id = t01.body_part_id"
-				+ " order by t03.id asc, t02.id asc, t01.id asc"
-				+ ";"
-		;
+				+ "     , t03.label as body_part_label "
+				+ "from subcategories_body_parts t01 "
+				+ "inner join subcategories t02 on t01.subcategory_id = t02.id "
+				+ "inner join body_parts t03 on t01.body_part_id = t03.id "
+				+ "where t01.id = ? "
+				+ "order by t01.id asc, t02.id asc, t03.id asc;";
 
     	return this.jdbcTemplate.queryForObject(
     			sqlQuery,
@@ -115,7 +113,7 @@ public class SubcategoriesBodyPartDao {
     //  UPDATE
     public void update(SubcategoriesBodyPart subcategoriesBodyPart) throws SQLException {
         
-    	String sqlQuery = "update subcategories_body_part set subcategory_id=?, body_part_id=? where id=?";
+    	String sqlQuery = "update subcategories_body_parts set subcategory_id=?, body_part_id=? where id=?";
         
 
         try {

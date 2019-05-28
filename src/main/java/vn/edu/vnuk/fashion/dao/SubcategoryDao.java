@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import vn.edu.vnuk.fashion.helper.DaoHelpers;
 import vn.edu.vnuk.fashion.model.Subcategory;
 import vn.edu.vnuk.fashion.rowmapper.SubcategoryRowMapper;
 
@@ -54,19 +55,14 @@ public class SubcategoryDao {
     	String sqlQuery = "select t01.id"
 		    			+ "     , t01.label"
 		    			+ "     , t02.id as category_id"
-						+ "     , t02.label as category_label"
-						+ "  from subcategories t01, categories t02"
-						+ " where t02.id = t01.category_id"
-				;
+						+ "     , t02.label as category_label "
+						+ "from subcategories t01 "
+						+ "inner join categories t02 on t01.category_id = t02.id ";
     	
-    	if (categoryId != null) {
-    		sqlQuery += String.format("   and t02.id = %s", categoryId);
-    		sqlQuery += " order by t01.id asc;";
-    	}
+    	if (categoryId != null)
+    		sqlQuery = DaoHelpers.addConditionForQuery(sqlQuery, "t01.category_id", categoryId);
     	
-    	else {
-        	sqlQuery += " order by t01.id asc, t02.id asc;";
-    	}
+    	sqlQuery += " order by t01.id asc, t02.id asc;";
     	
     	
         try {

@@ -5,13 +5,11 @@ import javax.validation.constraints.NotNull;
 public class SubcategoriesBodyPart {
 	private Long id;
 	
-	@NotNull
 	private Subcategory subcategory;
 	
 	@NotNull
 	private Long subcategoryId;
 	
-	@NotNull
 	private BodyPart bodyPart;
 	
 	@NotNull
