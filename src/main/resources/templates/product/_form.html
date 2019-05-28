@@ -1,0 +1,135 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	
+    <form th:fragment="form(title, action, method, cancelLink)" 
+    	  th:action="${action}" 
+    	  th:object="${product}" 
+    	  th:method="${method}"
+    	  class="px-5 py-5 col-md-6 offset-md-3"
+		  style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+
+		<h3 class="my-margin-bottom-28 text-center">
+			<em th:text="${title}"></em>
+		</h3>
+
+		<div>
+        	<div class="mt-4 form-group">
+				<label for="name">Name</label>
+	    		<input class="form-control" id="name" placeholder="Name" type="text" th:field="*{name}">
+        	</div>
+        	
+        	<div th:if="${labelFieldError}" class="my-error-field">
+        		<span class="my-margin-right-19">
+					<i class="fas fa-minus-circle" aria-hidden="true"></i>
+				</span>
+				
+		    	<span th:text="${labelFieldError}"></span>
+        	</div>
+        	
+        	<div class="mt-4 form-group">
+        		<label for="subcategory">Subcategory</label>
+	        	<select class="form-control" th:field="*{subcategoryId}" id="subcategory">
+				    <option
+				    	th:each="subcategory : ${subcategories}"
+				    	th:value="${subcategory.id}"
+				    	th:text="${subcategory.label}"
+				    >
+				    </option>
+				</select>
+        	</div>
+        	
+        	<div class="mt-4 form-group">
+        		<label for="sleeve">Sleeve</label>
+	        	<select class="form-control" th:field="*{sleeveId}" id="sleeve">
+				    <option
+				    	th:each="sleeve : ${sleeves}"
+				    	th:value="${sleeve.id}"
+				    	th:text="${sleeve.label}"
+				    >
+				    </option>
+				</select>
+        	</div>
+        	
+        	<div class="mt-4 form-group">
+        		<label for="shape">Shape</label>
+	        	<select class="form-control" th:field="*{shapeId}" id="shape">
+				    <option
+				    	th:each="shape : ${shapes}"
+				    	th:value="${shape.id}"
+				    	th:text="${shape.label}"
+				    >
+				    </option>
+				</select>
+        	</div>
+        	
+        	<div class="mt-4 form-group">
+        		<label for="collar">Collar</label>
+	        	<select class="form-control" th:field="*{collarId}" id="collar">
+				    <option
+				    	th:each="collar : ${collars}"
+				    	th:value="${collar.id}"
+				    	th:text="${collar.label}"
+				    >
+				    </option>
+				</select>
+        	</div>
+        	
+        	<div class="mt-4 form-group">
+        		<label for="height">Height</label>
+	        	<select class="form-control" th:field="*{heightId}" id="height">
+				    <option
+				    	th:each="height : ${heights}"
+				    	th:value="${height.id}"
+				    	th:text="${height.label}"
+				    >
+				    </option>
+				</select>
+        	</div>
+        	
+        	<div class="mt-4 form-group">
+        		<label for="material">Material</label>
+	        	<select class="form-control" th:field="*{materialId}" id="material">
+				    <option
+				    	th:each="material : ${materials}"
+				    	th:value="${material.id}"
+				    	th:text="${material.label}"
+				    >
+				    </option>
+				</select>
+        	</div>
+        	
+        	<div class="mt-4 form-group">
+        		<label for="maker">Maker</label>
+	        	<select class="form-control" th:field="*{makerId}" id="maker">
+				    <option
+				    	th:each="maker : ${makers}"
+				    	th:value="${maker.id}"
+				    	th:text="${maker.label}"
+				    >
+				    </option>
+				</select>
+        	</div>	
+        </div>
+        
+        <div class="my-margin-top-19 text-center">
+
+		    <a th:href="${cancelLink}" class="btn btn-sm btn-danger my-margin-right-19">
+				<span class="my-margin-right-19">
+					<i class="fas fa-times" aria-hidden="true"></i>
+				</span>
+				
+		    	<span>Cancel</span>
+		    </a>
+	
+	
+		    <button type="submit" class="btn btn-sm btn-success">
+				<span class="my-margin-right-19">
+					<i class="fas fa-check-circle" aria-hidden="true"></i>
+				</span>
+				
+		    	<span>Save</span>
+		    </button>
+		    
+		</div>
+	</form>
+	
+</html>

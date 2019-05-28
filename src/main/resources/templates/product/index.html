@@ -1,0 +1,96 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	
+	<title th:fragment="title">List of all the products</title>
+	
+	
+	<section th:fragment="content">
+		<div class="container my-5">
+			<h3 class="my-margin-bottom-28 text-center">
+				<em th:if="${category == null}">List of products</em>
+			</h3>
+
+			<a href="products/new" class="btn btn-sm btn-success my-margin-bottom-19">
+			<span class="my-margin-right-19">
+				<i class="fa fa-plus" aria-hidden="true"></i>
+			</span>
+
+				<span>Create a new product</span>
+			</a>
+
+
+			<div id="my-notice" class="my-no-line-height">
+	        <span class="my-margin-right-19">
+				<i aria-hidden="true"></i>
+			</span>
+
+				<span></span>
+			</div>
+			
+			<table class="table table-responsive table-bordered text-center" style="max-height: 600px;">
+				<thead class="thead-dark">
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Name</th>
+					<th scope="col">Subcategory</th>
+					<th scope="col">Collar</th>
+					<th scope="col">Height</th>
+					<th scope="col">Maker</th>
+					<th scope="col">Material</th>
+					<th scope="col">Shape</th>
+					<th scope="col">Sleeve</th>
+					<th scope="col">Actions</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr th:each="product : ${products}" th:attr="data-product-id=${product.id}">
+
+					<td scope="row" th:text="${product.id}"></td>
+					<td th:text="${product.name}"></td>
+					<td th:text="${product.subcategory.label}"></td>
+					<td th:text="${product.collar.label}"></td>
+					<td th:text="${product.height.label}"></td>
+					<td th:text="${product.maker.label}"></td>
+					<td th:text="${product.material.label}"></td>
+					<td th:text="${product.shape.label}"></td>
+					<td th:text="${product.sleeve.label}"></td>
+					<td>
+						<!-- Show subcategory -->
+						<a
+								th:href="@{/products/{id}(id=${product.id})}"
+								class="btn btn-sm btn-light"
+								data-toggle="tooltip"
+								title="Show product"
+								data-placement="bottom"
+						>
+							<i class="far fa-eye" aria-hidden="true"></i>
+						</a>
+						<!-- Edit subcategory -->
+						<a
+								th:href="@{/products/{id}/edit(id=${product.id})}"
+								class="btn btn-sm btn-primary my-product-to-edit"
+								data-toggle="tooltip"
+								title="Edit product"
+								data-placement="bottom"
+						>
+							<i class="far fa-edit" aria-hidden="true"></i>
+						</a>
+						<!-- Delete subcategory -->
+						<button
+								type="button"
+								class="btn btn-sm btn-danger my-product-to-delete"
+								th:value="${product.id}"
+								data-toggle="tooltip"
+								title="Delete product"
+								data-placement="bottom"
+						>
+							<i class="far fa-trash-alt" aria-hidden="true"></i>
+						</button>
+					</td>
+				</tr>
+
+				</tbody>
+			</table>
+		</div>
+	</section>
+	
+</html>

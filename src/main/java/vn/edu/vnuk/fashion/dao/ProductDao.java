@@ -32,13 +32,13 @@ public class ProductDao {
             						sqlQuery,
             						new Object[] {
             								product.getName(),
-            				                product.getSubcategory().getId(),
-            				                product.getSleeve().getId(),
-            				                product.getShape().getId(),
-            				                product.getCollar().getId(),
-            				                product.getHeight().getId(),
-            				                product.getMaterial().getId(),
-            				                product.getMaker().getId()
+            				                product.getSubcategoryId(),
+            				                product.getSleeveId(),
+            				                product.getShapeId(),
+            				                product.getCollarId(),
+            				                product.getHeightId(),
+            				                product.getMaterialId(),
+            				                product.getMakerId()
             							}
         						)
         				)
@@ -122,30 +122,32 @@ public class ProductDao {
 
     //  READ (Single Category)
     public Product read(Long id) throws SQLException{
-    	String sqlQuery = "select subcategory.id as subcategory_id, "
-        		+ "subcategory.label as subcategory_label, "
-        		+ "sleeve.id as sleeve_id, "
-        		+ "sleeve.label as sleeve_label, "
-        		+ "shape.id as shape_id, "
-        		+ "shape.label as shape_label, "
-        		+ "collar.id as collar_id, "
-        		+ "collar.label as collar_label, "
-        		+ "height.id as height_id, "
-        		+ "height.label as height_label, "
-        		+ "material.id as material_id, "
-        		+ "material.label as material_label, "
-        		+ "maker.id as maker_id, "
-        		+ "maker.label as maker_label "
-        		+ "from product "
-        		+ "inner join subcategory on product.subcategory_id = subcategory.id "
-        		+ "inner join sleeve on product.sleeve_id = sleeve.id "
-        		+ "inner join shape on product.shape_id = shape.id "
-        		+ "inner join collar on product.collar_id = collar.id "
-        		+ "inner join height on product.height_id = height.id "
-        		+ "inner join material on product.material_id = material.id "
-        		+ "inner join maker on product.maker_id = maker.id "
-        		+ "where product.id = ? "
-        		+ "order by product.id asc;";
+    	String sqlQuery = "select subcategories.id as subcategory_id, "
+        		+ "subcategories.label as subcategory_label, "
+        		+ "sleeves.id as sleeve_id, "
+        		+ "sleeves.label as sleeve_label, "
+        		+ "shapes.id as shape_id, "
+        		+ "shapes.label as shape_label, "
+        		+ "collars.id as collar_id, "
+        		+ "collars.label as collar_label, "
+        		+ "heights.id as height_id, "
+        		+ "heights.label as height_label, "
+        		+ "materials.id as material_id, "
+        		+ "materials.label as material_label, "
+        		+ "makers.id as maker_id, "
+        		+ "makers.label as maker_label, "
+        		+ "products.id, "
+        		+ "products.name "
+        		+ "from products "
+        		+ "inner join subcategories on products.subcategory_id = subcategories.id "
+        		+ "inner join sleeves on products.sleeve_id = sleeves.id "
+        		+ "inner join shapes on products.shape_id = shapes.id "
+        		+ "inner join collars on products.collar_id = collars.id "
+        		+ "inner join heights on products.height_id = heights.id "
+        		+ "inner join materials on products.material_id = materials.id "
+        		+ "inner join makers on products.maker_id = makers.id "
+        		+ "where products.id = ? "
+        		+ "order by products.id asc;";
         
         return this.jdbcTemplate.queryForObject(
     			sqlQuery,
@@ -175,13 +177,14 @@ public class ProductDao {
 					
 					new Object[] {
 							product.getName(),
-							product.getSubcategory().getId(),
-							product.getSleeve().getId(),
-				            product.getShape().getId(),
-				            product.getCollar().getId(),
-				            product.getHeight().getId(),
-				            product.getMaterial().getId(),
-				            product.getMaker().getId()
+							product.getSubcategoryId(),
+							product.getSleeveId(),
+				            product.getShapeId(),
+				            product.getCollarId(),
+				            product.getHeightId(),
+				            product.getMaterialId(),
+				            product.getMakerId(),
+				            product.getId()
 						}
 				);
             
