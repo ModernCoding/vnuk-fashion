@@ -65,7 +65,7 @@ public class SubcategoryDao {
     	}
     	
     	else {
-        	sqlQuery += " order by t02.id asc, t01.id asc;";
+        	sqlQuery += " order by t01.id asc, t02.id asc;";
     	}
     	
     	
@@ -95,7 +95,7 @@ public class SubcategoryDao {
 				+ "  from subcategories t01, categories t02"
 				+ " where t01.id = ?"
 				+ "   and t02.id = t01.category_id"
-				+ " order by t02.id asc, t01.id asc"
+				+ " order by t01.id asc, t02.id asc"
 				+ ";"
 		;
 
