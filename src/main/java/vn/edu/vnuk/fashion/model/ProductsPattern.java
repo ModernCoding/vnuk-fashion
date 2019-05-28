@@ -11,7 +11,6 @@ public class ProductsPattern {
 	@NotNull
 	private Long patternId;
 	
-	@NotNull
 	private Product product;
 	
 	private Pattern pattern;

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import vn.edu.vnuk.fashion.helper.DaoHelpers;
 import vn.edu.vnuk.fashion.model.ProductsPattern;
 import vn.edu.vnuk.fashion.rowmapper.ProductsPatternRowMapper;
 
@@ -14,14 +15,9 @@ import vn.edu.vnuk.fashion.rowmapper.ProductsPatternRowMapper;
 
 @Repository
 public class ProductsPatternDao {
-	
-    private final JdbcTemplate jdbcTemplate;
-    
-    @Autowired
-    public ProductsPatternDao(JdbcTemplate jdbcTemplate) {
-	  this.jdbcTemplate = jdbcTemplate;
-    }
 
+	@Autowired
+    private JdbcTemplate jdbcTemplate;
 
     //  CREATE
     public void create(ProductsPattern productsPattern) throws SQLException{
@@ -37,8 +33,8 @@ public class ProductsPatternDao {
             				this.jdbcTemplate.update(
             						sqlQuery,
             						new Object[] {
-            								productsPattern.getPatternId(),
-            								productsPattern.getProductId()
+            								productsPattern.getProductId(),
+            								productsPattern.getPatternId()
             							}
         						)
         				)
@@ -57,32 +53,23 @@ public class ProductsPatternDao {
     //  READ (List of ProductsPatterns)
     public List<ProductsPattern> read(String productId , String patternId) throws SQLException {
     	
-    	String sqlQuery = "select t01.id"
-		    			+ "     , t02.id as product_id"
-		    			+ "     , t02.name"
-		    			+ "     , t02.subcategory_id"
-		    			+ "     , t02.sleeve_id"
-		    			+ "     , t02.shape_id"
-		    			+ "     , t02.collar_id"
-		    			+ "     , t02.height_id"
-		    			+ "     , t02.material_id"
-		    			+ "     , t02.maker_id"
-		    			+ "     , t03.id as pattern_id"
-		    			+ "     , t03.label"
-						+ "  from products_patterns t01, products t02, patterns t03"
-
-						+ " where t02.id = t01.product_id"
-						+ "and t03.id = t01.pattern_id"
-				;
+    	String sqlQuery = 
+	  			  "select products_patterns.id, "
+	  			+ "		products.id as product_id, "
+	  			+ "		products.name as product_name, "
+	  			+ "		patterns.id as pattern_id, "
+	  			+ "		patterns.label as pattern_label "
+				+ "from products_patterns "
+				+ "inner join products on products_patterns.product_id = products.id "
+				+ "inner join patterns on products_patterns.pattern_id = patterns.id ";
+    	    	
+    	if (productId != null)
+    		sqlQuery = DaoHelpers.addConditionForQuery(sqlQuery, "products.id", productId);
     	
-    	if (productId != null && patternId != null) {
-    		sqlQuery += String.format("   and t02.id = %s", productId, "   and t03.id = %s", patternId );
-    		sqlQuery += " order by t01.id asc;";
-    	}
+    	if (patternId != null)
+    		sqlQuery = DaoHelpers.addConditionForQuery(sqlQuery, "patterns.id", patternId);
     	
-    	else {
-        	sqlQuery += " order by t03.id asc, t02.id asc, t01.id asc;";
-    	}
+    	sqlQuery += " order by products_patterns.id asc, products.id asc, patterns.id asc;";
     	
     	
         try {
@@ -104,25 +91,17 @@ public class ProductsPatternDao {
     //  READ (Single ProductsPattern)
     public ProductsPattern read(Long id) throws SQLException{
 
-    	String sqlQuery = "select t01.id"
-    			+ "     , t02.id as product_id"
-    			+ "     , t02.name"
-    			+ "     , t02.subcategory_id"
-    			+ "     , t02.sleeve_id"
-    			+ "     , t02.shape_id"
-    			+ "     , t02.collar_id"
-    			+ "     , t02.height_id"
-    			+ "     , t02.material_id"
-    			+ "     , t02.maker_id"
-    			+ "     , t03.id as pattern_id"
-    			+ "     , t03.id label"
-				+ "  from products_patterns t01, products t02, patterns t03"
-				+ " where t01.id = ?"
-				+ "   and t02.id = t01.product_id"
-				+ "   and t03.id = t01.pattern_id"	
-				+ " order by t01.id asc, t02.id asc, t01.id asc"
-				+ ";"
-		;
+    	String sqlQuery = 
+    			  "select products_patterns.id, "
+    			+ "		products.id as product_id, "
+    			+ "		products.name as product_name, "
+    			+ "		patterns.id as pattern_id, "
+    			+ "		patterns.label as pattern_label "
+				+ "from products_patterns "
+				+ "inner join products on products_patterns.product_id = products.id "
+				+ "inner join patterns on products_patterns.pattern_id = patterns.id "
+				+ "where products_patterns.id = ? "
+				+ "order by products_patterns.id asc, products.id asc, patterns.id asc;";
 
     	return this.jdbcTemplate.queryForObject(
     			sqlQuery,
@@ -144,9 +123,9 @@ public class ProductsPatternDao {
 					sqlQuery,
 					
 					new Object[] {
-							productsPattern.getId(),
+							productsPattern.getProductId(),
 							productsPattern.getPatternId(),
-							productsPattern.getProductId()
+							productsPattern.getId()
 						}
 				);
             

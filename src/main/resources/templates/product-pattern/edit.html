@@ -1,0 +1,29 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	
+	<title th:fragment="title" th:text="'Edit product pattern #' + ${productsPattern.id}"></title>
+	
+	
+	<section th:fragment="content">	
+		<div class="container">
+			<div class="row my-5">	
+			    <form
+			    	th:replace="
+			    			~{
+			    				/product-pattern/_form
+			    				
+			    				::
+			    				
+			    				form('Edit product-pattern #' + ${productsPattern.id},
+			    					@{/products-patterns/{id}(id=${productsPattern.id}, backToShow=${backToShow})},
+			    					'patch',
+			    					@{/products-patterns{urlCompletion}(urlCompletion=${urlCompletion})}
+			    				)
+			    			}
+			    		"
+			    >
+			    </form>
+		    </div>
+		</div>
+	</section>
+	
+</html>
