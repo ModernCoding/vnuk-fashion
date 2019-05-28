@@ -1,6 +1,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	
-	<title th:fragment="title">List of all the collars</title>
+	<title th:fragment="title">List of all the colors</title>
 	
 	
 	<section th:fragment="content">
@@ -9,11 +9,11 @@
 				<em>List of all collars</em>
 			</h3>
 
-			<a href="collars/new" class="btn btn-sm btn-success my-margin-bottom-19">
+			<a href="colors/new" class="btn btn-sm btn-success my-margin-bottom-19">
 				<span class="my-margin-right-19">
 					<i class="fa fa-plus" aria-hidden="true"></i>
 				</span>
-				<span>Create a new collar</span>
+				<span>Create a new color</span>
 			</a>
 
 
@@ -30,23 +30,23 @@
 					<tr>
 						<th scope="col">#</th>
 						<th scope="col">Label</th>
-						<th scope="col">Products</th>
+						<th scope="col">Products Colors</th>
 						<th scope="col">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="collar : ${collars}" th:attr="data-collar-id=${collar.id}">
-						<td scope="row" th:text="${collar.id}"></td>
+					<tr th:each="color : ${colors}" th:attr="data-color-id=${color.id}">
+						<td scope="row" th:text="${color.id}"></td>
 						<td>
-							<div th:text="${collar.label}" class="my-margin-bottom-4 d-inline-block" ></div>
+							<div th:text="${color.label}" class="my-margin-bottom-4 d-inline-block" ></div>
 
 						</td>
 						<td>
 							<div class="d-inline-block">
-								<a th:href="@{/products?collarId={id}(id=${collar.id})}" class="btn btn-sm btn-info">
+								<a th:href="@{/products-colors?colorId={id}(id=${color.id})}" class="btn btn-sm btn-info">
 									<i class="fas fa-angle-double-right" aria-hidden="true"></i>
 									<span class="my-margin-left-19">
-										<i>Products</i>
+										<i>Products Colors</i>
 									</span>
 								</a>
 							</div>
@@ -54,10 +54,10 @@
 						<td>
 							<!-- Show title -->
 							<a
-									th:href="@{/collars/{id}(id=${collar.id})}"
+									th:href="@{/colors/{id}(id=${color.id})}"
 									class="btn btn-sm btn-light"
 									data-toggle="tooltip"
-									title="Show collar"
+									title="Show color"
 									data-placement="bottom"
 							>
 								<i class="far fa-eye" aria-hidden="true"></i>
@@ -66,10 +66,10 @@
 
 							<!-- Edit title -->
 							<a
-									th:href="@{/collars/{id}/edit(id=${collar.id})}"
-									class="btn btn-sm btn-primary my-collar-to-edit"
+									th:href="@{/colors/{id}/edit(id=${color.id})}"
+									class="btn btn-sm btn-primary my-color-to-edit"
 									data-toggle="tooltip"
-									title="Edit collar"
+									title="Edit color"
 									data-placement="bottom"
 							>
 								<i class="far fa-edit" aria-hidden="true"></i>
@@ -78,10 +78,10 @@
 							<!-- Delete title -->
 							<button
 									type="button"
-									class="btn btn-sm btn-danger my-collar-to-delete"
-									th:value="${collar.id}"
+									class="btn btn-sm btn-danger my-color-to-delete"
+									th:value="${color.id}"
 									data-toggle="tooltip"
-									title="Delete collar"
+									title="Delete color"
 									data-placement="bottom"
 							>
 								<i class="far fa-trash-alt" aria-hidden="true"></i>

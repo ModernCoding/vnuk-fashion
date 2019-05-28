@@ -20,7 +20,7 @@ public class CollarDao {
     //  CREATE
     public void create(Collar collar) throws SQLException{
 
-        String sqlQuery = "insert into collar (label) values (?)";
+        String sqlQuery = "insert into collars (label) values (?)";
 
         try {
             System.out.println(

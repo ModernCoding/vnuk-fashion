@@ -1,11 +1,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	
-	<title th:fragment="title">Create a new collar</title>
+	<title th:fragment="title">Create a new color</title>
 	
 	<section th:fragment="content">
 		<div class="container my-5">
 			<div class="row my-5">
-				<form th:replace="~{/collar/_form :: form('Create a new collar', @{/collars}, 'post', @{/collars})}"></form>
+				<form th:replace="~{/color/_form :: form('Create a new color', @{/colors}, 'post', @{/colors})}"></form>
 			</div>
 		</div>
 	</section>
