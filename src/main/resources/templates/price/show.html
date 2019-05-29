@@ -1,0 +1,87 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	
+	<title th:fragment="title" th:text="'Price #' + ${price.id}"></title>
+	
+	
+	<section th:fragment="content">
+		<div class="container my-5">
+			<h3 class="my-margin-bottom-28 text-center">
+				<em th:text="'price #' + ${price.id}"></em>
+			</h3>
+			
+			<div class="row">
+				<div class="col-md-8 offset-md-2">
+					<table class="table table-bordered text-center">
+						<thead class="thead-dark">
+							<tr>
+								<th scope="col">Field</th>
+								<th scope="col">Value</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td scope="row">Value</td>
+								<td th:text="${price.value}"></td>
+							</tr>
+							
+							<tr>
+								<td scope="row">Product size</td>
+								<td th:text="${price.productsSize.label}"></td>
+							</tr>
+							
+							<tr>
+								<td scope="row">Product color</td>
+								<td th:text="${price.productsColor.label}"></td>
+							</tr>
+							
+							<tr>
+								<td scope="row">Product pattern</td>
+								<td th:text="${price.productsPattern.label}"></td>
+							</tr>
+							
+							<tr>
+								<td scope="row">Product length</td>
+								<td th:text="${price.productsLength.label}"></td>
+							</tr>
+							
+							<tr>
+								<td scope="row">Seller</td>
+								<td th:text="${price.seller.label}"></td>
+							</tr>
+							
+							<tr>
+								<td scope="row">Price type</td>
+								<td th:text="${price.priceType.label}"></td>
+							</tr>
+						</tbody>
+						
+					</table>
+					
+					<div class="my-margin-top-19">
+					    <a th:href="@{/prices}" class="btn btn-sm btn-secondary mr-2">
+							<span>
+								<i class="far fa-arrow-alt-circle-left" aria-hidden="true"></i>
+							</span>
+							
+					    	<span>Back to the list of prices</span>
+					    </a>
+				
+				
+					    <a
+			                th:href="@{/prices/{id}/edit(id=${price.id}, backToShow=true)}"
+					    	class="btn btn-sm btn-primary"
+					    >
+							<span>
+								<i class="far fa-edit" aria-hidden="true"></i>
+							</span>
+							
+					    	<span>Edit price #<span th:text="${price.id}"></span></span>
+					    </a>
+					    
+					</div>
+				</div>
+			</div>			
+		</div>
+	</section>
+	
+</html>

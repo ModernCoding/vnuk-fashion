@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import vn.edu.vnuk.fashion.helper.DaoHelpers;
 import vn.edu.vnuk.fashion.model.ProductsColor;
 import vn.edu.vnuk.fashion.rowmapper.ProductsColorRowMapper;
 
@@ -16,13 +17,8 @@ import vn.edu.vnuk.fashion.rowmapper.ProductsColorRowMapper;
 @Repository
 public class ProductsColorDao {
 	
-    private final JdbcTemplate jdbcTemplate;
-    
-    @Autowired
-    public ProductsColorDao(JdbcTemplate jdbcTemplate) {
-	  this.jdbcTemplate = jdbcTemplate;
-    }
-
+	@Autowired
+    private JdbcTemplate jdbcTemplate;
 
     //  CREATE
     public void create(ProductsColor  productsColor) throws SQLException{
@@ -38,8 +34,8 @@ public class ProductsColorDao {
             				this.jdbcTemplate.update(
             						sqlQuery,
             						new Object[] {
-            								productsColor.getColorId(),
-            								productsColor.getProductId()
+            								productsColor.getProductId(),
+            								productsColor.getColorId()
             							}
         						)
         				)
@@ -56,34 +52,24 @@ public class ProductsColorDao {
     
     
     //  READ (List of ProductsColors)
-    public List<ProductsColor> read(String productId , String colorId) throws SQLException {
+    public List<ProductsColor> read(ProductsColor productsColor) throws SQLException {
     	
     	String sqlQuery = "select t01.id"
-		    			+ "     , t02.id as product_id"
-		    			+ "     , t02.name"
-		    			+ "     , t02.subcategory_id"
-		    			+ "     , t02.sleeve_id"
-		    			+ "     , t02.shape_id"
-		    			+ "     , t02.collar_id"
-		    			+ "     , t02.height_id"
-		    			+ "     , t02.material_id"
-		    			+ "     , t02.maker_id"
-		    			+ "     , t03.id as color_id"
-		    			+ "     , t03.label"
-						+ "  from products_colors t01, products t02, colors t03"
-
-						+ " where t02.id = t01.product_id"
-						+ "and t03.id = t01.color_id"
-				;
+		    			+ "     , t01.color_id"
+		    			+ "		, t01.product_id"
+		    			+ "		, t02.name as product_name"
+		    			+ "     , t03.label as color_label "
+						+ "from products_colors t01 "
+						+ "inner join products t02 on t01.product_id = t02.id "
+						+ "inner join colors t03 on t01.color_id = t03.id ";
     	
-    	if (productId != null && colorId != null) {
-    		sqlQuery += String.format("   and t02.id = %s", productId, "   and t03.id = %s", colorId );
-    		sqlQuery += " order by t01.id asc;";
-    	}
+    	if (productsColor.getProductId() != null)
+    		sqlQuery = DaoHelpers.addConditionForQuery(sqlQuery, "t02.id", String.valueOf(productsColor.getProductId()));
     	
-    	else {
-        	sqlQuery += " order by t03.id asc, t02.id asc, t01.id asc;";
-    	}
+    	if (productsColor.getColorId() != null)
+    		sqlQuery = DaoHelpers.addConditionForQuery(sqlQuery, "t03.id", String.valueOf(productsColor.getColorId()));
+    	
+    	sqlQuery += " order by t01.id asc, t02.id asc, t03.id asc;";
     	
     	
         try {
@@ -106,25 +92,16 @@ public class ProductsColorDao {
     public ProductsColor read(Long id) throws SQLException{
 
     	String sqlQuery = "select t01.id"
-    			+ "     , t02.id as product_id"
-    			+ "     , t02.name"
-    			+ "     , t02.subcategory_id"
-    			+ "     , t02.sleeve_id"
-    			+ "     , t02.shape_id"
-    			+ "     , t02.collar_id"
-    			+ "     , t02.height_id"
-    			+ "     , t02.material_id"
-    			+ "     , t02.maker_id"
-    			+ "     , t03.id as color_id"
-    			+ "     , t03.label"
-				+ "  from products_colors t01, products t02, colors t03"
-				+ " where t01.id = ?"
-				+ "   and t02.id = t01.product_id"
-				+ "   and t03.id = t01.color_id"	
-				+ " order by t01.id asc, t02.id asc, t01.id asc"
-				+ ";"
+    			+ "     , t01.color_id"
+    			+ "		, t01.product_id"
+    			+ "		, t02.name as product_name"
+    			+ "     , t03.label as color_label "
+				+ "from products_colors t01 "
+				+ "inner join products t02 on t01.product_id = t02.id "
+				+ "inner join colors t03 on t01.color_id = t03.id "
+				+ "where t01.id = ? "
+				+ "order by t01.id asc, t02.id asc, t03.id asc;";
 		;
-
     	return this.jdbcTemplate.queryForObject(
     			sqlQuery,
         		new Object[] {id},
@@ -145,9 +122,9 @@ public class ProductsColorDao {
 					sqlQuery,
 					
 					new Object[] {
-							productsColor.getId(),
 							productsColor.getProductId(),
-							productsColor.getColorId()
+							productsColor.getColorId(),
+							productsColor.getId()
 						}
 				);
             

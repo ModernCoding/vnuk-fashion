@@ -23,20 +23,16 @@ public class Price {
 	@NotNull
 	private Long priceTypeId;
 	
-	@NotNull
 	private ProductsSize productsSize;
 	
-	@NotNull
 	private ProductsColor productsColor;
 	
 	private ProductsPattern productsPattern;
 	
 	private ProductsLength productsLength;
 	
-	@NotNull
 	private Seller seller;
 
-	@NotNull
 	private PriceType priceType;
 	
 	@NotNull

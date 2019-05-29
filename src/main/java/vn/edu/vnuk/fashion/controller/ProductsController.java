@@ -26,7 +26,6 @@ import vn.edu.vnuk.fashion.dao.MakerDao;
 import vn.edu.vnuk.fashion.dao.MaterialDao;
 import vn.edu.vnuk.fashion.dao.ProductDao;
 import vn.edu.vnuk.fashion.dao.ShapeDao;
-import vn.edu.vnuk.fashion.dao.SizeDao;
 import vn.edu.vnuk.fashion.dao.SleeveDao;
 import vn.edu.vnuk.fashion.dao.SubcategoryDao;
 import vn.edu.vnuk.fashion.model.Product;

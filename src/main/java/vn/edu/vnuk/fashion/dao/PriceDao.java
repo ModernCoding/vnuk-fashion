@@ -20,10 +20,10 @@ public class PriceDao {
     //  CREATE
     public void create(Price price) throws SQLException{
 
-        String sqlQuery = "insert into subcategories (products_size_id, "
+        String sqlQuery = "insert into prices (products_size_id, "
         		+ "products_color_id, "
         		+ "products_pattern_id, "
-        		+ "products_lenght_id, "
+        		+ "products_length_id, "
         		+ "seller_id, "
         		+ "price_type_id, "
         		+ "value) "
@@ -66,7 +66,7 @@ public class PriceDao {
     			+ "		, prices.value as value"
     			+ "		, products_patterns.id as product_pattern_id"
     			+ "		, products_colors.id as product_color_id"
-    			+ "		, products_lengths.id as product_lengths_id"
+    			+ "		, products_lengths.id as product_length_id"
     			+ "		, products_sizes.id as product_size_id"
     			+ "		, price_types.id as price_type_id"
     			+ "		, price_types.label as price_type_label"
@@ -125,18 +125,18 @@ public class PriceDao {
     			+ "		, prices.value as value"
     			+ "		, products_patterns.id as product_pattern_id"
     			+ "		, products_colors.id as product_color_id"
-    			+ "		, products_lengths.id as product_lengths_id"
+    			+ "		, products_lengths.id as product_length_id"
     			+ "		, products_sizes.id as product_size_id"
     			+ "		, price_types.id as price_type_id"
     			+ "		, price_types.label as price_type_label"
     			+ "		, sellers.id as seller_id"
-    			+ "		, sellers.label as seller_label"
+    			+ "		, sellers.label as seller_label "
 				+ "from prices "
 				+ "inner join products_patterns on prices.products_pattern_id = products_patterns.id "
 				+ "inner join products_colors on prices.products_color_id = products_colors.id "
 				+ "inner join products_lengths on prices.products_length_id = products_lengths.id "
 				+ "inner join products_sizes on prices.products_size_id = products_sizes.id "
-				+ "inner join price_types on prices.price_type_id = prices_types.id "
+				+ "inner join price_types on prices.price_type_id = price_types.id "
 				+ "inner join sellers on prices.seller_id = sellers.id "
 				+ "where prices.id = ?;";
     	
@@ -156,7 +156,7 @@ public class PriceDao {
         		+ "products_length_id=?, "
         		+ "seller_id=?, "
         		+ "price_type_id=?, "
-        		+ "value=?, "
+        		+ "value=? "
         		+ "where id=?";
         
         try {

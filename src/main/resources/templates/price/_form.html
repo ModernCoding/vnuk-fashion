@@ -1,0 +1,123 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	
+    <form th:fragment="form(title, action, method, cancelLink)" 
+    	  th:action="${action}" 
+    	  th:object="${price}" 
+    	  th:method="${method}"
+    	  class="px-5 py-5 col-md-6 offset-md-3"
+		  style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+
+		<h3 class="my-margin-bottom-28 text-center">
+			<em th:text="${title}"></em>
+		</h3>
+
+		<div>
+        	<div class="mt-4 form-group">
+				<label for="value">Value</label>
+	    		<input class="form-control" id="value" placeholder="Value" type="text" th:field="*{value}">
+        	</div>
+        	
+        	<div th:if="${labelFieldError}" class="my-error-field">
+        		<span class="my-margin-right-19">
+					<i class="fas fa-minus-circle" aria-hidden="true"></i>
+				</span>
+				
+		    	<span th:text="${labelFieldError}"></span>
+        	</div>
+        	
+        	<div class="mt-4 form-group">
+        		<label for="productsSize">Product size</label>
+	        	<select class="form-control" th:field="*{productsSizeId}" id="productsSize">
+				    <option
+				    	th:each="productsSize : ${productsSizes}"
+				    	th:value="${productsSize.id}"
+				    	th:text="${productsSize.id}"
+				    >
+				    </option>
+				</select>
+        	</div>
+        	
+        	<div class="mt-4 form-group">
+        		<label for="productsColor">Product color</label>
+	        	<select class="form-control" th:field="*{productsColorId}" id="productsColor">
+				    <option
+				    	th:each="productsColor : ${productsColors}"
+				    	th:value="${productsColor.id}"
+				    	th:text="${productsColor.id}"
+				    >
+				    </option>
+				</select>
+        	</div>
+        	
+        	<div class="mt-4 form-group">
+        		<label for="productsPattern">Product pattern</label>
+	        	<select class="form-control" th:field="*{productsPatternId}" id="productsPattern">
+				    <option
+				    	th:each="productsPattern : ${productsPatterns}"
+				    	th:value="${productsPattern.id}"
+				    	th:text="${productsPattern.id}"
+				    >
+				    </option>
+				</select>
+        	</div>
+        	
+        	<div class="mt-4 form-group">
+        		<label for="productsLength">Product length</label>
+	        	<select class="form-control" th:field="*{productsLengthId}" id="productsLength">
+				    <option
+				    	th:each="productsLength : ${productsLengths}"
+				    	th:value="${productsLength.id}"
+				    	th:text="${productsLength.id}"
+				    >
+				    </option>
+				</select>
+        	</div>
+        	
+        	<div class="mt-4 form-group">
+        		<label for="seller">Seller</label>
+	        	<select class="form-control" th:field="*{sellerId}" id="seller">
+				    <option
+				    	th:each="seller : ${sellers}"
+				    	th:value="${seller.id}"
+				    	th:text="${seller.label}"
+				    >
+				    </option>
+				</select>
+        	</div>
+        	
+        	<div class="mt-4 form-group">
+        		<label for="priceType">Price type</label>
+	        	<select class="form-control" th:field="*{priceTypeId}" id="priceType">
+				    <option
+				    	th:each="priceType : ${priceTypes}"
+				    	th:value="${priceType.id}"
+				    	th:text="${priceType.label}"
+				    >
+				    </option>
+				</select>
+        	</div>	
+        </div>
+        
+        <div class="my-margin-top-19 text-center">
+
+		    <a th:href="${cancelLink}" class="btn btn-sm btn-danger my-margin-right-19">
+				<span class="my-margin-right-19">
+					<i class="fas fa-times" aria-hidden="true"></i>
+				</span>
+				
+		    	<span>Cancel</span>
+		    </a>
+	
+	
+		    <button type="submit" class="btn btn-sm btn-success">
+				<span class="my-margin-right-19">
+					<i class="fas fa-check-circle" aria-hidden="true"></i>
+				</span>
+				
+		    	<span>Save</span>
+		    </button>
+		    
+		</div>
+	</form>
+	
+</html>

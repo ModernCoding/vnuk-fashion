@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import vn.edu.vnuk.fashion.helper.DaoHelpers;
 import vn.edu.vnuk.fashion.model.ProductsLength;
 import vn.edu.vnuk.fashion.rowmapper.ProductsLengthRowMapper;
 
@@ -57,34 +58,24 @@ public class ProductsLengthDao {
     
     
     //  READ (List of ProductsLengths)
-    public List<ProductsLength> read(String productId , String lengthId) throws SQLException {
+    public List<ProductsLength> read(ProductsLength productsLength) throws SQLException {
     	
     	String sqlQuery = "select t01.id"
-		    			+ "     , t02.id as product_id"
-		    			+ "     , t02.name"
-		    			+ "     , t02.subcategory_id"
-		    			+ "     , t02.sleeve_id"
-		    			+ "     , t02.shape_id"
-		    			+ "     , t02.collar_id"
-		    			+ "     , t02.height_id"
-		    			+ "     , t02.material_id"
-		    			+ "     , t02.maker_id"
-		    			+ "     , t03.id as length_id"
-		    			+ "     , t03.label"
-						+ "  from products_lengths t01, products t02, lengths t03"
-
-						+ " where t02.id = t01.product_id"
-						+ "and t03.id = t01.length_id"
-				;
+		    			+ "     , t01.product_id"
+		    			+ "     , t01.length_id"
+		    			+ "     , t03.label as length_label"
+		    			+ "     , t02.name as product_name "
+						+ "from products_lengths t01 "
+						+ "inner join products t02 on t01.product_id = t02.id "
+						+ "inner join lengths t03 on t01.length_id = t03.id ";
     	
-    	if (productId != null && lengthId != null) {
-    		sqlQuery += String.format("   and t02.id = %s", productId, "   and t03.id = %s", lengthId );
-    		sqlQuery += " order by t01.id asc;";
-    	}
+    	if (productsLength.getProductId() != null)
+    		sqlQuery = DaoHelpers.addConditionForQuery(sqlQuery, "t02.id", String.valueOf(productsLength.getProductId()));
     	
-    	else {
-        	sqlQuery += " order by t03.id asc, t02.id asc, t01.id asc;";
-    	}
+    	if (productsLength.getLengthId() != null)
+    		sqlQuery = DaoHelpers.addConditionForQuery(sqlQuery, "t03.id", String.valueOf(productsLength.getLengthId()));
+    	
+    	sqlQuery += " order by t01.id asc, t02.id asc, t03.id asc;";
     	
     	
         try {
@@ -107,23 +98,15 @@ public class ProductsLengthDao {
     public ProductsLength read(Long id) throws SQLException{
 
     	String sqlQuery = "select t01.id"
-    			+ "     , t02.id as product_id"
-    			+ "     , t02.name"
-    			+ "     , t02.subcategory_id"
-    			+ "     , t02.sleeve_id"
-    			+ "     , t02.shape_id"
-    			+ "     , t02.collar_id"
-    			+ "     , t02.height_id"
-    			+ "     , t02.material_id"
-    			+ "     , t02.maker_id"
-    			+ "     , t03.id as length_id"
-    			+ "     , t03.label"
-				+ "  from products_lengths t01, products t02, lengths t03"
-				+ " where t01.id = ?"
-				+ "   and t02.id = t01.product_id"
-				+ "   and t03.id = t01.length_id"	
-				+ " order by t01.id asc, t02.id asc, t01.id asc"
-				+ ";"
+    			+ "     , t01.product_id"
+    			+ "     , t01.length_id"
+    			+ "     , t03.label as length_label"
+    			+ "     , t02.name as product_name "
+				+ "from products_lengths t01 "
+				+ "inner join products t02 on t01.product_id = t02.id "
+				+ "inner join lengths t03 on t01.length_id = t03.id "
+				+ "where t01.id = ? "
+				+ "order by t01.id asc, t02.id asc, t03.id asc;"
 		;
 
     	return this.jdbcTemplate.queryForObject(
