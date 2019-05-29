@@ -157,7 +157,7 @@ public class ProductsController {
     	
     	model.addAttribute("backToShow", backToShow);
     	model.addAttribute("urlCompletion", backToShow ? String.format("/%s", id) : "");
-    	model.addAttribute("products", productDao.read(new Product()));
+    	model.addAttribute("product", productDao.read(id));
     	String temp = null;
     	model.addAttribute("subcategories", subcategoryDao.read(temp));
     	model.addAttribute("sleeves", sleeveDao.read());
