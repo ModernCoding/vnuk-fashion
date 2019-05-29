@@ -37,6 +37,7 @@
 						<th scope="col">Product length</th>
 						<th scope="col">Seller</th>
 						<th scope="col">Price type</th>
+						<th scope="col">Orders</th>
 						<th scope="col">Actions</th>
 					</tr>
 				</thead>
@@ -51,6 +52,16 @@
 						<td th:text="${price.productsLengthId}"></td>
 						<td th:text="${price.seller.label}"></td>
 						<td th:text="${price.priceType.label}"></td>
+						<td>
+							<div class="d-inline-block">
+								<a th:href="@{/orders?priceId={id}(id=${price.id})}" class="btn btn-sm btn-info">
+									<i class="fas fa-angle-double-right" aria-hidden="true"></i>
+									<span class="my-margin-left-19">
+										<i>Orders</i>
+									</span>
+								</a>
+							</div>
+						</td>
 						<td>
 							<!-- Show subcategory -->
 							<a
