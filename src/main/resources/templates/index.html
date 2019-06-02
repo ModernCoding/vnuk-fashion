@@ -63,10 +63,32 @@
 	                <div class="product col-sm-6 col-md-4 col-lg-3 mb-3">
 	                    <div class="card" style="padding: 0px;">
 	                        <div class="card-body">
+	                            <h5 class="card-title">Products colors</h5><hr>
+	                            <p class="card-text">Create | Edit products colors</p>
+	                            <a th:href="@{/products-colors}" class="btn btn-primary">View all</a>
+	                            <a th:href="@{/products-colors/new}" class="btn btn-success">Create</a>
+	                        </div>
+	                    </div>
+	                </div>
+	                
+	                <div class="product col-sm-6 col-md-4 col-lg-3 mb-3">
+	                    <div class="card" style="padding: 0px;">
+	                        <div class="card-body">
 	                            <h5 class="card-title">Lengths</h5><hr>
 	                            <p class="card-text">Create | Edit lengths</p>
 	                            <a th:href="@{/lengths}" class="btn btn-primary">View all</a>
 	                            <a th:href="@{/lengths/new}" class="btn btn-success">Create</a>
+	                        </div>
+	                    </div>
+	                </div>
+	                
+	                <div class="product col-sm-6 col-md-4 col-lg-3 mb-3">
+	                    <div class="card" style="padding: 0px;">
+	                        <div class="card-body">
+	                            <h5 class="card-title">Products-lengths</h5><hr>
+	                            <p class="card-text">Create | Edit products lengths</p>
+	                            <a th:href="@{/products-lengths}" class="btn btn-primary">View all</a>
+	                            <a th:href="@{/products-lengths/new}" class="btn btn-success">Create</a>
 	                        </div>
 	                    </div>
 	                </div>
@@ -85,10 +107,233 @@
 	                <div class="product col-sm-6 col-md-4 col-lg-3 mb-3">
 	                    <div class="card" style="padding: 0px;">
 	                        <div class="card-body">
+	                            <h5 class="card-title">Products patterns</h5><hr>
+	                            <p class="card-text">Create | Edit products patterns</p>
+	                            <a th:href="@{/products-patterns}" class="btn btn-primary">View all</a>
+	                            <a th:href="@{/products-patterns/new}" class="btn btn-success">Create</a>
+	                        </div>
+	                    </div>
+	                </div>
+	                
+	                <div class="product col-sm-6 col-md-4 col-lg-3 mb-3">
+	                    <div class="card" style="padding: 0px;">
+	                        <div class="card-body">
+	                            <h5 class="card-title">Products</h5><hr>
+	                            <p class="card-text">Create | Edit products</p>
+	                            <a th:href="@{/products}" class="btn btn-primary">View all</a>
+	                            <a th:href="@{/products/new}" class="btn btn-success">Create</a>
+	                        </div>
+	                    </div>
+	                </div>
+	                
+	                <div class="product col-sm-6 col-md-4 col-lg-3 mb-3">
+	                    <div class="card" style="padding: 0px;">
+	                        <div class="card-body">
+	                            <h5 class="card-title">Prices</h5><hr>
+	                            <p class="card-text">Create | Edit prices</p>
+	                            <a th:href="@{/prices}" class="btn btn-primary">View all</a>
+	                            <a th:href="@{/prices/new}" class="btn btn-success">Create</a>
+	                        </div>
+	                    </div>
+	                </div>
+	                
+	                <div class="product col-sm-6 col-md-4 col-lg-3 mb-3">
+	                    <div class="card" style="padding: 0px;">
+	                        <div class="card-body">
 	                            <h5 class="card-title">Titles</h5><hr>
 	                            <p class="card-text">Create | Edit titles</p>
 	                            <a th:href="@{/titles}" class="btn btn-primary">View all</a>
 	                            <a th:href="@{/titles/new}" class="btn btn-success">Create</a>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="product col-sm-6 col-md-4 col-lg-3 mb-3">
+	                    <div class="card" style="padding: 0px;">
+	                        <div class="card-body">
+	                            <h5 class="card-title">Customers</h5><hr>
+	                            <p class="card-text">Create | Edit customers</p>
+	                            <a th:href="@{/customers}" class="btn btn-primary">View all</a>
+	                            <a th:href="@{/customers/new}" class="btn btn-success">Create</a>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="product col-sm-6 col-md-4 col-lg-3 mb-3">
+	                    <div class="card" style="padding: 0px;">
+	                        <div class="card-body">
+	                            <h5 class="card-title">Orders</h5><hr>
+	                            <p class="card-text">Create | Edit orders</p>
+	                            <a th:href="@{/orders}" class="btn btn-primary">View all</a>
+	                            <a th:href="@{/orders/new}" class="btn btn-success">Create</a>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="product col-sm-6 col-md-4 col-lg-3 mb-3">
+	                    <div class="card" style="padding: 0px;">
+	                        <div class="card-body">
+	                            <h5 class="card-title">Reviews</h5><hr>
+	                            <p class="card-text">Create | Edit reviews</p>
+	                            <a th:href="@{/reviews}" class="btn btn-primary">View all</a>
+	                            <a th:href="@{/reviews/new}" class="btn btn-success">Create</a>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="product col-sm-6 col-md-4 col-lg-3 mb-3">
+	                    <div class="card" style="padding: 0px;">
+	                        <div class="card-body">
+	                            <h5 class="card-title">Sellers</h5><hr>
+	                            <p class="card-text">Create | Edit sellers</p>
+	                            <a th:href="@{/sellers}" class="btn btn-primary">View all</a>
+	                            <a th:href="@{/sellers/new}" class="btn btn-success">Create</a>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="product col-sm-6 col-md-4 col-lg-3 mb-3">
+	                    <div class="card" style="padding: 0px;">
+	                        <div class="card-body">
+	                            <h5 class="card-title">Price types</h5><hr>
+	                            <p class="card-text">Create | Edit price types</p>
+	                            <a th:href="@{/price-types}" class="btn btn-primary">View all</a>
+	                            <a th:href="@{/price-types/new}" class="btn btn-success">Create</a>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="product col-sm-6 col-md-4 col-lg-3 mb-3">
+	                    <div class="card" style="padding: 0px;">
+	                        <div class="card-body">
+	                            <h5 class="card-title">Sizes</h5><hr>
+	                            <p class="card-text">Create | Edit sizes</p>
+	                            <a th:href="@{/sizes}" class="btn btn-primary">View all</a>
+	                            <a th:href="@{/sizes/new}" class="btn btn-success">Create</a>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="product col-sm-6 col-md-4 col-lg-3 mb-3">
+	                    <div class="card" style="padding: 0px;">
+	                        <div class="card-body">
+	                            <h5 class="card-title">Products sizes</h5><hr>
+	                            <p class="card-text">Create | Edit products sizes</p>
+	                            <a th:href="@{/products-sizes}" class="btn btn-primary">View all</a>
+	                            <a th:href="@{/products-sizes/new}" class="btn btn-success">Create</a>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="product col-sm-6 col-md-4 col-lg-3 mb-3">
+	                    <div class="card" style="padding: 0px;">
+	                        <div class="card-body">
+	                            <h5 class="card-title">Genders</h5><hr>
+	                            <p class="card-text">Create | Edit genders</p>
+	                            <a th:href="@{/genders}" class="btn btn-primary">View all</a>
+	                            <a th:href="@{/genders/new}" class="btn btn-success">Create</a>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="product col-sm-6 col-md-4 col-lg-3 mb-3">
+	                    <div class="card" style="padding: 0px;">
+	                        <div class="card-body">
+	                            <h5 class="card-title">Products genders</h5><hr>
+	                            <p class="card-text">Create | Edit products genders</p>
+	                            <a th:href="@{/products-genders}" class="btn btn-primary">View all</a>
+	                            <a th:href="@{/products-genders/new}" class="btn btn-success">Create</a>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="product col-sm-6 col-md-4 col-lg-3 mb-3">
+	                    <div class="card" style="padding: 0px;">
+	                        <div class="card-body">
+	                            <h5 class="card-title">Body parts</h5><hr>
+	                            <p class="card-text">Create | Edit body parts</p>
+	                            <a th:href="@{/body-parts}" class="btn btn-primary">View all</a>
+	                            <a th:href="@{/body-parts/new}" class="btn btn-success">Create</a>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="product col-sm-6 col-md-4 col-lg-3 mb-3">
+	                    <div class="card" style="padding: 0px;">
+	                        <div class="card-body">
+	                            <h5 class="card-title">Subcategories body parts</h5><hr>
+	                            <p class="card-text">Create | Edit subcategories body parts</p>
+	                            <a th:href="@{/subcategories-body-parts}" class="btn btn-primary">View all</a>
+	                            <a th:href="@{/subcategories-body-parts/new}" class="btn btn-success">Create</a>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="product col-sm-6 col-md-4 col-lg-3 mb-3">
+	                    <div class="card" style="padding: 0px;">
+	                        <div class="card-body">
+	                            <h5 class="card-title">Subcategories</h5><hr>
+	                            <p class="card-text">Create | Edit subcategories</p>
+	                            <a th:href="@{/subcategories}" class="btn btn-primary">View all</a>
+	                            <a th:href="@{/subcategories/new}" class="btn btn-success">Create</a>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="product col-sm-6 col-md-4 col-lg-3 mb-3">
+	                    <div class="card" style="padding: 0px;">
+	                        <div class="card-body">
+	                            <h5 class="card-title">Categories</h5><hr>
+	                            <p class="card-text">Create | Edit categories</p>
+	                            <a th:href="@{/categories}" class="btn btn-primary">View all</a>
+	                            <a th:href="@{/categories/new}" class="btn btn-success">Create</a>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="product col-sm-6 col-md-4 col-lg-3 mb-3">
+	                    <div class="card" style="padding: 0px;">
+	                        <div class="card-body">
+	                            <h5 class="card-title">Sleeves</h5><hr>
+	                            <p class="card-text">Create | Edit sleeves</p>
+	                            <a th:href="@{/sleeves}" class="btn btn-primary">View all</a>
+	                            <a th:href="@{/sleeves/new}" class="btn btn-success">Create</a>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="product col-sm-6 col-md-4 col-lg-3 mb-3">
+	                    <div class="card" style="padding: 0px;">
+	                        <div class="card-body">
+	                            <h5 class="card-title">Shapes</h5><hr>
+	                            <p class="card-text">Create | Edit shapes</p>
+	                            <a th:href="@{/shapes}" class="btn btn-primary">View all</a>
+	                            <a th:href="@{/shapes/new}" class="btn btn-success">Create</a>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="product col-sm-6 col-md-4 col-lg-3 mb-3">
+	                    <div class="card" style="padding: 0px;">
+	                        <div class="card-body">
+	                            <h5 class="card-title">Materials</h5><hr>
+	                            <p class="card-text">Create | Edit materials</p>
+	                            <a th:href="@{/materials}" class="btn btn-primary">View all</a>
+	                            <a th:href="@{/materials/new}" class="btn btn-success">Create</a>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="product col-sm-6 col-md-4 col-lg-3 mb-3">
+	                    <div class="card" style="padding: 0px;">
+	                        <div class="card-body">
+	                            <h5 class="card-title">Makers</h5><hr>
+	                            <p class="card-text">Create | Edit makers</p>
+	                            <a th:href="@{/makers}" class="btn btn-primary">View all</a>
+	                            <a th:href="@{/makers/new}" class="btn btn-success">Create</a>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="product col-sm-6 col-md-4 col-lg-3 mb-3">
+	                    <div class="card" style="padding: 0px;">
+	                        <div class="card-body">
+	                            <h5 class="card-title">Heights</h5><hr>
+	                            <p class="card-text">Create | Edit heights</p>
+	                            <a th:href="@{/heights}" class="btn btn-primary">View all</a>
+	                            <a th:href="@{/heights/new}" class="btn btn-success">Create</a>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="product col-sm-6 col-md-4 col-lg-3 mb-3">
+	                    <div class="card" style="padding: 0px;">
+	                        <div class="card-body">
+	                            <h5 class="card-title">Collars</h5><hr>
+	                            <p class="card-text">Create | Edit collars</p>
+	                            <a th:href="@{/collars}" class="btn btn-primary">View all</a>
+	                            <a th:href="@{/collars/new}" class="btn btn-success">Create</a>
 	                        </div>
 	                    </div>
 	                </div>
