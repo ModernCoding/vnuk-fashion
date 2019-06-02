@@ -2,7 +2,6 @@ package vn.edu.vnuk.fashion.controller;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,54 +19,55 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import vn.edu.vnuk.fashion.dao.ColorDao;
 import vn.edu.vnuk.fashion.dao.ProductDao;
-import vn.edu.vnuk.fashion.dao.ProductsSizeDao;
-import vn.edu.vnuk.fashion.dao.SizeDao;
+import vn.edu.vnuk.fashion.dao.ProductsColorDao;
 import vn.edu.vnuk.fashion.model.Product;
-import vn.edu.vnuk.fashion.model.ProductsSize;
+import vn.edu.vnuk.fashion.model.ProductsColor;
 
 @Controller
-public class ProductsSizesController {
+public class ProductsCollorsController {
 	
 	@Autowired
 	private ProductDao productDao;
 	
 	@Autowired
-	private SizeDao sizeDao;	
+	private ColorDao colorDao;	
 	
 	@Autowired
-	private ProductsSizeDao productsSizeDao;
+	private ProductsColorDao productsColorDao;
 
-	@RequestMapping("/products-sizes")
+	@RequestMapping("/products-colors")
     public String index(
 		
 		@RequestParam(value="productId", required = false) String productId,
-		@RequestParam(value="sizeId", required = false) String sizeId,
+		@RequestParam(value="colorId", required = false) String colorId,
 		Model model,
 		ServletRequest request
 
 	) throws SQLException{
-        
-		model.addAttribute("productsSizes", productsSizeDao.read(productId, sizeId));
+		ProductsColor productsColor = new ProductsColor();
 		
-        model.addAttribute("template", "product-size/index");
+		if (productId != null) productsColor.setProductId(Long.parseLong(productId));
+		
+		if (colorId != null) productsColor.setColorId(Long.parseLong(colorId));
+		
+		model.addAttribute("productsColors", productsColorDao.read(productsColor));
+        model.addAttribute("template", "product-color/index");
         return "_layout";
-   
 	}
     
-    
-    @RequestMapping("/products-sizes/{id}")
+    @RequestMapping("/products-colors/{id}")
     public String show(@PathVariable("id") Long id, Model model, ServletRequest request) throws SQLException{
-        model.addAttribute("productSize", productsSizeDao.read(id));
-        model.addAttribute("template", "product-size/show");
+        model.addAttribute("productsColor", productsColorDao.read(id));
+        model.addAttribute("template", "product-color/show");
         return "_layout";
     }
     
-    
-    @RequestMapping("/products-sizes/new")
+    @RequestMapping("/products-colors/new")
     public String add(
     		
-		ProductsSize productsSize,
+		ProductsColor productsColor,
 		Model model,
 		@ModelAttribute("fieldErrors") ArrayList<FieldError> fieldErrors
 	
@@ -80,27 +80,24 @@ public class ProductsSizesController {
     			);
     	}
     	
-    	model.addAttribute("template", "product-size/new");
-    	List<Product> products = productDao.read(new Product());
-    	model.addAttribute("products", products);
-    	model.addAttribute("sizes", sizeDao.read());
+    	model.addAttribute("template", "product-color/new");
+    	model.addAttribute("products", productDao.read(new Product()));
+    	model.addAttribute("colors", colorDao.read());
         return "_layout";
     }
     
-    
-    @RequestMapping("/products-sizes/{id}/edit")
+    @RequestMapping("/products-colors/{id}/edit")
     public String edit(
     		
 		@RequestParam(value="backToShow", defaultValue="false") Boolean backToShow,
 		@PathVariable("id") Long id,
-		ProductsSize productsSize,
+		ProductsColor productsColor,
 		Model model,
 		ServletRequest request,
 		@ModelAttribute("fieldErrors") ArrayList<FieldError> fieldErrors
 		
 	) throws SQLException{
     	
-    	
     	for(FieldError fieldError : fieldErrors) {
     		model.addAttribute(
     				String.format("%sFieldError", fieldError.getField()),
@@ -108,22 +105,19 @@ public class ProductsSizesController {
     			);
     	}
     	
-    	
     	model.addAttribute("backToShow", backToShow);
     	model.addAttribute("urlCompletion", backToShow ? String.format("/%s", id) : "");
-    	model.addAttribute("productSize", productsSizeDao.read(id));
+    	model.addAttribute("productsColor", productsColorDao.read(id));
     	model.addAttribute("products", productDao.read(new Product()));
-    	model.addAttribute("sizes", sizeDao.read());
-        model.addAttribute("template", "product-size/edit");
+    	model.addAttribute("colors", colorDao.read());
+        model.addAttribute("template", "product-color/edit");
 
         return "_layout";
-    
     }
     
-    
-    @RequestMapping(value="/products-sizes", method=RequestMethod.POST)
+    @RequestMapping(value="/products-colors", method=RequestMethod.POST)
     public String create(		
-    	@Valid ProductsSize productsSize,
+    	@Valid ProductsColor productsColor,
     	BindingResult bindingResult,
     	ServletRequest request,
     	RedirectAttributes redirectAttributes    
@@ -131,44 +125,38 @@ public class ProductsSizesController {
     	
         if (bindingResult.hasErrors()) {
         	redirectAttributes.addFlashAttribute("fieldErrors", bindingResult.getAllErrors());
-            return "redirect:/products-sizes/new";
+            return "redirect:/products-colors/new";
         }
         
-        productsSizeDao.create(productsSize);
-        return "redirect:/products-sizes";
+        productsColorDao.create(productsColor);
+        return "redirect:/products-colors";
     }
     
-    
-    @RequestMapping(value="/products-sizes/{id}", method=RequestMethod.PATCH)
+    @RequestMapping(value="/products-colors/{id}", method=RequestMethod.PATCH)
     public String update(
     		
-    		@RequestParam(value="backToShow", defaultValue="false") Boolean backToShow,
-    		@PathVariable("id") Long id,
-    		@Valid ProductsSize productsSize,
-    		BindingResult bindingResult,
-    		ServletRequest request,
-    		RedirectAttributes redirectAttributes
-    		
-    	) throws SQLException{
-    	
+		@RequestParam(value="backToShow", defaultValue="false") Boolean backToShow,
+		@PathVariable("id") Long id,
+		@Valid ProductsColor productsColor,
+		BindingResult bindingResult,
+		ServletRequest request,
+		RedirectAttributes redirectAttributes
+		
+	) throws SQLException{
         
     	if (bindingResult.hasErrors()) {
         	redirectAttributes.addFlashAttribute("fieldErrors", bindingResult.getAllErrors());
-            return String.format("redirect:/products-sizes/%s/edit", id);
+            return String.format("redirect:/products-colors/%s/edit", id);
         }
         
-        productsSizeDao.update(productsSize);
-        return backToShow ? String.format("redirect:/products-sizes/%s", id) : "redirect:/products-sizes";
-        
-        
+        productsColorDao.update(productsColor);
+        return backToShow ? String.format("redirect:/products-colors/%s", id) : "redirect:/products-colors";
     }
-    
     
     //  delete with ajax
-    @RequestMapping(value="/products-sizes/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value="/products-colors/{id}", method = RequestMethod.DELETE)
     public void delete(@PathVariable("id") Long id, ServletRequest request, HttpServletResponse response) throws SQLException {
-    	productsSizeDao.delete(id);
+    	productsColorDao.delete(id);
         response.setStatus(200);
     }
-    
 }

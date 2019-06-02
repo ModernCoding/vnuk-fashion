@@ -114,7 +114,7 @@ public class ProductsColorDao {
     //  UPDATE
     public void update(ProductsColor productsColor) throws SQLException {
         
-    	String sqlQuery = "update products_colors set product_id=?, gender_id=? where id=?";
+    	String sqlQuery = "update products_colors set product_id=?, color_id=? where id=?";
         
 
         try {
