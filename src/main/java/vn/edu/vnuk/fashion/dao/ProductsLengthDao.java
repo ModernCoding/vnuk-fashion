@@ -129,9 +129,9 @@ public class ProductsLengthDao {
 					sqlQuery,
 					
 					new Object[] {
-							productsLength.getId(),
 							productsLength.getProductId(),
-							productsLength.getLengthId()
+							productsLength.getLengthId(),
+							productsLength.getId()
 						}
 				);
             
