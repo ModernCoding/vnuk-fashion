@@ -5,7 +5,6 @@ import javax.validation.constraints.NotNull;
 public class Review {
 	private Long id;
 	
-	@NotNull
 	private Order order;
 	
 	@NotNull
@@ -14,8 +13,6 @@ public class Review {
 	private Long orderId;
 
 	private String description;
-	
-	
 
 	public Long getOrderId() {
 		return orderId;

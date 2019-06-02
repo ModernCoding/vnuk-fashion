@@ -91,12 +91,12 @@ public class CustomerDao {
     public Customer read(Long id) throws SQLException{
 
     	String sqlQuery = "select customers.id"
-    			+ "     , customers.label as customer_label"
+    			+ "     , customers.label as label"
     			+ "     , titles.id as title_id"
 				+ "     , titles.label as title_label"
-				+ "     , customers.address as customer_address"
-				+ "     , customers.phone as customer_phone"
-				+ "     , customers.email as customer_email "
+				+ "     , customers.address as address"
+				+ "     , customers.phone as phone"
+				+ "     , customers.email as email "
 				+ "from customers "
 				+ "inner join titles on customers.title_id = titles.id "
 				+ "where customers.id = ?;";

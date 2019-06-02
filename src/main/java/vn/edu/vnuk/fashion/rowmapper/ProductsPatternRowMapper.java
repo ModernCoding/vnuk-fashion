@@ -8,17 +8,9 @@ import java.util.Map;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import vn.edu.vnuk.fashion.model.Category;
-import vn.edu.vnuk.fashion.model.Collar;
-import vn.edu.vnuk.fashion.model.Height;
-import vn.edu.vnuk.fashion.model.Maker;
-import vn.edu.vnuk.fashion.model.Material;
 import vn.edu.vnuk.fashion.model.Pattern;
 import vn.edu.vnuk.fashion.model.Product;
 import vn.edu.vnuk.fashion.model.ProductsPattern;
-import vn.edu.vnuk.fashion.model.Shape;
-import vn.edu.vnuk.fashion.model.Sleeve;
-import vn.edu.vnuk.fashion.model.Subcategory;
 
 public class ProductsPatternRowMapper implements RowMapper<ProductsPattern> {
 

@@ -9,7 +9,6 @@ import java.util.Map;
 import org.springframework.jdbc.core.RowMapper;
 
 import vn.edu.vnuk.fashion.model.BodyPart;
-import vn.edu.vnuk.fashion.model.Category;
 import vn.edu.vnuk.fashion.model.SubcategoriesBodyPart;
 import vn.edu.vnuk.fashion.model.Subcategory;
 

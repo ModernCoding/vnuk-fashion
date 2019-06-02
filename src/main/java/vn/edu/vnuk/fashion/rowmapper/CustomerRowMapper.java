@@ -33,7 +33,6 @@ public Customer mapRow(ResultSet rs, int rowNum) throws SQLException {
 		return customer;
 	}
 	
-	
 	public List<Customer> mapRows(List<Map<String, Object>> rows) throws SQLException {
 		
 		List<Customer> customers = new ArrayList<Customer>();

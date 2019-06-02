@@ -8,7 +8,6 @@ import java.util.Map;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import vn.edu.vnuk.fashion.model.Category;
 import vn.edu.vnuk.fashion.model.Collar;
 import vn.edu.vnuk.fashion.model.Height;
 import vn.edu.vnuk.fashion.model.Maker;

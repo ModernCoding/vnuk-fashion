@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import vn.edu.vnuk.fashion.helper.DaoHelpers;
 import vn.edu.vnuk.fashion.model.Review;
 import vn.edu.vnuk.fashion.rowmapper.ReviewRowMapper;
-
 
 @Repository
 public class ReviewDao {
@@ -55,7 +55,7 @@ public class ReviewDao {
     
     
     //  READ (List of review)
-    public List<Review> read(String orderId) throws SQLException {
+    public List<Review> read(Review review) throws SQLException {
     	
     	String sqlQuery = "select t01.id"
 		    			+ "     , t01.rating"
@@ -63,19 +63,12 @@ public class ReviewDao {
 		    			+ "     , t02.id as order_id"
 						+ "     , t02.customer_id as customer_id"
 						+ "     , t02.price_id as price_id"
-						+ "     , t02.qty as order_qty"
-						
-						+ "  from reviews t01, orders t02"
-						+ " where t02.id = t01.order_id"
-				;
+						+ "     , t02.qty as order_qty "
+						+ "from reviews t01 "
+						+ "inner join orders t02 on t01.order_id = t02.id ";
     	
-    	if (orderId != null) {
-    		sqlQuery += String.format("   and t02.id = %s", orderId);
-    		sqlQuery += " order by t01.id asc;";
-    	}
-    	
-    	else {
-        	sqlQuery += " order by t02.id asc, t01.id asc;";
+    	if (review.getOrderId() != null) {
+    		sqlQuery = DaoHelpers.addConditionForQuery(sqlQuery, "t02.order_id", String.valueOf(review.getOrderId()));
     	}
     	
     	
@@ -104,13 +97,10 @@ public class ReviewDao {
     			+ "     , t02.id as order_id"
 				+ "     , t02.customer_id as customer_id"
 				+ "     , t02.price_id as price_id"
-				+ "     , t02.qty as order_qty"
-				+ "  from reviews t01, orders t02"
-				+ " where t01.id = ?"
-				+ "   and t02.id = t01.order_id"
-				+ " order by t02.id asc, t01.id asc"
-				+ ";"
-		;
+				+ "     , t02.qty as order_qty "
+				+ "from reviews t01 "
+				+ "inner join orders t02 on t01.order_id = t02.id "
+				+ "where t01.id = ?;";
 
     	return this.jdbcTemplate.queryForObject(
     			sqlQuery,

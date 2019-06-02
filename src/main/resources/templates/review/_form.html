@@ -1,0 +1,68 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	
+    <form th:fragment="form(title, action, method, cancelLink)" 
+    	  th:action="${action}" 
+    	  th:object="${review}" 
+    	  th:method="${method}"
+    	  class="px-5 py-5 col-md-6 offset-md-3"
+		  style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+
+		<h3 class="my-margin-bottom-28 text-center">
+			<em th:text="${title}"></em>
+		</h3>
+
+		<div>
+			<div th:if="${labelFieldError}" class="my-error-field">
+        		<span class="my-margin-right-19">
+					<i class="fas fa-minus-circle" aria-hidden="true"></i>
+				</span>
+				
+		    	<span th:text="${labelFieldError}"></span>
+        	</div>
+		
+        	<div class="mt-4 form-group">
+				<label for="rating">Rating</label>
+	    		<input class="form-control" id="rating" placeholder="Rating" type="text" th:field="*{rating}">
+        	</div>
+        	
+        	<div class="mt-4 form-group">
+        		<label for="description">Description</label>
+        		<input class="form-control" id="description" placeholder="Description" type="text" th:field="*{description}">
+        	</div>
+        	
+        	<div class="mt-4 form-group">
+        		<label for="order">Order</label>
+	        	<select class="form-control" th:field="*{orderId}" id="order">
+				    <option
+				    	th:each="order : ${orders}"
+				    	th:value="${order.id}"
+				    	th:text="${order.id}"
+				    >
+				    </option>
+				</select>
+        	</div>
+        </div>
+        
+        <div class="my-margin-top-19 text-center">
+
+		    <a th:href="${cancelLink}" class="btn btn-sm btn-danger my-margin-right-19">
+				<span class="my-margin-right-19">
+					<i class="fas fa-times" aria-hidden="true"></i>
+				</span>
+				
+		    	<span>Cancel</span>
+		    </a>
+	
+	
+		    <button type="submit" class="btn btn-sm btn-success">
+				<span class="my-margin-right-19">
+					<i class="fas fa-check-circle" aria-hidden="true"></i>
+				</span>
+				
+		    	<span>Save</span>
+		    </button>
+		    
+		</div>
+	</form>
+	
+</html>

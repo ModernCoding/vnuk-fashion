@@ -59,7 +59,6 @@ public class PriceDao {
     
     
     //  READ (List of Tasks)
-    @SuppressWarnings("finally")
     public List<Price> read(Price price) throws SQLException {
     	
     	String sqlQuery = "select prices.id as id"
